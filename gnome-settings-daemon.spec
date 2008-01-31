@@ -48,7 +48,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p2 -b .path
+%patch0 -p1 -b .path
 
 %build
 %configure --enable-static=no
