@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.21.90.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -29,6 +29,8 @@ BuildRequires:	libgnomekbd-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 
+Patch0:		gsd-path-fix.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also 
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -46,6 +48,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p2 -b .path
 
 %build
 %configure --enable-static=no
@@ -111,6 +114,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Jan 31 2008 - Bastien Nocera <bnocera@redhat.com> - 2.21.90.1-2
+- Fix the path for g-s-d, from upstream patch
+
 * Tue Jan 29 2008 - Bastien Nocera <bnocera@redhat.com> - 2.21.90.1-1
 - Update to 2.21.90.1
 
