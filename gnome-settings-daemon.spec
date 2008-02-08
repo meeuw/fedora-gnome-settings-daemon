@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.21.90.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,6 +30,8 @@ BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 
 Patch0:		gsd-path-fix.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=511771
+Patch1:		load-xkb.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also 
@@ -49,6 +51,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .path
+%patch1 -p1 -b .load-xkb
 
 %build
 %configure --enable-static=no
@@ -114,6 +117,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Feb  7 2008 Matthias Clasen <mclasen@redhat.com> - 2.21.90.1-3
+- Load xkb settings initially
+
 * Thu Jan 31 2008 - Bastien Nocera <bnocera@redhat.com> - 2.21.90.1-2
 - Fix the path for g-s-d, from upstream patch
 
