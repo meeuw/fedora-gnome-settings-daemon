@@ -100,7 +100,7 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS 
 %{_sysconfdir}/gconf/schemas/*
-%{_libdir}/gnome-settings-daemon
+%{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
 %{_datadir}/gnome-settings-daemon/
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
