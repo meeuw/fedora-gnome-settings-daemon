@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.21.91
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -51,6 +51,15 @@ developing applications that use %{name}.
 %configure --enable-static=no
 make %{?_smp_mflags}
 
+cd po
+# clean up .po files
+make %{name}.pot
+for p in *.po; do
+  msgmerge -U $p %{name}.pot
+done
+# regenerate .gmo files
+make
+cd .. 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -111,6 +120,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Feb 11 2008 Matthias Clasen <mclasen@redhat.com> - 2.21.91-2
+- Remove obsolete control-center translations
+
 * Mon Feb 11 2008 - Bastien Nocera <bnocera@redhat.com> - 2.21.91-1
 - Update to 2.21.91
 - Remove obsolete patches
