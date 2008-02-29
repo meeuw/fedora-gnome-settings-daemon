@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.21.91
-Release:	3%{?dist}
+Version:	2.21.92
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -14,7 +14,7 @@ Requires(preun): GConf2 >= 2.14
 Requires(post): GConf2 >= 2.14
 
 BuildRequires:	dbus-glib-devel
-BuildRequires:	GConf2-devel 
+BuildRequires:	GConf2-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	gnome-vfs2-devel
 BuildRequires:	gnome-desktop-devel >= 2.21.91
@@ -24,7 +24,6 @@ BuildRequires:	libgnome-devel
 BuildRequires:	xorg-x11-proto-devel
 BuildRequires:	gstreamer-devel
 BuildRequires:	gstreamer-plugins-base-devel
-BuildRequires:	esound-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
@@ -32,7 +31,7 @@ BuildRequires:	perl(XML::Parser)
 Patch1:         add-randr-12.patch
 
 %description
-A daemon to share settings from GNOME to other applications. It also 
+A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
 
 %package	devel
@@ -63,7 +62,7 @@ for p in *.po; do
 done
 # regenerate .gmo files
 make
-cd .. 
+cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -111,7 +110,7 @@ fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING NEWS 
+%doc AUTHORS COPYING NEWS
 %{_sysconfdir}/gconf/schemas/*
 %{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
@@ -124,6 +123,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Feb 29 2008 Jon McCann <jmccann@redhat.com> - 2.21.92-1
+- Update to 2.21.92
+
 * Tue Feb 12 2008 Soren Sandmann <sandmann@redhat.com> - 2.21.91-3
 - Add patch to make the xrandr plugin listen for client messages from
   the control panel and reread the configuration file.
