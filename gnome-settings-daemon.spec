@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.21.92
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -123,6 +123,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sun Mar  2 2008 Soren Sandmann <sandmann@redhat.com> - 2.21.92-2
+- Update randr patch to handle video key
+
 * Fri Feb 29 2008 Jon McCann <jmccann@redhat.com> - 2.21.92-1
 - Update to 2.21.92
 
