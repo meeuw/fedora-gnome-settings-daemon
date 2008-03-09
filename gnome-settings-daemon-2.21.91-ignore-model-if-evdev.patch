@@ -1,0 +1,17 @@
+diff --git a/plugins/keyboard/gsd-keyboard-xkb.c b/plugins/keyboard/gsd-keyboard-xkb.c
+index a633167..7896d85 100644
+--- a/plugins/keyboard/gsd-keyboard-xkb.c
++++ b/plugins/keyboard/gsd-keyboard-xkb.c
+@@ -152,6 +152,12 @@ apply_xkb_settings (void)
+ 
+         gkbd_keyboard_config_load_from_x_current (&current_sys_kbd_config,
+                                                   NULL);
++        /* Ignore model if using evdev, since evdev needs its own model
++         */
++        if (strcmp (initial_sys_kbd_config.model, "evdev") == 0) {
++                g_free (current_kbd_config.model);
++                current_kbd_config.model = g_strdup ("evdev");
++        }
+         /* Activate - only if different! */
+         if (!gkbd_keyboard_config_equals
+             (&current_kbd_config, &current_sys_kbd_config)) {

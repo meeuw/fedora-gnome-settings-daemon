@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.21.92
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -29,6 +29,7 @@ BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 
 Patch1:         add-randr-12.patch
+Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -49,6 +50,7 @@ developing applications that use %{name}.
 %setup -q
 
 %patch1 -p1 -b .add-randr-12
+%patch2 -p1 -b .ignore-layout-if-using-evdev
 
 %build
 %configure --enable-static=no
@@ -123,6 +125,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sun Mar  9 2008 Ray Strode <rstrode@redhat.com> - 2.21.92-3
+- Don't set keyboard model on startup from gconf if evdev is being used.
+  Evdev needs to use its own keyboard model to work right.
+
 * Sun Mar  2 2008 Soren Sandmann <sandmann@redhat.com> - 2.21.92-2
 - Update randr patch to handle video key
 
