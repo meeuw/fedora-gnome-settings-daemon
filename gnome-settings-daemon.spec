@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.21.92
-Release:	3%{?dist}
+Version:	2.22.0
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://ftp.gnome.org/pub/gnome/sources/%{name}
-Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.21/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.22/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -125,6 +125,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Mar 10 2008 Matthias Clasen <mclasen@redhat.com> 2.22.0-1
+- Update to 2.22.0
+
 * Sun Mar  9 2008 Ray Strode <rstrode@redhat.com> - 2.21.92-3
 - Don't set keyboard model on startup from gconf if evdev is being used.
   Evdev needs to use its own keyboard model to work right.
