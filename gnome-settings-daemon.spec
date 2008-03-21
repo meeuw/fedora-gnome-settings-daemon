@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,6 +30,8 @@ BuildRequires:	perl(XML::Parser)
 
 Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=523676
+Patch3:		mouse-no-eat-keys.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -51,6 +53,7 @@ developing applications that use %{name}.
 
 %patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
+%patch3 -p1 -b .mouse-no-eat-keys
 
 %build
 %configure --enable-static=no
@@ -125,6 +128,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Mar 20 2008 Matthias Clasen <mclasen@redhat.com> 2.22.0-2
+- Fix interaction between "Locate Pointer" and volume keys
+
 * Mon Mar 10 2008 Matthias Clasen <mclasen@redhat.com> 2.22.0-1
 - Update to 2.22.0
 
