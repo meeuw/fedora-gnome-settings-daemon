@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.22.0
-Release:	3%{?dist}
+Version:	2.22.1
+Release:	0.2008.03.26.1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,8 +30,6 @@ BuildRequires:	perl(XML::Parser)
 
 Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=523676
-Patch3:		mouse-no-eat-keys.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -53,10 +51,9 @@ developing applications that use %{name}.
 
 %patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
-%patch3 -p1 -b .mouse-no-eat-keys
 
 %build
-%configure --enable-static=no
+%configure --enable-static=no --enable-profiling
 make %{?_smp_mflags}
 
 cd po
@@ -135,6 +132,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Mar 26 2008 Jon McCann <jmccann@redhat.com> - 2.22.1-0.2008.03.26.1
+- Update to snapshot
+- Enable profiling
+
 * Wed Mar 26 2008 - Bastien Nocera <bnocera@redhat.com> - 2.22.0-3
 - apps_gnome_settings_daemon_default_editor.schemas is obsolete (#438937)
 
