@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.1
-Release:	0.2008.03.26.2%{?dist}
+Release:	0.2008.03.26.3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,6 +30,9 @@ BuildRequires:	perl(XML::Parser)
 
 Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=438942
+# http://bugzilla.gnome.org/show_bug.cgi?id=524499
+Patch3:         gsd-mouse-too-much-grab.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -51,6 +54,9 @@ developing applications that use %{name}.
 
 %patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
+pushd plugins/mouse/
+%patch3 -p0 -b .no-eat-keys
+popd
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -132,6 +138,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Mar 26 2008 - Bastien Nocera <bnocera@redhat.com> - 2.22.1-0.2008.03.26.3
+- Add patch for the mouse plugin not to eat multimedia key events (#438942)
+
 * Wed Mar 26 2008 Jon McCann <jmccann@redhat.com> - 2.22.1-0.2008.03.26.2
 - Rebuild
 
