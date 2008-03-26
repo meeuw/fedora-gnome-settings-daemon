@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -82,7 +82,6 @@ rm -rf $RPM_BUILD_ROOT
 %post
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 gconftool-2 --makefile-install-rule \
-	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
 	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
 	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
 	%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
@@ -92,8 +91,12 @@ gconftool-2 --makefile-install-rule \
 %pre
 if [ "$1" -gt 1 ]; then
 	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
+		gconftool-2 --makefile-uninstall-rule \
+			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
+			>& /dev/null || :
+	fi
 	gconftool-2 --makefile-uninstall-rule \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
 		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
 		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
 		%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
@@ -104,8 +107,12 @@ fi
 %preun
 if [ "$1" -eq 0 ]; then
 	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
+		gconftool-2 --makefile-uninstall-rule \
+			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
+			>& /dev/null || :
+	fi
 	gconftool-2 --makefile-uninstall-rule \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
 		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
 		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
 		%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
@@ -128,6 +135,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Mar 26 2008 - Bastien Nocera <bnocera@redhat.com> - 2.22.0-3
+- apps_gnome_settings_daemon_default_editor.schemas is obsolete (#438937)
+
 * Thu Mar 20 2008 Matthias Clasen <mclasen@redhat.com> 2.22.0-2
 - Fix interaction between "Locate Pointer" and volume keys
 
