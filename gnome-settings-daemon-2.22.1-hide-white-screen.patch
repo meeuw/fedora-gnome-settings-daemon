@@ -1,0 +1,30 @@
+diff -up gnome-settings-daemon-2.22.1/plugins/background/libbackground/preferences.c.hide-white-screen gnome-settings-daemon-2.22.1/plugins/background/libbackground/preferences.c
+--- gnome-settings-daemon-2.22.1/plugins/background/libbackground/preferences.c.hide-white-screen	2008-03-31 10:37:43.000000000 -0400
++++ gnome-settings-daemon-2.22.1/plugins/background/libbackground/preferences.c	2008-03-31 10:39:27.000000000 -0400
+@@ -252,6 +252,26 @@ bg_preferences_load (BGPreferences *pref
+ 		else
+ 			prefs->wallpaper_filename = g_filename_from_utf8 (tmp, -1, NULL,
+ 									  NULL, NULL);
++
++		if (!g_file_test (prefs->wallpaper_filename, G_FILE_TEST_EXISTS)) {
++			GConfValue *default_value;
++			default_value = gconf_client_get_default_from_schema (client,
++									      BG_PREFERENCES_DRAW_BACKGROUND, NULL);
++			if (default_value != NULL) {
++				prefs->enabled = gconf_value_get_bool (default_value);
++				gconf_value_free (default_value);
++
++				g_free (prefs->wallpaper_filename);
++				prefs->wallpaper_filename = NULL;
++
++				default_value = gconf_client_get_default_from_schema (client,
++										      BG_PREFERENCES_PICTURE_FILENAME, NULL);
++				if (default_value != NULL) {
++					prefs->wallpaper_filename = g_strdup (gconf_value_get_string (default_value));
++					gconf_value_free (default_value);
++				}
++			}
++		}
+ 	}
+ 	g_free (tmp);
+ 

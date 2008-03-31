@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.1
-Release:	0.2008.03.26.3%{?dist}
+Release:	0.2008.03.26.4%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -33,6 +33,7 @@ Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=438942
 # http://bugzilla.gnome.org/show_bug.cgi?id=524499
 Patch3:         gsd-mouse-too-much-grab.patch
+Patch4:         gnome-settings-daemon-2.22.1-hide-white-screen.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -57,6 +58,7 @@ developing applications that use %{name}.
 pushd plugins/mouse/
 %patch3 -p0 -b .no-eat-keys
 popd
+%patch4 -p1 -b .hide-white-screen
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -138,6 +140,12 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Mar 31 2008 - Ray Strode <rstrode@redhat.com> - 2.22.1-0.2008.03.26.4
+- Over the releases we've accumulated default.png, default-wide.png default-5_4.png
+  and default.jpg.  We haven't been able to drop them because it would leave some
+  users with white backgrounds on upgrade.  This patch just falls back to the
+  default image if the user's background doesn't exist.
+
 * Wed Mar 26 2008 - Bastien Nocera <bnocera@redhat.com> - 2.22.1-0.2008.03.26.3
 - Add patch for the mouse plugin not to eat multimedia key events (#438942)
 
