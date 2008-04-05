@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.1
-Release:	0.2008.03.26.4%{?dist}
+Release:	0.2008.03.26.5%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -140,6 +140,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sat Apr 5 2008 - Soren Sandmann <sandmann@redhat.com> - 2.22.1-2008.03.26.5
+- Update randr plugin
+
 * Mon Mar 31 2008 - Ray Strode <rstrode@redhat.com> - 2.22.1-0.2008.03.26.4
 - Over the releases we've accumulated default.png, default-wide.png default-5_4.png
   and default.jpg.  We haven't been able to drop them because it would leave some

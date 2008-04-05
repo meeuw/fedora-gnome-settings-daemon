@@ -1,6 +1,7 @@
+diff -up gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c.add-randr-12 gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c
 --- gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c.add-randr-12	2008-03-24 17:21:50.000000000 -0400
-+++ gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c	2008-03-24 18:23:32.000000000 -0400
-@@ -35,7 +35,10 @@
++++ gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c	2008-04-05 12:42:41.000000000 -0400
+@@ -35,15 +35,33 @@
  #include <gdk/gdk.h>
  #include <gdk/gdkx.h>
  #include <gtk/gtk.h>
@@ -12,8 +13,9 @@
  
  #ifdef HAVE_RANDR
  #include <X11/extensions/Xrandr.h>
-@@ -44,6 +47,22 @@
- #include "gnome-settings-profile.h"
+ #endif
+ 
+-#include "gnome-settings-profile.h"
  #include "gsd-xrandr-manager.h"
  
 +#define GSD_XRANDR_MANAGER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GSD_TYPE_XRANDR_MANAGER, GsdXrandrManagerPrivate))
@@ -35,7 +37,7 @@
  static void     gsd_xrandr_manager_class_init  (GsdXrandrManagerClass *klass);
  static void     gsd_xrandr_manager_init        (GsdXrandrManager      *xrandr_manager);
  static void     gsd_xrandr_manager_finalize    (GObject             *object);
-@@ -52,252 +71,74 @@ G_DEFINE_TYPE (GsdXrandrManager, gsd_xra
+@@ -52,252 +70,74 @@ G_DEFINE_TYPE (GsdXrandrManager, gsd_xra
  
  static gpointer manager_object = NULL;
  
@@ -94,11 +96,30 @@
 -        if (val == NULL) {
 -                return -1;
 -        }
--
++static Atom
++gnome_randr_xatom (void)
++{
++        return gdk_x11_atom_to_xatom (gnome_randr_atom());
++}
+ 
 -        if (sscanf (val, "%dx%d", &w, &h) != 2) {
 -                g_free (val);
 -                return -1;
--        }
++static GdkFilterReturn
++on_client_message (GdkXEvent  *xevent,
++		   GdkEvent   *event,
++		   gpointer    data)
++{
++        RWScreen *screen = data;
++        XEvent *ev = (XEvent *)xevent;
++        
++        if (ev->type == ClientMessage		&&
++            ev->xclient.message_type == gnome_randr_xatom()) {
++                
++                configuration_apply_stored (screen);
++                
++                return GDK_FILTER_REMOVE;
+         }
 -
 -        g_free (val);
 -
@@ -106,10 +127,9 @@
 -        *height = h;
 -
 -        return i;
-+static Atom
-+gnome_randr_xatom (void)
-+{
-+        return gdk_x11_atom_to_xatom (gnome_randr_atom());
++        
++        /* Pass the event on to GTK+ */
++        return GDK_FILTER_CONTINUE;
  }
  
 -static int
@@ -117,29 +137,31 @@
 -          char        *display,
 -          int          screen)
 +static GdkFilterReturn
-+on_client_message (GdkXEvent  *xevent,
-+                   GdkEvent   *event,
-+                   gpointer    data)
++event_filter (GdkXEvent           *xevent,
++              GdkEvent            *event,
++              gpointer             data)
  {
 -        char   *key;
 -        int     val;
 -        GError *error;
-+        RWScreen *screen = data;
-+        XEvent *ev = (XEvent *)xevent;
++        GsdXrandrManager *manager = data;
++        XEvent *xev = (XEvent *) xevent;
  
 -        key = g_strdup_printf ("%s/%d/rate", display, screen);
 -        error = NULL;
 -        val = gconf_client_get_int (client, key, &error);
 -        g_free (key);
-+        if (ev->type == ClientMessage &&
-+            ev->xclient.message_type == gnome_randr_xatom()) {
++        if (!manager->priv->running)
++                return GDK_FILTER_CONTINUE;
  
 -        if (error == NULL) {
 -                return val;
 -        }
 -
 -        g_error_free (error);
-+                configuration_apply_stored (screen);
++        /* verify we have a key event */
++        if (xev->xany.type != KeyPress && xev->xany.type != KeyRelease)
++                return GDK_FILTER_CONTINUE;
  
 -        return 0;
 -}
@@ -166,21 +188,23 @@
 -                        closest_width = sizes[i].width;
 -                        closest_height = sizes[i].height;
 -                }
-+                return GDK_FILTER_REMOVE;
++        if (xev->xkey.keycode == manager->priv->keycode) {
++                /* FIXME: here we should cycle between valid
++                 * configurations, and save them
++                 */
++                configuration_apply_stored (manager->priv->rw_screen);
++                
++                return GDK_FILTER_CONTINUE;
          }
  
 -        return closest;
-+        /* Pass the event on to GTK+ */
 +        return GDK_FILTER_CONTINUE;
  }
 -#endif /* HAVE_RANDR */
  
--static void
+ static void
 -apply_settings (GsdXrandrManager *manager)
-+static GdkFilterReturn
-+event_filter (GdkXEvent           *xevent,
-+              GdkEvent            *event,
-+              gpointer             data)
++on_randr_event (RWScreen *screen, gpointer data)
  {
 -#ifdef HAVE_RANDR
 -        GdkDisplay  *display;
@@ -222,13 +246,9 @@
 -                g_message ("Display has unsupported version of XRandR (%d.%d), not setting resolution.", major, minor);
 -                goto out;
 -        }
-+        GsdXrandrManager *manager = data;
-+        XEvent *xev = (XEvent *) xevent;
- 
+-
 -        client = gconf_client_get_default ();
-+        if (!manager->priv->running)
-+                return GDK_FILTER_CONTINUE;
- 
+-
 -        i = 0;
 -        specific_path = NULL;
 -        if (gethostname (hostname, sizeof (hostname)) == 0) {
@@ -237,10 +257,7 @@
 -        }
 -        keys[i++] = "/desktop/gnome/screen/default";
 -        keys[i++] = NULL;
-+        /* verify we have a key event */
-+        if (xev->xany.type != KeyPress && xev->xany.type != KeyRelease)
-+                return GDK_FILTER_CONTINUE;
- 
+-
 -        n_screens = gdk_display_get_n_screens (display);
 -        for (i = 0; i < n_screens; i++) {
 -                screen = gdk_display_get_screen (display, i);
@@ -295,85 +312,86 @@
 -                                                                    rate,
 -                                                                    GDK_CURRENT_TIME);
 -                        }
-+        if (xev->xkey.keycode == manager->priv->keycode) {
-+                /* FIXME: here we should cycle between valid
-+                 * configurations, and save them
-+                 */
-+                configuration_apply_stored (manager->priv->rw_screen);
- 
+-
 -                        XRRFreeScreenConfigInfo (config);
 -                }
-+                return GDK_FILTER_CONTINUE;
-         }
+-        }
++        GsdXrandrManager *manager = data;
  
 -        g_free (specific_path);
 -
 -        /* We need to make sure we process the screen resize event. */
 -        gdk_display_sync (display);
-+        return GDK_FILTER_CONTINUE;
-+}
- 
+-
 -        while (gtk_events_pending ()) {
 -                gtk_main_iteration ();
 -        }
-+static void
-+on_randr_event (RWScreen *screen, gpointer data)
-+{
-+        GsdXrandrManager *manager = data;
- 
+-
 -        if (client != NULL) {
 -                g_object_unref (client);
 -        }
 - out:
 -        gnome_settings_profile_end (NULL);
+-
+-#endif /* HAVE_RANDR */
 +        if (!manager->priv->running)
 +                return;
- 
--#endif /* HAVE_RANDR */
++        
 +        /* FIXME: Set up any new screens here */
  }
  
  gboolean
-@@ -306,7 +147,24 @@ gsd_xrandr_manager_start (GsdXrandrManag
+@@ -306,8 +146,30 @@ gsd_xrandr_manager_start (GsdXrandrManag
  {
          g_debug ("Starting xrandr manager");
  
 -        apply_settings (manager);
+-
 +        manager->priv->running = TRUE;
-+
++        
 +        if (manager->priv->keycode) {
++                gdk_error_trap_push ();
++                
 +                XGrabKey (gdk_x11_get_default_xdisplay(),
 +                          manager->priv->keycode, AnyModifier,
 +                          gdk_x11_get_default_root_xwindow(),
 +                          True, GrabModeAsync, GrabModeAsync);
++
++                gdk_flush ();
++                gdk_error_trap_pop ();
 +        }
-+
++        
 +        configuration_apply_stored (manager->priv->rw_screen);
-+
++        
 +        gdk_window_add_filter (gdk_get_default_root_window(),
 +                               (GdkFilterFunc)event_filter,
 +                               manager);
-+
++        
 +        gdk_add_client_message_filter (gnome_randr_atom(),
 +                                       on_client_message,
 +                                       manager->priv->rw_screen);
- 
++        
          return TRUE;
  }
-@@ -315,6 +173,12 @@ void
+ 
+@@ -315,6 +177,16 @@ void
  gsd_xrandr_manager_stop (GsdXrandrManager *manager)
  {
          g_debug ("Stopping xrandr manager");
 +
 +        manager->priv->running = FALSE;
-+
++        
++        gdk_error_trap_push ();
++        
 +        XUngrabKey (gdk_x11_get_default_xdisplay(),
 +                    manager->priv->keycode, AnyModifier,
 +                    gdk_x11_get_default_root_xwindow());
++
++        gdk_error_trap_pop ();
  }
  
  static void
-@@ -388,11 +252,22 @@ gsd_xrandr_manager_class_init (GsdXrandr
+@@ -388,11 +260,22 @@ gsd_xrandr_manager_class_init (GsdXrandr
          object_class->constructor = gsd_xrandr_manager_constructor;
          object_class->dispose = gsd_xrandr_manager_dispose;
          object_class->finalize = gsd_xrandr_manager_finalize;
@@ -387,7 +405,7 @@
 +        Display *dpy = gdk_x11_get_default_xdisplay ();
 +        guint keyval = gdk_keyval_from_name (VIDEO_KEYSYM);
 +        guint keycode = XKeysymToKeycode (dpy, keyval);
-+
++        
 +        manager->priv = GSD_XRANDR_MANAGER_GET_PRIVATE (manager);
 +
 +        manager->priv->keycode = keycode;
@@ -396,7 +414,7 @@
  }
  
  static void
-@@ -405,6 +280,8 @@ gsd_xrandr_manager_finalize (GObject *ob
+@@ -405,6 +288,8 @@ gsd_xrandr_manager_finalize (GObject *ob
  
          xrandr_manager = GSD_XRANDR_MANAGER (object);
  
