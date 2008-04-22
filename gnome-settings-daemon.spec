@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.22.1
-Release:	0.2008.03.26.5%{?dist}
+Release:	0.2008.03.26.6%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,6 +34,8 @@ Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=524499
 Patch3:         gsd-mouse-too-much-grab.patch
 Patch4:         gnome-settings-daemon-2.22.1-hide-white-screen.patch
+# survive xrandr being absent (such as on Xnest in sabayon)
+Patch5:		xrandr-missingok.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -59,6 +61,7 @@ pushd plugins/mouse/
 %patch3 -p0 -b .no-eat-keys
 popd
 %patch4 -p1 -b .hide-white-screen
+%patch5 -p1 -b .xrandr-missingok
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -140,6 +143,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Apr 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.22.1-2008.03.26.6
+- Make the xrandr plugin survive the absence of Xrandr
+
 * Sat Apr 5 2008 - Soren Sandmann <sandmann@redhat.com> - 2.22.1-2008.03.26.5
 - Update randr plugin
 
