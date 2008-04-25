@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.22.1
-Release:	0.2008.03.26.6%{?dist}
+Version:	2.23.1.1
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://ftp.gnome.org/pub/gnome/sources/%{name}
-Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.22/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.23/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -143,6 +143,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Apr 25 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1.1-1
+- Update to 2.23.1.1
+
 * Tue Apr 22 2008 Matthias Clasen <mclasen@redhat.com> - 2.22.1-2008.03.26.6
 - Make the xrandr plugin survive the absence of Xrandr
 
