@@ -136,6 +136,7 @@ fi
 %{_libexecdir}/gnome-settings-daemon
 %{_datadir}/gnome-settings-daemon/
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
+%{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 
 %files devel
 %defattr(-,root,root,-)
