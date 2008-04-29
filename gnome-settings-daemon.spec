@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.1.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -36,6 +36,9 @@ Patch3:         gsd-mouse-too-much-grab.patch
 Patch4:         gnome-settings-daemon-2.22.1-hide-white-screen.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=530356
+# https://bugzilla.redhat.com/show_bug.cgi?id=346201
+Patch6:         gsd-handle-different-keysyms.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -62,6 +65,7 @@ pushd plugins/mouse/
 popd
 %patch4 -p1 -b .hide-white-screen
 %patch5 -p1 -b .xrandr-missingok
+%patch6 -p1 -b .multi-keysyms
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -144,6 +148,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Apr 29 2008 - Bastien Nocera <bnocera@redhat.com> - 2.22.1.1-2
+- Add patch from upstream to avoid the Stop button triggering an Eject (#346201)
+
 * Fri Apr 25 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1.1-1
 - Update to 2.23.1.1
 
