@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.1.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -41,6 +41,8 @@ Patch5:		xrandr-missingok.patch
 Patch6:         gsd-handle-different-keysyms.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=531487
 Patch7:		gnome-settings-daemon-background-without-nautilus.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=531589
+Patch8:		gdm-keyboard-layout.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -69,6 +71,7 @@ popd
 %patch5 -p1 -b .xrandr-missingok
 %patch6 -p1 -b .multi-keysyms
 %patch7 -p1 -b .background-without-nautilus
+%patch8 -p1 -b .gdm-keyboard-layout
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -151,6 +154,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon May  5 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1-1-4
+- Pick up the keyboard layout from the login screen
+
 * Mon May  5 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1-1-3
 - Fix background drawing without nautilus
 
