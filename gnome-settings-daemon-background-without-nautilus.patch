@@ -1,14 +1,6 @@
 diff -up gnome-settings-daemon-2.22.1/plugins/background/gsd-background-manager.c.no-nautilus gnome-settings-daemon-2.22.1/plugins/background/gsd-background-manager.c
 --- gnome-settings-daemon-2.22.1/plugins/background/gsd-background-manager.c.no-nautilus	2008-03-24 17:42:47.000000000 -0400
 +++ gnome-settings-daemon-2.22.1/plugins/background/gsd-background-manager.c	2008-05-05 01:08:37.000000000 -0400
-@@ -292,6 +294,7 @@ gsd_background_manager_start (GsdBackgro
-         bg_preferences_load (manager->priv->prefs);
- 
-         client = gconf_client_get_default ();
-+	gconf_client_add_dir (client, "/desktop/gnome/background", GCONF_CLIENT_PRELOAD_NONE, NULL);
-         gconf_client_notify_add (client,
-                                  "/desktop/gnome/background",
-                                  (GConfClientNotifyFunc) background_callback,
 @@ -314,6 +317,9 @@ gsd_background_manager_start (GsdBackgro
          if (!nautilus_show_desktop) {
                  apply_prefs (manager);
