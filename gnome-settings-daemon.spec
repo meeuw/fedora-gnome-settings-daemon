@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.1.1
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -154,6 +154,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue May 13 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1-1-5
+- Rebuild
+
 * Mon May  5 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1-1-4
 - Pick up the keyboard layout from the login screen
 
