@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.23.1.1
-Release:	5%{?dist}
+Version:	2.23.2
+Release:	0.2008.05.14.1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -17,7 +17,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	gnome-vfs2-devel
-BuildRequires:	gnome-desktop-devel >= 2.22.0-6
+BuildRequires:	gnome-desktop-devel >= 2.23.2
 BuildRequires:	libglade2-devel
 BuildRequires:	libgnomeui-devel
 BuildRequires:	libgnome-devel
@@ -30,19 +30,8 @@ BuildRequires:	perl(XML::Parser)
 
 Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=438942
-# http://bugzilla.gnome.org/show_bug.cgi?id=524499
-Patch3:         gsd-mouse-too-much-grab.patch
-Patch4:         gnome-settings-daemon-2.22.1-hide-white-screen.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=530356
-# https://bugzilla.redhat.com/show_bug.cgi?id=346201
-Patch6:         gsd-handle-different-keysyms.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=531487
-Patch7:		gnome-settings-daemon-background-without-nautilus.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=531589
-Patch8:		gdm-keyboard-layout.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -64,14 +53,7 @@ developing applications that use %{name}.
 
 %patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
-pushd plugins/mouse/
-%patch3 -p0 -b .no-eat-keys
-popd
-%patch4 -p1 -b .hide-white-screen
 %patch5 -p1 -b .xrandr-missingok
-%patch6 -p1 -b .multi-keysyms
-%patch7 -p1 -b .background-without-nautilus
-%patch8 -p1 -b .gdm-keyboard-layout
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -154,6 +136,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed May 14 2008 Jon McCann <jmccann@redhat.com> - 2.23.2-0.2008.05.14.1
+- Build snapshot
+
 * Tue May 13 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.1-1-5
 - Rebuild
 
