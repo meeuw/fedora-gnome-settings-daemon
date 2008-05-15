@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.2
-Release:	0.2008.05.14.1%{?dist}
+Release:	0.2008.05.14.2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -27,6 +27,7 @@ BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
+BuildRequires:  intltool
 
 Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
@@ -136,6 +137,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed May 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.2-0.2008.05.14.2
+- Fix BuildRequires
+
 * Wed May 14 2008 Jon McCann <jmccann@redhat.com> - 2.23.2-0.2008.05.14.1
 - Build snapshot
 
