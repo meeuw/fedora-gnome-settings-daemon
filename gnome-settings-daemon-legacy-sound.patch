@@ -1,0 +1,51 @@
+Index: plugins/sound/gsd-sound-manager.c
+===================================================================
+--- plugins/sound/gsd-sound-manager.c	(revision 340)
++++ plugins/sound/gsd-sound-manager.c	(working copy)
+@@ -296,7 +296,18 @@
+ 
+         client = gconf_client_get_default ();
+ 
++	/* The "preference" here was just around because ESD introduced tradeoffs and was generally
++           poor software.  Pulseaudio is better and notably releases the sound device when not in
++           use, so should have no impact for legacy applications.  The reason we don't actually want
++           to even read from the preference is because someone may have set it to false intending
++           to disable ESD, but they will then disable Pulseaudio later.  
++           https://bugzilla.redhat.com/show_bug.cgi?id=430624
++        */
++#ifdef ENABLE_LEGACY_SOUND_PREF
+         enable_sound = gconf_client_get_bool (client, "/desktop/gnome/sound/enable_esd", NULL);
++#else
++	enable_sound = TRUE;
++#endif
+         event_sounds = gconf_client_get_bool (client, "/desktop/gnome/sound/event_sounds", NULL);
+         /* FIXME this is completely bogus, the entry doesn't exist */
+         event_changed_new = gconf_client_get_int  (client, "/desktop/gnome/sound/event_changed", NULL);
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 340)
++++ configure.ac	(working copy)
+@@ -317,6 +317,23 @@
+ 
+ 
+ # ---------------------------------------------------------------------------
++# Enable Legacy Sound Preference
++# ---------------------------------------------------------------------------
++PKG_CHECK_MODULES(PULSEAUDIO, libpulse, have_pulseaudio=yes, AC_MSG_RESULT([no]))
++if test x$have_pulseaudio = xyes; then
++	default_enable_legacy_sound_pref=no
++else
++	default_enable_legacy_sound_pref=yes
++fi
++AC_ARG_ENABLE(legacy-sound-pref,
++	[AC_HELP_STRING([--enable-legacy-sound-pref],
++	[check for preference to start ESD])],
++	,enable_legacy_sound_pref=$default_enable_legacy_sound_pref)
++if test "x$enable_legacy_sound_pref" = "xyes"; then
++    AC_DEFINE(ENABLE_LEGACY_SOUND_PREF,1,[enable preference for ESD startup])
++fi
++
++# ---------------------------------------------------------------------------
+ # Enable Profiling
+ # ---------------------------------------------------------------------------
+ AC_ARG_ENABLE(profiling,

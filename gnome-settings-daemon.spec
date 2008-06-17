@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -24,6 +24,7 @@ BuildRequires:	libgnome-devel
 BuildRequires:	xorg-x11-proto-devel
 BuildRequires:	gstreamer-devel
 BuildRequires:	gstreamer-plugins-base-devel
+BuildRequires:  pulseaudio-libs-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
@@ -33,6 +34,7 @@ Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
+Patch6:         gnome-settings-daemon-legacy-sound.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -55,6 +57,7 @@ developing applications that use %{name}.
 %patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch5 -p1 -b .xrandr-missingok
+%patch6 -p0 -b .legacy-sound
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -137,6 +140,11 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Jun 17 2008 Colin Walters <walters@redhat.com> - 2.23.3-2
+- Add (now upstreamed) patch to legacy ESD preference; see
+  http://bugzilla.gnome.org/show_bug.cgi?id=533198
+  https://bugzilla.redhat.com/show_bug.cgi?id=430624
+
 * Wed Jun  4 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.3-1
 - Update to 2.23.3
 
