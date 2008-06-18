@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.23.3
-Release:	2%{?dist}
+Version:	2.23.4
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -140,6 +140,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Jun 18 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.4-1
+- Update to 2.23.4
+
 * Tue Jun 17 2008 Colin Walters <walters@redhat.com> - 2.23.3-2
 - Add (now upstreamed) patch to legacy ESD preference; see
   http://bugzilla.gnome.org/show_bug.cgi?id=533198
