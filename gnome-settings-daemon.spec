@@ -33,7 +33,6 @@ BuildRequires:  intltool
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
-Patch6:         gnome-settings-daemon-legacy-sound.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -55,7 +54,6 @@ developing applications that use %{name}.
 
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch5 -p1 -b .xrandr-missingok
-%patch6 -p0 -b .legacy-sound
 
 %build
 %configure --enable-static=no --enable-profiling
