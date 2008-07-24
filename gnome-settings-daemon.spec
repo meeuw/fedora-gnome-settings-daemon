@@ -1,5 +1,5 @@
 Name:		gnome-settings-daemon
-Version:	2.23.4
+Version:	2.23.5
 Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -17,7 +17,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	gnome-vfs2-devel
-BuildRequires:	gnome-desktop-devel >= 2.23.2
+BuildRequires:	gnome-desktop-devel >= 2.23.5
 BuildRequires:	libglade2-devel
 BuildRequires:	libgnomeui-devel
 BuildRequires:	libgnome-devel
@@ -30,7 +30,6 @@ BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 BuildRequires:  intltool
 
-Patch1:         add-randr-12.patch
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
@@ -54,7 +53,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch1 -p1 -b .add-randr-12
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch5 -p1 -b .xrandr-missingok
 %patch6 -p0 -b .legacy-sound
@@ -140,6 +138,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Jul 24 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.5-1
+- Update to 2.23.5
+
 * Wed Jun 18 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.4-1
 - Update to 2.23.4
 
