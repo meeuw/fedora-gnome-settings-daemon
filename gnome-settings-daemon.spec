@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.5
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,6 +34,9 @@ Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 Patch5:		xrandr-missingok.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=544733
+Patch7:		icon-names.patch 
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -54,6 +57,7 @@ developing applications that use %{name}.
 
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch5 -p1 -b .xrandr-missingok
+%patch7 -p1 -b .icon-names
 
 %build
 %configure --enable-static=no --enable-profiling
@@ -147,6 +151,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Jul 25 2008 Matthias Clasen <mclasne@redhat.com> - 2.23.5-3
+- Use standard icon names in the volume OSD
+ 
 * Fri Jul 25 2008 - Bastien Nocera <bnocera@redhat.com> - 2.23.5-2
 - Fix build, call gtk-update-icon-cache as required
 
