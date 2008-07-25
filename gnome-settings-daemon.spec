@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.5
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -87,6 +87,10 @@ gconftool-2 --makefile-install-rule \
 	%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
 	%{_sysconfdir}/gconf/schemas/gnome-settings-daemon.schemas \
 	>& /dev/null || :
+touch %{_datadir}/icons/hicolor
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor
+fi
 
 %pre
 if [ "$1" -gt 1 ]; then
@@ -120,6 +124,12 @@ if [ "$1" -eq 0 ]; then
 		>& /dev/null || :
 fi
 
+%postun
+touch %{_datadir}/icons/hicolor
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  /usr/bin/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor
+fi
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS
@@ -129,6 +139,7 @@ fi
 %{_datadir}/gnome-settings-daemon/
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
+%{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
 
 %files devel
 %defattr(-,root,root,-)
@@ -136,6 +147,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Jul 25 2008 - Bastien Nocera <bnocera@redhat.com> - 2.23.5-2
+- Fix build, call gtk-update-icon-cache as required
+
 * Thu Jul 24 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.5-1
 - Update to 2.23.5
 
