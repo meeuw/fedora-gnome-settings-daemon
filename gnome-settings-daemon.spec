@@ -32,6 +32,7 @@ BuildRequires:  intltool
 
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
+# http://bugzilla.gnome.org/show_bug.cgi?id=546446
 Patch5:		xrandr-missingok.patch
 
 %description
