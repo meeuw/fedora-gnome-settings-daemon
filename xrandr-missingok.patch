@@ -1,15 +1,16 @@
-diff -up gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c.xrandr-missingok gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c
---- gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c.xrandr-missingok	2008-04-22 13:39:45.000000000 -0400
-+++ gnome-settings-daemon-2.22.1/plugins/xrandr/gsd-xrandr-manager.c	2008-04-22 13:39:50.000000000 -0400
-@@ -146,6 +146,11 @@ gsd_xrandr_manager_start (GsdXrandrManag
+diff -up gnome-settings-daemon-2.23.6/plugins/xrandr/gsd-xrandr-manager.c.xrandr-missingok gnome-settings-daemon-2.23.6/plugins/xrandr/gsd-xrandr-manager.c
+--- gnome-settings-daemon-2.23.6/plugins/xrandr/gsd-xrandr-manager.c.xrandr-missingok	2008-08-04 10:25:53.000000000 -0400
++++ gnome-settings-daemon-2.23.6/plugins/xrandr/gsd-xrandr-manager.c	2008-08-05 13:25:25.000000000 -0400
+@@ -296,6 +296,12 @@ gsd_xrandr_manager_start (GsdXrandrManag
  {
          g_debug ("Starting xrandr manager");
  
-+	if (manager->priv->rw_screen == NULL) {
-+		g_set_error (error, 0, 0, "Failed to initialize XRandr extension");
-+		return FALSE;
-+	}
++        if (manager->priv->rw_screen == NULL) {
++                g_set_error (error, 0, 0, "Failed to initialize XRandr extension");
++                return FALSE;
++        }
++ 
 +
          manager->priv->running = TRUE;
-         
-         if (manager->priv->keycode) {
+         manager->priv->client = gconf_client_get_default ();
+ 
