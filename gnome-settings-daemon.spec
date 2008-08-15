@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.6
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,6 +34,7 @@ Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 # survive xrandr being absent (such as on Xnest in sabayon)
 # http://bugzilla.gnome.org/show_bug.cgi?id=546446
 Patch5:		xrandr-missingok.patch
+Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -55,9 +56,10 @@ developing applications that use %{name}.
 
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch5 -p1 -b .xrandr-missingok
+%patch6 -p1 -b .drop-sample-cache
 
 %build
-%configure --enable-static=no --enable-profiling
+%configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
 cd po
@@ -74,6 +76,8 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/libsound.so
+rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/sound.gnome-settings-plugin
 
 %find_lang %{name} --with-gnome
 
@@ -148,6 +152,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Aug 14 2008 Lennart Poettering <lpoetter@redhat.com> - 2.23.6-2
+- Apply patch from gnome bug 545386. This hasn't been accepted in this form yet
+  by upstream, will however very likely be merged in a similar form.
+
 * Tue Aug  5 2008 Matthias Clasen <mclasne@redhat.com> - 2.23.6-1
 - Update to 2.23.6
 
