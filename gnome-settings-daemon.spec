@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.6
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -59,6 +59,10 @@ developing applications that use %{name}.
 %patch6 -p1 -b .drop-sample-cache
 
 %build
+aclocal
+automake
+autoconf
+
 %configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
@@ -152,9 +156,13 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Aug 14 2008 Lennart Poettering <lpoetter@redhat.com> - 2.23.6-3
+- Rerun autotools after patching configure.ac
+
 * Thu Aug 14 2008 Lennart Poettering <lpoetter@redhat.com> - 2.23.6-2
 - Apply patch from gnome bug 545386. This hasn't been accepted in this form yet
   by upstream, will however very likely be merged in a similar form.
+- Disable esd/sounds module since we don't need it to start PA anymore
 
 * Tue Aug  5 2008 Matthias Clasen <mclasne@redhat.com> - 2.23.6-1
 - Update to 2.23.6
