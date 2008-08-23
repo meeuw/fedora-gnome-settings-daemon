@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.23.6
-Release:	3%{?dist}
+Version:	2.23.90
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -31,9 +31,6 @@ BuildRequires:	perl(XML::Parser)
 BuildRequires:  intltool
 
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
-# survive xrandr being absent (such as on Xnest in sabayon)
-# http://bugzilla.gnome.org/show_bug.cgi?id=546446
-Patch5:		xrandr-missingok.patch
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 
 %description
@@ -55,7 +52,6 @@ developing applications that use %{name}.
 %setup -q
 
 %patch2 -p1 -b .ignore-layout-if-using-evdev
-%patch5 -p1 -b .xrandr-missingok
 %patch6 -p1 -b .drop-sample-cache
 
 %build
@@ -156,6 +152,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Aug 22 2008 Matthias Clasen <mclasne@redhat.com> - 2.23.90-1
+- Update to 2.23.90
+
 * Thu Aug 14 2008 Lennart Poettering <lpoetter@redhat.com> - 2.23.6-3
 - Rerun autotools after patching configure.ac
 
