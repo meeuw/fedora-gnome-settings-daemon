@@ -28,7 +28,7 @@ BuildRequires:  pulseaudio-libs-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
-BuildRequires:  intltool
+BuildRequires:  autoconf, automake, libtool, intltool
 
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
