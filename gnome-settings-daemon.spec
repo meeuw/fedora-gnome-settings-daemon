@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.91
-Release:	0.20080828.1%{?dist}
+Release:	0.20080828.2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -26,6 +26,7 @@ BuildRequires:	gstreamer-devel
 BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:	libgnomekbd-devel
+BuildRequires:	libnotify-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 BuildRequires:  autoconf, automake, libtool, intltool
@@ -152,6 +153,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Aug 28 2008 Jon McCann <jmccann@redhat.com> - 2.23.91-0.2008.08.28.2
+- BuildRequires libnotify-devel
+
 * Thu Aug 28 2008 Jon McCann <jmccann@redhat.com> - 2.23.91-0.2008.08.28.1
 - Update to snapshot
 
