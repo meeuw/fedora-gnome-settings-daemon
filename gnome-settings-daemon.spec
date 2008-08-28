@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.23.90
-Release:	1%{?dist}
+Version:	2.23.91
+Release:	0.20080828.1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -152,6 +152,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Aug 28 2008 Jon McCann <jmccann@redhat.com> - 2.23.91-0.2008.08.28.1
+- Update to snapshot
+
 * Fri Aug 22 2008 Matthias Clasen <mclasne@redhat.com> - 2.23.90-1
 - Update to 2.23.90
 
