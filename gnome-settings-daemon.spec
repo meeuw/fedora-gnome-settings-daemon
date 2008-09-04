@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.91
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -17,7 +17,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	gnome-vfs2-devel
-BuildRequires:	gnome-desktop-devel >= 2.23.90
+BuildRequires:	gnome-desktop-devel >= 2.23.91-2
 BuildRequires:	libglade2-devel
 BuildRequires:	libgnomeui-devel
 BuildRequires:	libgnome-devel
@@ -155,6 +155,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Sep 03 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-3
+- Bump gnome-desktop requirement
+
 * Wed Sep 03 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-2
 - Add patch to do fn-f7 cycling
 
