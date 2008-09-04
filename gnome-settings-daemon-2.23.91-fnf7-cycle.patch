@@ -1,16 +1,8 @@
-Index: plugins/xrandr/gsd-xrandr-manager.c
-===================================================================
---- plugins/xrandr/gsd-xrandr-manager.c	(revision 480)
-+++ plugins/xrandr/gsd-xrandr-manager.c	(working copy)
-@@ -61,6 +61,7 @@
- #define CONF_KEY "show_notification_icon"
- 
- #define VIDEO_KEYSYM    "XF86Display"
-+#define VIDEO_KEYSYM    "F7"
- 
- /* name of the icon files (gsd-xrandr.svg, etc.) */
- #define GSD_XRANDR_ICON_NAME "gsd-xrandr"
-@@ -82,6 +83,10 @@
+diff --git a/plugins/xrandr/gsd-xrandr-manager.c b/plugins/xrandr/gsd-xrandr-manager.c
+index 4d8ce2f..b80e55d 100644
+--- a/plugins/xrandr/gsd-xrandr-manager.c
++++ b/plugins/xrandr/gsd-xrandr-manager.c
+@@ -82,6 +82,10 @@ struct GsdXrandrManagerPrivate
          GnomeRRLabeler *labeler;
          GConfClient *client;
          int notify_id;
@@ -21,7 +13,7 @@ Index: plugins/xrandr/gsd-xrandr-manager.c
  };
  
  static void     gsd_xrandr_manager_class_init  (GsdXrandrManagerClass *klass);
-@@ -127,6 +132,418 @@
+@@ -127,6 +131,418 @@ on_client_message (GdkXEvent  *xevent,
          return GDK_FILTER_CONTINUE;
  }
  
@@ -440,7 +432,7 @@ Index: plugins/xrandr/gsd-xrandr-manager.c
  static GdkFilterReturn
  event_filter (GdkXEvent           *xevent,
                GdkEvent            *event,
-@@ -142,12 +559,9 @@
+@@ -142,12 +558,9 @@ event_filter (GdkXEvent           *xevent,
          if (xev->xany.type != KeyPress && xev->xany.type != KeyRelease)
                  return GDK_FILTER_CONTINUE;
  
@@ -456,7 +448,7 @@ Index: plugins/xrandr/gsd-xrandr-manager.c
                  return GDK_FILTER_CONTINUE;
          }
  
-@@ -869,6 +1283,9 @@
+@@ -869,6 +1282,9 @@ gsd_xrandr_manager_init (GsdXrandrManager *manager)
          manager->priv = GSD_XRANDR_MANAGER_GET_PRIVATE (manager);
  
          manager->priv->keycode = keycode;

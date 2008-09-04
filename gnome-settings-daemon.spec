@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.91
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -55,7 +55,7 @@ developing applications that use %{name}.
 
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch6 -p1 -b .drop-sample-cache
-%patch7 -p0 -b .fnf7-cycle
+%patch7 -p1 -b .fnf7-cycle
 
 %build
 aclocal
@@ -155,6 +155,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Sep 04 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-4
+- Use the fn-F7 key, not the F7 key.
+
 * Wed Sep 03 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-3
 - Bump gnome-desktop requirement
 
