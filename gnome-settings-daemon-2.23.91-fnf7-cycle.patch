@@ -1,5 +1,5 @@
 diff --git a/plugins/xrandr/gsd-xrandr-manager.c b/plugins/xrandr/gsd-xrandr-manager.c
-index 4d8ce2f..b80e55d 100644
+index 4d8ce2f..4057962 100644
 --- a/plugins/xrandr/gsd-xrandr-manager.c
 +++ b/plugins/xrandr/gsd-xrandr-manager.c
 @@ -82,6 +82,10 @@ struct GsdXrandrManagerPrivate
@@ -13,7 +13,7 @@ index 4d8ce2f..b80e55d 100644
  };
  
  static void     gsd_xrandr_manager_class_init  (GsdXrandrManagerClass *klass);
-@@ -127,6 +131,418 @@ on_client_message (GdkXEvent  *xevent,
+@@ -127,6 +131,421 @@ on_client_message (GdkXEvent  *xevent,
          return GDK_FILTER_CONTINUE;
  }
  
@@ -136,6 +136,7 @@ index 4d8ce2f..b80e55d 100644
 +                                info->width = width;
 +                                info->height = height;
 +                                info->rate = best_rate;
++                                info->rotation = GNOME_RR_ROTATION_0;
 +                                info->x = 0;
 +                                info->y = 0;
 +                        }
@@ -219,10 +220,8 @@ index 4d8ce2f..b80e55d 100644
 +                GnomeOutputInfo *info = result->outputs[i];
 +
 +                if (is_laptop (info)) {
-+                        if (!info->on) {
-+                                if (turn_on (screen, info, x, 0)) {
-+                                        x += info->width;
-+                                }
++                        if (info->on || turn_on (screen, info, x, 0)) {
++                                x += info->width;
 +                        }
 +                }
 +        }
@@ -231,10 +230,8 @@ index 4d8ce2f..b80e55d 100644
 +                GnomeOutputInfo *info = result->outputs[i];
 +
 +                if (info->connected && !is_laptop (info)) {
-+                        if (!info->on) {
-+                                if (turn_on (screen, info, x, 0)) {
-+                                        x += info->width;
-+                                }
++                        if (info->on || turn_on (screen, info, x, 0)) {
++                                x += info->width;
 +                        }
 +                }
 +        }
@@ -403,8 +400,14 @@ index 4d8ce2f..b80e55d 100644
 +
 +        current = gnome_rr_config_new_current (screen);
 +        
-+        if (priv->fn_f7_configs && !gnome_rr_config_match (current, priv->fn_f7_configs[0]))
-+                generate_fn_f7_configs (mgr);
++        if (priv->fn_f7_configs && 
++            (!gnome_rr_config_match (current, priv->fn_f7_configs[0]) ||
++             !gnome_rr_config_equal (current, priv->fn_f7_configs[mgr->priv->current_fn_f7_config]))) {
++                    /* Our view of the world is incorrect, so regenerate the
++                     * configurations
++                     */
++                    generate_fn_f7_configs (mgr);
++            }
 +
 +        gnome_rr_config_free (current);
 +        
@@ -432,7 +435,7 @@ index 4d8ce2f..b80e55d 100644
  static GdkFilterReturn
  event_filter (GdkXEvent           *xevent,
                GdkEvent            *event,
-@@ -142,12 +558,9 @@ event_filter (GdkXEvent           *xevent,
+@@ -142,12 +561,9 @@ event_filter (GdkXEvent           *xevent,
          if (xev->xany.type != KeyPress && xev->xany.type != KeyRelease)
                  return GDK_FILTER_CONTINUE;
  
@@ -448,7 +451,7 @@ index 4d8ce2f..b80e55d 100644
                  return GDK_FILTER_CONTINUE;
          }
  
-@@ -869,6 +1282,9 @@ gsd_xrandr_manager_init (GsdXrandrManager *manager)
+@@ -869,6 +1285,9 @@ gsd_xrandr_manager_init (GsdXrandrManager *manager)
          manager->priv = GSD_XRANDR_MANAGER_GET_PRIVATE (manager);
  
          manager->priv->keycode = keycode;
