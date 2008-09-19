@@ -34,6 +34,8 @@ BuildRequires:  autoconf, automake, libtool, intltool
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
+
+# http://bugzilla.gnome.org/show_bug.cgi?id=552857
 Patch8:		gnome-settings-daemon-2.23.92-fade.patch
 
 %description
