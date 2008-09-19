@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.23.92
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,6 +34,7 @@ BuildRequires:  autoconf, automake, libtool, intltool
 Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
+Patch8:		gnome-settings-daemon-2.23.92-fade.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -56,6 +57,7 @@ developing applications that use %{name}.
 %patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch6 -p1 -b .drop-sample-cache
 %patch7 -p1 -b .fnf7-cycle
+%patch8 -p1 -b .fade
 
 %build
 aclocal
@@ -155,7 +157,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
-* Thu Sep 11 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-5
+* Thu Sep 18 2008 Ray Strode <rstrode@redhat.com> - 2.23.92-3
+- When switching desktop backgrounds fade between them
+
+* Thu Sep 11 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.92-2
 - Fix various bugs in the fn-F7 support
 
 * Mon Sep  8 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.92-1
