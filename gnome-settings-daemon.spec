@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -159,6 +159,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Sep 28 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-2
+- Don't draw background twice at startup
+
 * Tue Sep 23 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-1
 - Update to 2.24.0
 
