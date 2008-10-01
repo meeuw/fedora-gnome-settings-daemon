@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -38,6 +38,9 @@ Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
 Patch8:		gnome-settings-daemon-2.23.92-fade.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=554525
+Patch9:		fix-gdm-layout.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -60,6 +63,7 @@ developing applications that use %{name}.
 %patch6 -p1 -b .drop-sample-cache
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
+%patch9 -p1 -b .fix-gdm-layout
 
 %build
 aclocal
@@ -159,6 +163,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Sep 30 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-3
+- Fix the picking up of the gdm keyboard layout
+
 * Wed Sep 28 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-2
 - Don't draw background twice at startup
 
