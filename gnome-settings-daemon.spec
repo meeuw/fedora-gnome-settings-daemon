@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -36,7 +36,7 @@ Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
-Patch8:		gnome-settings-daemon-2.23.92-fade.patch
+Patch8:		gnome-settings-daemon-2.24.0-fade.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=554525
 Patch9:		fix-gdm-layout.patch
@@ -167,6 +167,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sun Oct 12 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-6
+- Update fade patch to skip crossfade when changing frames in
+  slideshow background.
+
 * Fri Oct 10 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-5
 - Fix the picking up of the gdm keyboard layout even more
 

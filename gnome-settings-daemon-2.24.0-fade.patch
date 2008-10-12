@@ -1,0 +1,78 @@
+diff -up gnome-settings-daemon-2.24.0/plugins/background/gsd-background-manager.c.fade gnome-settings-daemon-2.24.0/plugins/background/gsd-background-manager.c
+--- gnome-settings-daemon-2.24.0/plugins/background/gsd-background-manager.c.fade	2008-08-04 10:25:52.000000000 -0400
++++ gnome-settings-daemon-2.24.0/plugins/background/gsd-background-manager.c	2008-10-12 12:28:24.000000000 -0400
+@@ -155,7 +155,8 @@ nautilus_is_running (void)
+ }
+ 
+ static void
+-draw_background (GsdBackgroundManager *manager)
++draw_background (GsdBackgroundManager *manager,
++                 gboolean              use_crossfade)
+ {
+         GdkDisplay *display;
+         int         n_screens;
+@@ -185,7 +186,15 @@ draw_background (GsdBackgroundManager *m
+                                                  gdk_screen_get_height (screen),
+                                                  TRUE);
+ 
+-                gnome_bg_set_pixmap_as_root (screen, pixmap);
++                if (use_crossfade) {
++                        GnomeBGCrossfade *fade;
++
++                        fade = gnome_bg_set_pixmap_as_root_with_crossfade (screen, pixmap, NULL);
++                        g_signal_connect (fade, "finished",
++                                          G_CALLBACK (g_object_unref), NULL);
++                } else {
++                        gnome_bg_set_pixmap_as_root (screen, pixmap);
++                }
+ 
+                 g_object_unref (pixmap);
+         }
+@@ -197,7 +206,7 @@ static gboolean
+ queue_draw_background (GsdBackgroundManager *manager)
+ {
+         manager->priv->timeout_id = 0;
+-        draw_background (manager);
++        draw_background (manager, TRUE);
+         return FALSE;
+ }
+ 
+@@ -205,7 +214,14 @@ static void
+ on_bg_changed (GnomeBG              *bg,
+                GsdBackgroundManager *manager)
+ {
+-        draw_background (manager);
++        draw_background (manager, TRUE);
++}
++
++static void
++on_bg_transitioned (GnomeBG              *bg,
++                    GsdBackgroundManager *manager)
++{
++        draw_background (manager, FALSE);
+ }
+ 
+ static void
+@@ -252,6 +268,11 @@ gsd_background_manager_start (GsdBackgro
+                           G_CALLBACK (on_bg_changed),
+                           manager);
+ 
++        g_signal_connect (manager->priv->bg,
++                          "transitioned",
++                          G_CALLBACK (on_bg_transitioned),
++                          manager);
++
+         watch_bg_preferences (manager);
+         gnome_bg_load_from_preferences (manager->priv->bg,
+                                         manager->priv->client);
+@@ -267,9 +288,7 @@ gsd_background_manager_start (GsdBackgro
+                                                        "/apps/nautilus/preferences/show_desktop",
+                                                        NULL);
+ 
+-        if (!nautilus_show_desktop) {
+-                draw_background (manager);
+-        } else {
++        if (nautilus_show_desktop) {
+                 /* even when nautilus is supposedly handling the
+                  * background, apply the settings eventually to make
+                  * people running a nautilus-less session happy */
