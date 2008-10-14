@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	11%{?dist}
+Release:	12%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -165,6 +165,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Oct 14 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-12
+- Hold off on settings-daemon fade if nautilus is going to do
+  it anyway.
+
 * Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-11
 - Show the shutdown dialog when the power button is pressed
 
