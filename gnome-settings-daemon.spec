@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	9%{?dist}
+Release:	10%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -40,6 +40,9 @@ Patch8:		gnome-settings-daemon-2.24.0-fade.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=555873 
 Patch9:		fix-gdm-layout.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=556307
+Patch10:	power-button.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -62,6 +65,7 @@ developing applications that use %{name}.
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
 %patch9 -p1 -b .fix-gdm-layout
+%patch1o -p1 -b .power-button
 
 %build
 aclocal
@@ -161,6 +165,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-10
+- Show the shutdown dialog when the power button is pressed
+
 * Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-9
 - Drop a patch that is no longer needed with the evdev ruleset
   in xkeyboard-config
