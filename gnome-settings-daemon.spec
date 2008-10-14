@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -31,7 +31,6 @@ BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 BuildRequires:  autoconf, automake, libtool, intltool
 
-Patch2:         gnome-settings-daemon-2.21.91-ignore-model-if-evdev.patch
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 
@@ -59,7 +58,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch2 -p1 -b .ignore-layout-if-using-evdev
 %patch6 -p1 -b .drop-sample-cache
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
@@ -163,6 +161,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-8
+- Drop a patch that is no longer needed with the evdev ruleset
+  in xkeyboard-config
+
 * Sun Oct 12 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-7
 - Try harder not to override peoples configured keyboard layouts
 

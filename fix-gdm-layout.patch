@@ -1,12 +1,12 @@
 diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gdm-layout gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c
---- gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gdm-layout	2008-10-12 14:45:57.000000000 -0400
-+++ gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c	2008-10-12 15:11:51.000000000 -0400
-@@ -142,12 +142,38 @@ apply_xkb_settings (void)
+--- gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gdm-layout	2008-10-14 09:26:57.000000000 -0400
++++ gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c	2008-10-14 09:27:09.000000000 -0400
+@@ -142,12 +142,39 @@ apply_xkb_settings (void)
  {
          GConfClient *conf_client;
          GkbdKeyboardConfig current_sys_kbd_config;
 +        int group_to_activate = -1;
-+	const char *gdm_layout;
++        const char *gdm_layout;
  
          if (!inited_ok)
                  return;
@@ -22,10 +22,9 @@ diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gd
 +        gdm_keyboard_layout = NULL;
 +        if (gdm_layout != NULL) {
 +                GSList *layouts;
-+
 +                layouts = gconf_client_get_list (conf_client,
 +                                                 GKBD_KEYBOARD_CONFIG_KEY_LAYOUTS,
-+                                                 GCONF_VALUE_STRING,
++                                                GCONF_VALUE_STRING,
 +                                                 NULL);    
 +                if (layouts == NULL) {
 +                        layouts = g_slist_append (layouts, g_strdup (gdm_layout));
@@ -35,12 +34,14 @@ diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gd
 +                                               layouts,
 +                                               NULL);
 +                }
++               g_slist_foreach (layouts, (GFunc)g_free, NULL);
++                g_slist_free (layouts);
 +        }
 +
          gkbd_keyboard_config_init (&current_sys_kbd_config,
                                     conf_client,
                                     xkl_engine);
-@@ -158,29 +184,20 @@ apply_xkb_settings (void)
+@@ -158,29 +185,20 @@ apply_xkb_settings (void)
          gkbd_keyboard_config_load_from_x_current (&current_sys_kbd_config,
                                                    NULL);
  
@@ -74,7 +75,7 @@ diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gd
 +                size_t len = strlen (gdm_layout);
 +                for (i = 0, l = current_kbd_config.layouts_variants; l; i++, l = l->next) {
 +                        char *lv = l->data;
-+                        if (strncmp (lv, gdm_layout, len) == 0 && (lv[len] == '\0' || lv[len] == '\t')) {
+++                        if (strncmp (lv, gdm_layout, len) == 0 && (lv[len] == '\0' || lv[len] == '\t')) {
 +                                group_to_activate = i;
 +                                break;
 +                        }
@@ -82,8 +83,8 @@ diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gd
 -                gdm_keyboard_layout = NULL;
          }
  
-         /* Ignore model if using evdev, since evdev needs its own model
-@@ -206,6 +223,8 @@ apply_xkb_settings (void)
+         /* Activate - only if different! */
+@@ -199,6 +217,8 @@ apply_xkb_settings (void)
                  xkl_debug (100,
                             "Actual KBD configuration was not changed: redundant notification\n");
  
