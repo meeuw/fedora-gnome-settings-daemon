@@ -75,7 +75,7 @@ diff -up gnome-settings-daemon-2.24.0/plugins/keyboard/gsd-keyboard-xkb.c.fix-gd
 +                size_t len = strlen (gdm_layout);
 +                for (i = 0, l = current_kbd_config.layouts_variants; l; i++, l = l->next) {
 +                        char *lv = l->data;
-++                        if (strncmp (lv, gdm_layout, len) == 0 && (lv[len] == '\0' || lv[len] == '\t')) {
++                        if (strncmp (lv, gdm_layout, len) == 0 && (lv[len] == '\0' || lv[len] == '\t')) {
 +                                group_to_activate = i;
 +                                break;
 +                        }

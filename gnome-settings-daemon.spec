@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -161,7 +161,7 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
-* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-8
+* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-9
 - Drop a patch that is no longer needed with the evdev ruleset
   in xkeyboard-config
 
