@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -65,7 +65,7 @@ developing applications that use %{name}.
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
 %patch9 -p1 -b .fix-gdm-layout
-%patch1o -p1 -b .power-button
+%patch10 -p1 -b .power-button
 
 %build
 aclocal
@@ -165,7 +165,7 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
-* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-10
+* Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-11
 - Show the shutdown dialog when the power button is pressed
 
 * Tue Oct 14 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-9
