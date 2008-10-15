@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	12%{?dist}
+Release:	13%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -75,15 +75,18 @@ autoconf
 %configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
+# strip unneeded translations from .mo files
+# ideally intltool (ha!) would do that for us
+# http://bugzilla.gnome.org/show_bug.cgi?id=474987
 cd po
-# clean up .po files
-make %{name}.pot
+grep -v ".*[.]desktop[.]in[.]in$\|.*[.]server[.]in[.]in$\|.*[.]schemas[.]in$" POTFILES.in > POTFILES.keep
+mv POTFILES.keep POTFILES.in
+intltool-update --pot
 for p in *.po; do
-  msgmerge -U $p %{name}.pot
+  msgmerge $p %{name}.pot > $p.out
+  msgfmt -o `basename $p .po`.gmo $p.out
 done
-# regenerate .gmo files
-make
-cd ..
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -165,6 +168,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Oct 15 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-13
+- Save some space
+
 * Tue Oct 14 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-12
 - Hold off on settings-daemon fade if nautilus is going to do
   it anyway.
