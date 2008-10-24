@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.24.0
-Release:	13%{?dist}
+Release:	14%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,6 +30,7 @@ BuildRequires:	libnotify-devel
 BuildRequires:	gettext
 BuildRequires:	perl(XML::Parser)
 BuildRequires:  autoconf, automake, libtool, intltool
+BuildRequires:  fontconfig-devel
 
 Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
@@ -168,6 +169,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Oct 24 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-14
+- At fontconfig-devel buildrequires (bug 468304)
+
 * Wed Oct 15 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-13
 - Save some space
 
