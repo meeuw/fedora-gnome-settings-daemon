@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -32,17 +32,12 @@ BuildRequires:	perl(XML::Parser)
 BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
 
-Patch6:		gnome-settings-daemon-2.23.4-drop-sample-cache.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=545386
+Patch6:		gnome-settings-daemon-2.25.1-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
 Patch8:		gnome-settings-daemon-2.24.0-fade.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=555873 
-Patch9:		fix-gdm-layout.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=556307
-Patch10:	power-button.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -65,8 +60,6 @@ developing applications that use %{name}.
 %patch6 -p1 -b .drop-sample-cache
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
-%patch9 -p1 -b .fix-gdm-layout
-%patch10 -p1 -b .power-button
 
 %build
 aclocal
@@ -169,7 +162,7 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
-* Wed Nov 12 2008 Matthias Clasen <mclasen@redhat.com> - 2.25.1-1
+* Wed Nov 12 2008 Matthias Clasen <mclasen@redhat.com> - 2.25.1-2
 - Update to 2.25.1
 
 * Fri Oct 24 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-14
