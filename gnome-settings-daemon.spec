@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.24.0
-Release:	14%{?dist}
+Version:	2.25.1
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://ftp.gnome.org/pub/gnome/sources/%{name}
-Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.24/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.25/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -169,6 +169,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Nov 12 2008 Matthias Clasen <mclasen@redhat.com> - 2.25.1-1
+- Update to 2.25.1
+
 * Fri Oct 24 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-14
 - At fontconfig-devel buildrequires (bug 468304)
 
