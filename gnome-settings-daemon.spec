@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.2
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -37,7 +37,7 @@ Patch6:		gnome-settings-daemon-2.25.1-drop-sample-cache.patch
 Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
-Patch8:		gnome-settings-daemon-2.24.0-fade.patch
+Patch8:		gnome-settings-daemon-2.25.2-fade.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -163,6 +163,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Dec  4 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-2
+- Rebase fade patch to apply with Behdad's updates to
+  g-s-d
+
 * Wed Dec  3 2008 Matthias Clasen <mclasen@redhat.com> - 2.25.2-1
 - Ypdate to 2.25.2
 
