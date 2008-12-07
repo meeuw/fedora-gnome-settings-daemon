@@ -1,0 +1,11 @@
+diff -up gnome-settings-daemon-2.24.1/gnome-settings-daemon/main.c.umask gnome-settings-daemon-2.24.1/gnome-settings-daemon/main.c
+--- gnome-settings-daemon-2.24.1/gnome-settings-daemon/main.c.umask	2008-12-07 03:55:58.000000000 -0500
++++ gnome-settings-daemon-2.24.1/gnome-settings-daemon/main.c	2008-12-07 03:56:04.000000000 -0500
+@@ -296,7 +296,6 @@ daemon_detach (void)
+ 
+         /* get outta the way */
+         chdir ("/");
+-        umask (0117);
+ }
+ 
+ static void
