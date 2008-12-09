@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.2
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -39,6 +39,9 @@ Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
 Patch8:		gnome-settings-daemon-2.25.2-fade.patch
 
+# http://bugzilla.redhat.com/445898
+Patch9:		gnome-settings-daemon-2.24.0-shutdown-cleanly.patch
+
 # http://bugzilla.gnome.org/show_bug.cgi?id=563543
 Patch12:	gnome-settings-daemon-2.24.1-umask.patch
 
@@ -63,6 +66,7 @@ developing applications that use %{name}.
 %patch6 -p1 -b .drop-sample-cache
 %patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
+%patch9 -p1 -b .shutdown-cleanly
 %patch12 -p1 -b .umask
 
 %build
@@ -167,6 +171,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Dec  9 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-5
+- Shutdown cleanly on TERM signal (bug 445898)
+
 * Sun Dec  7 2008 Behdad Esfahbod <besfahbo@redhat.com> - 2.25.2-4
 - Add gnome-settings-daemon-2.24.1-umask.patch
 
