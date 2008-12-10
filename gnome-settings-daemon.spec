@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.2
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -179,6 +179,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-8
+- Shutdown cleanly when bus goes away (bug 445898 again)
+
 * Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-7
 - Don't map touch pad tap to right-click for left-handed
   users (bug 324721)
