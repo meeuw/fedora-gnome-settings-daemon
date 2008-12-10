@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.2
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -45,6 +45,9 @@ Patch9:		gnome-settings-daemon-2.24.0-shutdown-cleanly.patch
 # http://bugzilla.redhat.com/474758
 Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
 
+# http://bugzilla.redhat.com/324721
+Patch11:	gnome-settings-daemon-2.24.0-fix-touchpad.patch
+
 # http://bugzilla.gnome.org/show_bug.cgi?id=563543
 Patch12:	gnome-settings-daemon-2.24.1-umask.patch
 
@@ -71,6 +74,7 @@ developing applications that use %{name}.
 %patch8 -p1 -b .fade
 %patch9 -p1 -b .shutdown-cleanly
 %patch10 -p1 -b .catch-deviceadded
+%patch11 -p1 -b .fix-touchpad
 %patch12 -p1 -b .umask
 
 %build
@@ -175,6 +179,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-7
+- Don't map touch pad tap to right-click for left-handed
+  users (bug 324721)
+
 * Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-6
 - Listen for DeviceAdded signals when configuring mouse
   (in addition to DeviceEnabled).  This may help with
