@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.2
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -179,6 +179,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-9
+- Don't call SetPointerMapping when using Xinput since
+  it duplicates effort but gets touchpads wrong (bug 324721)
+
 * Wed Dec 10 2008 Ray Strode <rstrode@redhat.com> - 2.25.2-8
 - Shutdown cleanly when bus goes away (bug 445898 again)
 
