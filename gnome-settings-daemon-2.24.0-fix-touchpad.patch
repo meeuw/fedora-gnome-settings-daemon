@@ -20,7 +20,7 @@ diff --git a/plugins/mouse/gsd-mouse-manager.c b/plugins/mouse/gsd-mouse-manager
          for (i = 0; i < device_info->num_classes; i++) {
                  if (class_info->class == ButtonClass) {
 @@ -356,6 +361,7 @@
- #ifdef HAVE_XINPUT
+ #ifdef HAVE_X11_EXTENSIONS_XINPUT_H
          if (supports_xinput_devices ()) {
                  set_xinput_devices_left_handed (left_handed);
 +                return;
