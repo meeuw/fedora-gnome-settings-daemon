@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -74,7 +74,8 @@ developing applications that use %{name}.
 %patch8 -p1 -b .fade
 %patch9 -p1 -b .shutdown-cleanly
 %patch10 -p1 -b .catch-deviceadded
-%patch11 -p1 -b .fix-touchpad
+# This one is buggy, stop using for now
+#%patch11 -p1 -b .fix-touchpad
 %patch12 -p1 -b .umask
 
 %build
@@ -179,6 +180,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Dec 18 2008 - Ray Strode <rstrode@redhat.com> - 2.25.3-2
+- Drop touchpad patch for now
+
 * Thu Dec 18 2008 - Bastien Nocera <bnocera@redhat.com> - 2.25.3-1
 - Update to 2.25.3
 
