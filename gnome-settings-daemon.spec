@@ -34,22 +34,15 @@ BuildRequires:  fontconfig-devel
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=545386
 Patch6:		gnome-settings-daemon-2.25.1-drop-sample-cache.patch
-Patch7:		gnome-settings-daemon-2.23.91-fnf7-cycle.patch
 
 # http://bugzilla.gnome.org/show_bug.cgi?id=552857
 Patch8:		gnome-settings-daemon-2.25.2-fade.patch
-
-# http://bugzilla.redhat.com/445898
-Patch9:		gnome-settings-daemon-2.24.0-shutdown-cleanly.patch
 
 # http://bugzilla.redhat.com/474758
 Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
 
 # http://bugzilla.redhat.com/324721
 Patch11:	gnome-settings-daemon-2.24.0-fix-touchpad.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=563543
-Patch12:	gnome-settings-daemon-2.24.1-umask.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -70,13 +63,10 @@ developing applications that use %{name}.
 %setup -q
 
 %patch6 -p1 -b .drop-sample-cache
-%patch7 -p1 -b .fnf7-cycle
 %patch8 -p1 -b .fade
-%patch9 -p1 -b .shutdown-cleanly
 %patch10 -p1 -b .catch-deviceadded
 # This one is buggy, stop using for now
 #%patch11 -p1 -b .fix-touchpad
-%patch12 -p1 -b .umask
 
 %build
 aclocal
