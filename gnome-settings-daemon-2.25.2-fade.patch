@@ -45,7 +45,7 @@ diff --git a/plugins/background/gsd-background-manager.c b/plugins/background/gs
 +                if (use_crossfade) {
 +                        GnomeBGCrossfade *fade;
 +
-+                        fade = gnome_bg_set_pixmap_as_root_with_crossfade (screen, pixmap, NULL);
++                        fade = gnome_bg_set_pixmap_as_root_with_crossfade (screen, pixmap);
 +                        g_signal_connect (fade, "finished",
 +                                          G_CALLBACK (g_object_unref), NULL);
 +                } else {
