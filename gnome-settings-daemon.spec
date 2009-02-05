@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -38,6 +38,9 @@ Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
 # http://bugzilla.redhat.com/324721
 #Patch11:	gnome-settings-daemon-2.24.0-fix-touchpad.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=570590
+Patch12:	notify-statusicon.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -59,6 +62,7 @@ developing applications that use %{name}.
 %patch10 -p1 -b .catch-deviceadded
 # This one is buggy, stop using for now
 #%patch11 -p1 -b .fix-touchpad
+%patch12 -p1 -b .notify-statusicon
 
 autoreconf -i -f
 
@@ -160,6 +164,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Feb  5 2009 Matthias Clasen  <mclasen@redhat.com> - 2.25.90-2
+- Fix a warning (#484132)
+
 * Wed Feb  4 2009 Matthias Clasen  <mclasen@redhat.com> - 2.25.90-1
 - Update to 2.25.90
 
