@@ -28,7 +28,7 @@ diff -up gnome-settings-daemon-2.25.90/plugins/a11y-keyboard/gsd-a11y-keyboard-m
 +        manager->priv->notification = notify_notification_new (title,
 +                                                               message,
 +                                                               "preferences-desktop-accessibility",
-+                                                               NULL):
++                                                               NULL);
 +        notify_notification_attach_to_status_icon (manager->priv->notification, manager->priv->status_icon);
          notify_notification_set_timeout (manager->priv->notification, NOTIFICATION_TIMEOUT * 1000);
  
