@@ -1,14 +1,7 @@
-============================================================
- Listen for DeviceAdded in addition to DeviceEnabled
-
-  This should help address problems like left-handed
-mouse, and acceleration settings getting lost after
-resume, or when new devices gets plugged in.
-
-diff --git a/plugins/mouse/gsd-mouse-manager.c b/plugins/mouse/gsd-mouse-manager.c
---- a/plugins/mouse/gsd-mouse-manager.c
-+++ b/plugins/mouse/gsd-mouse-manager.c
-@@ -320,7 +320,7 @@ devicepresence_filter (GdkXEvent *xevent,
+diff -up gnome-settings-daemon-2.25.90/plugins/mouse/gsd-mouse-manager.c.catch-deviceadded gnome-settings-daemon-2.25.90/plugins/mouse/gsd-mouse-manager.c
+--- gnome-settings-daemon-2.25.90/plugins/mouse/gsd-mouse-manager.c.catch-deviceadded	2009-02-04 23:23:55.000000000 -0500
++++ gnome-settings-daemon-2.25.90/plugins/mouse/gsd-mouse-manager.c	2009-02-04 23:22:13.000000000 -0500
+@@ -320,7 +320,7 @@ devicepresence_filter (GdkXEvent *xevent
          if (xev->type == xi_presence)
          {
              XDevicePresenceNotifyEvent *dpn = (XDevicePresenceNotifyEvent *) xev;

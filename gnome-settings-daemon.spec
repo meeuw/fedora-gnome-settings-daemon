@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.25.3
-Release:	4%{?dist}
+Version:	2.25.90
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -12,6 +12,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
 Requires(post): GConf2 >= 2.14
+Requires: control-center-filesystem
 
 BuildRequires:	dbus-glib-devel
 BuildRequires:	GConf2-devel
@@ -28,15 +29,8 @@ BuildRequires:  pulseaudio-libs-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	gettext
-BuildRequires:	perl(XML::Parser)
 BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=545386
-Patch6:		gnome-settings-daemon-2.25.1-drop-sample-cache.patch
-
-# http://bugzilla.gnome.org/show_bug.cgi?id=552857
-Patch8:		gnome-settings-daemon-2.25.2-fade.patch
 
 # http://bugzilla.redhat.com/474758
 Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
@@ -62,18 +56,13 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch6 -p1 -b .drop-sample-cache
-%patch8 -p1 -b .fade
 %patch10 -p1 -b .catch-deviceadded
 # This one is buggy, stop using for now
 #%patch11 -p1 -b .fix-touchpad
 
-%build
-aclocal
-automake
-libtoolize --force --copy
-autoconf
+autoreconf -i -f
 
+%build
 %configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
@@ -160,6 +149,7 @@ fi
 %{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
 %{_datadir}/gnome-settings-daemon/
+%{_datadir}/gnome-control-center/keybindings/50-accessibility.xml
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
@@ -170,6 +160,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb  4 2009 Matthias Clasen  <mclasen@redhat.com> - 2.25.90-1
+- Update to 2.25.90
+
 * Mon Jan 19 2009 - Ray Strode <rstrode@redhat.com> - 2.25.3-4
 - Update fade patch for new gnome-desktop release
 
