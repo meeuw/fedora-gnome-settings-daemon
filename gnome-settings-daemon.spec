@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.25.90
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -164,6 +164,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.25.90-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Thu Feb  5 2009 Matthias Clasen  <mclasen@redhat.com> - 2.25.90-2
 - Fix a warning (#484132)
 
