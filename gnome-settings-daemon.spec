@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.25.92
+Version:	2.26.0
 Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://ftp.gnome.org/pub/gnome/sources/%{name}
-Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.25/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnome.org/pub/gnome/sources/%{name}/2.26/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -160,6 +160,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Mar 16 2009 Matthias Clasen  <mclasen@redhat.com> - 2.26.0-1
+- Update to 2.26.0
+
 * Mon Mar  2 2009 Matthias Clasen  <mclasen@redhat.com> - 2.25.92-1
 - Update to 2.25.92
 
