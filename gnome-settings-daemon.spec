@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.26.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -35,8 +35,8 @@ BuildRequires:  fontconfig-devel
 # http://bugzilla.redhat.com/474758
 Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
 
-# http://bugzilla.redhat.com/324721
-#Patch11:	gnome-settings-daemon-2.24.0-fix-touchpad.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=578444
+Patch11:	gnome-settings-daemon-2.26.0-support-touchpads.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -57,8 +57,7 @@ developing applications that use %{name}.
 %setup -q
 
 %patch10 -p1 -b .catch-deviceadded
-# This one is buggy, stop using for now
-#%patch11 -p1 -b .fix-touchpad
+%patch11 -p1 -b .support-touchpads
 
 autoreconf -i -f
 
@@ -98,6 +97,7 @@ gconftool-2 --makefile-install-rule \
 	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
 	%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
 	%{_sysconfdir}/gconf/schemas/gnome-settings-daemon.schemas \
+	%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
 	>& /dev/null || :
 touch %{_datadir}/icons/hicolor
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
@@ -107,6 +107,11 @@ fi
 %pre
 if [ "$1" -gt 1 ]; then
 	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+	if [ -f %{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas ] ; then
+		gconftool-2 --makefile-uninstall-rule \
+			%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
+			>& /dev/null || :
+	fi
 	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
 		gconftool-2 --makefile-uninstall-rule \
 			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
@@ -123,6 +128,11 @@ fi
 %preun
 if [ "$1" -eq 0 ]; then
 	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+	if [ -f %{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas ] ; then
+		gconftool-2 --makefile-uninstall-rule \
+			%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
+			>& /dev/null || :
+	fi
 	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
 		gconftool-2 --makefile-uninstall-rule \
 			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
@@ -160,6 +170,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Apr  8 2009 Matthias Clasen  <mclasen@redhat.com> - 2.26.0-2
+- Support touchpads
+
 * Mon Mar 16 2009 Matthias Clasen  <mclasen@redhat.com> - 2.26.0-1
 - Update to 2.26.0
 
