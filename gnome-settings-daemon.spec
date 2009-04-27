@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.26.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -69,7 +69,7 @@ make %{?_smp_mflags}
 # ideally intltool (ha!) would do that for us
 # http://bugzilla.gnome.org/show_bug.cgi?id=474987
 cd po
-grep -v ".*[.]desktop[.]in[.]in$\|.*[.]server[.]in[.]in$\|.*[.]schemas[.]in$" POTFILES.in > POTFILES.keep
+grep -v ".*[.]desktop[.]in[.]in$\|.*[.]server[.]in[.]in$" POTFILES.in > POTFILES.keep
 mv POTFILES.keep POTFILES.in
 intltool-update --pot
 for p in *.po; do
@@ -170,6 +170,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Apr 27 2009 Matthias Clasen  <mclasen@redhat.com> - 2.26.1-2
+- Don't drop schemas translations from po files
+
 * Tue Apr 14 2009 Matthias Clasen  <mclasen@redhat.com> - 2.26.1-1
 - Update to 2.26.1
 
