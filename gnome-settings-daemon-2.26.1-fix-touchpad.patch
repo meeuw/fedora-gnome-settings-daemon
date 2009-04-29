@@ -1,0 +1,42 @@
+--- gnome-settings-daemon-2.26.1/plugins/mouse/gsd-mouse-manager.c.old	2009-04-29 14:32:27.000000000 +0100
++++ gnome-settings-daemon-2.26.1/plugins/mouse/gsd-mouse-manager.c	2009-04-29 15:44:55.000000000 +0100
+@@ -84,6 +84,7 @@ static void     gsd_mouse_manager_class_
+ static void     gsd_mouse_manager_init        (GsdMouseManager      *mouse_manager);
+ static void     gsd_mouse_manager_finalize    (GObject             *object);
+ static void     set_mouse_settings            (GsdMouseManager      *manager);
++static XDevice* device_is_touchpad            (XDeviceInfo deviceinfo);
+ 
+ G_DEFINE_TYPE (GsdMouseManager, gsd_mouse_manager, G_TYPE_OBJECT)
+ 
+@@ -282,10 +283,18 @@ set_xinput_devices_left_handed (gboolean
+         for (i = 0; i < n_devices; i++) {
+                 XDevice *device = NULL;
+ 
+-                if ((device_info[i].use != IsXExtensionDevice) ||
++                if ((device_info[i].use != IsXExtensionPointer) ||
+                     (!xinput_device_has_buttons (&device_info[i])))
+                         continue;
+ 
++		/* If the device is a touchpad, don't swap buttons
++		 * around */
++                device = device_is_touchpad (device_info[i]);
++                if (device != NULL) {
++			XCloseDevice (GDK_DISPLAY (), device);
++			continue;
++		}
++
+                 gdk_error_trap_push ();
+ 
+                 device = XOpenDevice (GDK_DISPLAY (), device_info[i].id);
+@@ -372,8 +381,11 @@ set_left_handed (GsdMouseManager *manage
+         gint n_buttons, i;
+ 
+ #ifdef HAVE_X11_EXTENSIONS_XINPUT_H
++	/* When XInput support is available, never set the
++	 * button ordering on the core pointer */
+         if (supports_xinput_devices ()) {
+                 set_xinput_devices_left_handed (left_handed);
++                return;
+         }
+ #endif
+ 
