@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.26.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -32,9 +32,6 @@ BuildRequires:	gettext
 BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
 
-# http://bugzilla.redhat.com/474758
-Patch10:	gnome-settings-daemon-2.24.0-catch-deviceadded.patch
-
 # http://bugzilla.gnome.org/show_bug.cgi?id=578444
 Patch11:	gnome-settings-daemon-2.26.0-support-touchpads.patch
 
@@ -59,7 +56,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch10 -p1 -b .catch-deviceadded
 %patch11 -p1 -b .support-touchpads
 %patch12 -p1 -b .lefthand-touchpad
 
@@ -174,6 +170,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri May 08 2009 Bastien Nocera <bnocera@redhat.com> 2.26.1-4
+- Remove useless patch, see:
+http://bugzilla.gnome.org/show_bug.cgi?id=580761 for details
+
 * Wed Apr 29 2009 Bastien Nocera <bnocera@redhat.com> 2.26.1-3
 - Don't set touchpads to be left-handed, otherwise the tap
   behaves like the 2nd mouse button (#483639)
