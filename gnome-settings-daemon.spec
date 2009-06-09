@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.27.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -38,6 +38,9 @@ Patch11:	gnome-settings-daemon-2.26.0-support-touchpads.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
 
+# http://bugzilla.gnome.org/show_bug.cgi?id=585209
+Patch13:	composited-changed.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -58,6 +61,7 @@ developing applications that use %{name}.
 
 %patch11 -p1 -b .support-touchpads
 %patch12 -p1 -b .lefthand-touchpad
+%patch13 -p1 -b .composited-changed
 
 autoreconf -i -f
 
@@ -170,6 +174,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Jun  8 2009 Matthias Clasen <mclasen@redhat.com> 2.27.1-2
+- Make the 'locate pointer' effect cope with changing compositing
+  managers
+
 * Sat May 16 2009 Matthias Clasen <mclasen@redhat.com> 2.27.1-1
 - Update to 2.27.1
 
