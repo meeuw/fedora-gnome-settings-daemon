@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.27.3
-Release:	2%{?dist}
+Version:	2.27.4
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -173,6 +173,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Jul 14 2009 Matthias Clasen <mclasen@redhat.com> 2.27.4-1
+- Update ot 2.27.4
+
 * Tue Jun 30 2009 Matthias Clasen <mclasen@redhat.com> 2.27.3-2
 - Rebuild against new libxklavier
 
