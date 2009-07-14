@@ -32,13 +32,8 @@ BuildRequires:	gettext
 BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
 
-# http://bugzilla.gnome.org/show_bug.cgi?id=578444
-Patch11:	gnome-settings-daemon-2.26.0-support-touchpads.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
-
-Patch13:	xklavier4.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -58,9 +53,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch11 -p1 -b .support-touchpads
 %patch12 -p1 -b .lefthand-touchpad
-%patch13 -p1 -b .xklavier4
 
 autoreconf -i -f
 
