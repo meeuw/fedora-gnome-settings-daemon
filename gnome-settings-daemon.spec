@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.27.4
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,6 +34,8 @@ BuildRequires:  fontconfig-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=524499
+Patch13:	locate-pointer-process.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -54,6 +56,7 @@ developing applications that use %{name}.
 %setup -q
 
 %patch12 -p1 -b .lefthand-touchpad
+%patch13 -p1 -b .locate-pointer
 
 autoreconf -i -f
 
@@ -154,6 +157,7 @@ fi
 %{_sysconfdir}/gconf/schemas/*
 %{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
+%{_libexecdir}/gsd-locate-pointer
 %{_datadir}/gnome-settings-daemon/
 %{_datadir}/gnome-control-center/keybindings/50-accessibility.xml
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
@@ -166,6 +170,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Jul 21 2009 Matthias Clasen <mclasen@redhat.com> 2.27.4-3
+- Make locate-pointer not interfere with media keys
+
 * Wed Jul 15 2009 Matthias Clasen <mclasen@redhat.com> 2.27.4-2
 - Rebuild against new libgnomekbd
 
