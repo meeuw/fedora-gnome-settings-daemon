@@ -1,0 +1,180 @@
+From 5f24fe80d888f9bf8670f03c37af63e96799285a Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Fri, 14 Aug 2009 18:16:10 +0100
+Subject: [PATCH] Update gnome-volume-control code
+
+Should cut down on the feedback loops.
+---
+ plugins/media-keys/cut-n-paste/gvc-channel-map.c   |   15 +++++++++++----
+ plugins/media-keys/cut-n-paste/gvc-channel-map.h   |    5 +++--
+ plugins/media-keys/cut-n-paste/gvc-mixer-control.c |    2 +-
+ plugins/media-keys/cut-n-paste/gvc-mixer-stream.c  |   16 +++++++++++++---
+ plugins/media-keys/gsd-media-keys-manager.c        |    3 +++
+ 5 files changed, 31 insertions(+), 10 deletions(-)
+
+diff --git a/plugins/media-keys/cut-n-paste/gvc-channel-map.c b/plugins/media-keys/cut-n-paste/gvc-channel-map.c
+index 32750ef..ea3e5af 100644
+--- a/plugins/media-keys/cut-n-paste/gvc-channel-map.c
++++ b/plugins/media-keys/cut-n-paste/gvc-channel-map.c
+@@ -44,6 +44,7 @@
+ struct GvcChannelMapPrivate
+ {
+         pa_channel_map        pa_map;
++        gboolean              pa_volume_is_set;
+         pa_cvolume            pa_volume;
+         gdouble               extern_volume[NUM_TYPES]; /* volume, balance, fade, lfe */
+         gboolean              can_balance;
+@@ -208,15 +209,16 @@ gvc_channel_map_class_init (GvcChannelMapClass *klass)
+                               G_SIGNAL_RUN_LAST,
+                               G_STRUCT_OFFSET (GvcChannelMapClass, volume_changed),
+                               NULL, NULL,
+-                              g_cclosure_marshal_VOID__VOID,
+-                              G_TYPE_NONE, 0);
++                              g_cclosure_marshal_VOID__BOOLEAN,
++                              G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+ 
+         g_type_class_add_private (klass, sizeof (GvcChannelMapPrivate));
+ }
+ 
+ void
+ gvc_channel_map_volume_changed (GvcChannelMap     *map,
+-                                const pa_cvolume  *cv)
++                                const pa_cvolume  *cv,
++                                gboolean           set)
+ {
+         g_return_if_fail (GVC_IS_CHANNEL_MAP (map));
+         g_return_if_fail (cv != NULL);
+@@ -227,13 +229,18 @@ gvc_channel_map_volume_changed (GvcChannelMap     *map,
+ 
+         map->priv->pa_volume = *cv;
+ 
+-        g_signal_emit (map, signals[VOLUME_CHANGED], 0);
++        if (map->priv->pa_volume_is_set == FALSE) {
++                map->priv->pa_volume_is_set = TRUE;
++                return;
++        }
++        g_signal_emit (map, signals[VOLUME_CHANGED], 0, set);
+ }
+ 
+ static void
+ gvc_channel_map_init (GvcChannelMap *map)
+ {
+         map->priv = GVC_CHANNEL_MAP_GET_PRIVATE (map);
++        map->priv->pa_volume_is_set = FALSE;
+ }
+ 
+ static void
+diff --git a/plugins/media-keys/cut-n-paste/gvc-channel-map.h b/plugins/media-keys/cut-n-paste/gvc-channel-map.h
+index b35c9cb..497ce69 100644
+--- a/plugins/media-keys/cut-n-paste/gvc-channel-map.h
++++ b/plugins/media-keys/cut-n-paste/gvc-channel-map.h
+@@ -44,7 +44,7 @@ typedef struct
+ typedef struct
+ {
+         GObjectClass           parent_class;
+-        void (*volume_changed) (GvcChannelMap *channel_map);
++        void (*volume_changed) (GvcChannelMap *channel_map, gboolean set);
+ } GvcChannelMapClass;
+ 
+ enum {
+@@ -67,7 +67,8 @@ gboolean                gvc_channel_map_can_fade                (GvcChannelMap
+ gboolean                gvc_channel_map_has_lfe                 (GvcChannelMap  *map);
+ 
+ void                    gvc_channel_map_volume_changed          (GvcChannelMap    *map,
+-                                                                 const pa_cvolume *cv);
++                                                                 const pa_cvolume *cv,
++                                                                 gboolean          set);
+ const char *            gvc_channel_map_get_mapping             (GvcChannelMap  *map);
+ 
+ /* private */
+diff --git a/plugins/media-keys/cut-n-paste/gvc-mixer-control.c b/plugins/media-keys/cut-n-paste/gvc-mixer-control.c
+index 0b5feee..eba8f55 100644
+--- a/plugins/media-keys/cut-n-paste/gvc-mixer-control.c
++++ b/plugins/media-keys/cut-n-paste/gvc-mixer-control.c
+@@ -691,7 +691,7 @@ update_sink (GvcMixerControl    *control,
+ 
+         if (map == NULL)
+                 map = gvc_mixer_stream_get_channel_map (stream);
+-        gvc_channel_map_volume_changed (map, &info->volume);
++        gvc_channel_map_volume_changed (map, &info->volume, TRUE);
+ }
+ 
+ static void
+diff --git a/plugins/media-keys/cut-n-paste/gvc-mixer-stream.c b/plugins/media-keys/cut-n-paste/gvc-mixer-stream.c
+index caea0f1..2a9a7ce 100644
+--- a/plugins/media-keys/cut-n-paste/gvc-mixer-stream.c
++++ b/plugins/media-keys/cut-n-paste/gvc-mixer-stream.c
+@@ -153,7 +153,7 @@ gvc_mixer_stream_set_volume (GvcMixerStream *stream,
+         pa_cvolume_scale(&cv, volume);
+ 
+         if (!pa_cvolume_equal(gvc_channel_map_get_cvolume(stream->priv->channel_map), &cv)) {
+-                gvc_channel_map_volume_changed(stream->priv->channel_map, &cv);
++                gvc_channel_map_volume_changed(stream->priv->channel_map, &cv, FALSE);
+                 g_object_notify (G_OBJECT (stream), "volume");
+         }
+ 
+@@ -172,7 +172,7 @@ gvc_mixer_stream_set_decibel (GvcMixerStream *stream,
+         pa_cvolume_scale(&cv, pa_sw_volume_from_dB(db));
+ 
+         if (!pa_cvolume_equal(gvc_channel_map_get_cvolume(stream->priv->channel_map), &cv)) {
+-                gvc_channel_map_volume_changed(stream->priv->channel_map, &cv);
++                gvc_channel_map_volume_changed(stream->priv->channel_map, &cv, FALSE);
+                 g_object_notify (G_OBJECT (stream), "volume");
+         }
+ 
+@@ -323,9 +323,11 @@ gvc_mixer_stream_set_application_id (GvcMixerStream *stream,
+ 
+ static void
+ on_channel_map_volume_changed (GvcChannelMap  *channel_map,
++                               gboolean        set,
+                                GvcMixerStream *stream)
+ {
+-        gvc_mixer_stream_push_volume (stream);
++        if (set == TRUE)
++                gvc_mixer_stream_push_volume (stream);
+ 
+         g_object_notify (G_OBJECT (stream), "volume");
+ }
+@@ -650,7 +652,15 @@ gvc_mixer_stream_push_volume (GvcMixerStream *stream)
+ {
+         pa_operation *op;
+         gboolean ret;
++
+         g_return_val_if_fail (GVC_IS_MIXER_STREAM (stream), FALSE);
++
++        if (stream->priv->is_event_stream != FALSE)
++                return TRUE;
++
++        g_debug ("Pushing new volume to stream '%s' (%s)",
++                 stream->priv->description, stream->priv->name);
++
+         ret = GVC_MIXER_STREAM_GET_CLASS (stream)->push_volume (stream, (gpointer *) &op);
+         if (ret) {
+                 if (stream->priv->change_volume_op != NULL)
+diff --git a/plugins/media-keys/gsd-media-keys-manager.c b/plugins/media-keys/gsd-media-keys-manager.c
+index 8438875..2b14bcc 100644
+--- a/plugins/media-keys/gsd-media-keys-manager.c
++++ b/plugins/media-keys/gsd-media-keys-manager.c
+@@ -688,9 +688,11 @@ do_sound_action (GsdMediaKeysManager *manager,
+                         manager->priv->num_expected_update_signals = 2;
+                         gvc_mixer_stream_change_is_muted (manager->priv->stream, !muted);
+                         gvc_mixer_stream_set_volume (manager->priv->stream, 0);
++                        gvc_mixer_stream_push_volume (manager->priv->stream);
+                 } else if (!muted) {
+                         manager->priv->num_expected_update_signals = 1;
+                         gvc_mixer_stream_set_volume (manager->priv->stream, vol - norm_vol_step);
++                        gvc_mixer_stream_push_volume (manager->priv->stream);
+                 }
+                 break;
+         case VOLUME_UP_KEY:
+@@ -698,6 +700,7 @@ do_sound_action (GsdMediaKeysManager *manager,
+                         if (vol == 0) {
+                                 manager->priv->num_expected_update_signals = 2;
+                                 gvc_mixer_stream_set_volume (manager->priv->stream, vol + norm_vol_step);
++                                gvc_mixer_stream_push_volume (manager->priv->stream);
+                                 gvc_mixer_stream_change_is_muted (manager->priv->stream, !muted);
+                         } else {
+                                 manager->priv->num_expected_update_signals = 1;
+-- 
+1.6.2.5
+
