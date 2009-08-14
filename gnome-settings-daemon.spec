@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.27.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -32,6 +32,7 @@ BuildRequires:	gettext
 BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
 
+Patch0:		0001-Update-gnome-volume-control-code.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=524499
@@ -55,6 +56,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
+%patch0 -p1 -b .gvc-update
 %patch12 -p1 -b .lefthand-touchpad
 %patch13 -p1 -b .locate-pointer
 
@@ -170,6 +172,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Aug 14 2009 Bastien Nocera <bnocera@redhat.com> 2.27.90-2
+- Update gnome-volume-control code
+
 * Fri Aug 14 2009 Bastien Nocera <bnocera@redhat.com> 2.27.90-1
 - Update to 2.27.90
 
