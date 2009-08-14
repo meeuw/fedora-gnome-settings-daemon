@@ -1,5 +1,5 @@
 Name:		gnome-settings-daemon
-Version:	2.27.5
+Version:	2.27.90
 Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -170,6 +170,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Aug 14 2009 Bastien Nocera <bnocera@redhat.com> 2.27.90-1
+- Update to 2.27.90
+
 * Tue Jul 28 2009 Matthias Clasen <mclasen@redhat.com> 2.27.5-1
 - Update to 2.27.5
 
