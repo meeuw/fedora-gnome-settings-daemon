@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.27.91
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -36,6 +36,8 @@ BuildRequires:  fontconfig-devel
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
 # http://bugzilla.gnome.org/show_bug.cgi?id=524499
 Patch13:	locate-pointer-process.patch
+# http://bugzilla.gnome.org/show_bug.cgi?id=593112
+Patch14:	buttonmapping.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -57,6 +59,7 @@ developing applications that use %{name}.
 
 %patch12 -p1 -b .lefthand-touchpad
 %patch13 -p1 -b .locate-pointer
+%patch14 -p1 -b .buttonmap
 
 autoreconf -i -f
 
@@ -170,6 +173,10 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Aug 26 2009 Peter Hutterer <peter.hutterer@redhat.com> 2.27.91-2
+- buttonmapping.patch: Don't check for IsXExtensionDevice, only skip button
+  mappings for core devices instead (#502129).
+
 * Mon Aug 24 2009 Bastien Nocera <bnocera@redhat.com> 2.27.91-1
 - Update to 2.27.91
 
