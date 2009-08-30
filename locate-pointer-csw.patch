@@ -1,0 +1,62 @@
+--- gnome-settings-daemon-2.27.91/plugins/mouse/gsd-locate-pointer.c	2009-08-30 02:33:02.791519895 -0400
++++ hacked/plugins/mouse/gsd-locate-pointer.c	2009-08-30 02:32:13.785515177 -0400
+@@ -126,27 +126,29 @@
+   cairo_t *cr;
+   GdkBitmap *mask;
+ 
+-  if (event->window != data->window)
++  if (event && event->window != data->window)
+     return FALSE;
+ 
+-  cr = gdk_cairo_create (data->window);
+-
+   if (gtk_widget_is_composited (data->widget))
+-    locate_pointer_paint (data, cr, TRUE);
+-  else
+     {
+-      locate_pointer_paint (data, cr, FALSE);
++      cr = gdk_cairo_create (data->window);
++      locate_pointer_paint (data, cr, TRUE);
+       cairo_destroy (cr);
+-
++    }
++  else
++    {
+       /* create a bitmap for the shape, reuse the cairo_t to paint on it */
+       mask = gdk_pixmap_new (data->window, WINDOW_SIZE, WINDOW_SIZE, 1);
+       cr = gdk_cairo_create (mask);
+       locate_pointer_paint (data, cr, FALSE);
+       gdk_window_shape_combine_mask (data->window, mask, 0, 0);
+       g_object_unref (mask);
+-    }
++      cairo_destroy (cr);
+ 
+-  cairo_destroy (cr);
++      cr = gdk_cairo_create (data->window);
++      locate_pointer_paint (data, cr, FALSE);
++      cairo_destroy (cr);
++    }
+ 
+   return TRUE;
+ }
+@@ -168,7 +170,7 @@
+   else if (progress >= data->progress + CIRCLES_PROGRESS_INTERVAL)
+     {
+       /* only invalidate window each circle interval */
+-      gdk_window_invalidate_rect (data->window, NULL, FALSE);
++      locate_pointer_expose (data->widget, NULL, data);
+       data->progress += CIRCLES_PROGRESS_INTERVAL;
+     }
+ 
+@@ -340,10 +342,9 @@
+   g_signal_connect (data->widget, "composited-changed",
+                     G_CALLBACK (composited_changed), data);
+ 
++  move_locate_pointer_window (data, screen);
+   composited_changed (data->widget, data);
+-
+   gdk_window_show (data->window);
+-  move_locate_pointer_window (data, screen);
+ 
+   gsd_timeline_start (data->timeline);
+ }
