@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.27.91
-Release:	3%{?dist}
+Version:	2.27.92
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -34,12 +34,6 @@ BuildRequires:  fontconfig-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
 Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=524499
-Patch13:	locate-pointer-process.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=593112
-Patch14:	buttonmapping.patch
-# http://bugzilla.gnome.org/show_bug.cgi?id=593115
-Patch15:        locate-pointer-csw.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -60,9 +54,6 @@ developing applications that use %{name}.
 %setup -q
 
 %patch12 -p1 -b .lefthand-touchpad
-%patch13 -p1 -b .locate-pointer
-%patch14 -p1 -b .buttonmap
-%patch15 -p1 -b .locate-pointer-csw
 
 autoreconf -i -f
 
@@ -176,6 +167,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Sep  7 2009 Matthias Clasen <mclasen@redhat.com> - 2.27.92-1
+- Update to 2.27.92
+
 * Sun Aug 30 2009 Matthias Clasen <mclasen@redhat.com> - 2.27.91-3
 - Make 'Locate Pointer' work with metacity again
 
