@@ -33,7 +33,7 @@ BuildRequires:  autoconf, automake, libtool, intltool
 BuildRequires:  fontconfig-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
-Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
+#Patch12:	gnome-settings-daemon-2.26.1-fix-touchpad.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -53,7 +53,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%patch12 -p1 -b .lefthand-touchpad
+#%patch12 -p1 -b .lefthand-touchpad
 
 autoreconf -i -f
 
