@@ -28,7 +28,7 @@ BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:	libgnomekbd-devel
 BuildRequires:	libnotify-devel
-BuildRequires:	gettext
+BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=483639
