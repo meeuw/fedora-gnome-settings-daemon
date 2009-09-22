@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -30,6 +30,7 @@ BuildRequires:	libgnomekbd-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
+BuildRequires:	libcanberra-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -159,6 +160,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Sep 22 2009 Adam Jackson <ajax@redhat.com> 2.28.0-2
+- BuildRequires: libcanberra-devel
+
 * Mon Sep 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-1
 - Update to 2.28.0
 
