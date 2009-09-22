@@ -31,10 +31,6 @@ BuildRequires:	libnotify-devel
 BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=483639
-# http://bugzilla.gnome.org/show_bug.cgi?id=594617
-Patch1:		0001-Bug-594617-Touchpad-left-handed-bug-fixes.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -52,8 +48,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-
-%patch1 -p1 -b .lefthand-touchpad
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
