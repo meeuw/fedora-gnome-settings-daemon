@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.27.92
-Release:	2%{?dist}
+Version:	2.28.0
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://download.gnome.org/sources/%{name}
-Source0:	http://download.gnome.org/sources/%{name}/2.27/%{name}-%{version}.tar.bz2
+Source0:	http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -165,6 +165,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Sep 21 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-1
+- Update to 2.28.0
+
 * Wed Sep 09 2009 Bastien Nocera <bnocera@redhat.com> 2.27.92-2
 - Update left-hand touchpad patch
 
