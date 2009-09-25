@@ -1,0 +1,136 @@
+From cca9a6d853b4c1366cf965750f0a7c6e9c74e3a1 Mon Sep 17 00:00:00 2001
+From: William Jon McCann <jmccann@redhat.com>
+Date: Wed, 23 Sep 2009 21:15:45 -0400
+Subject: [PATCH 2/2] Improve the media keys overlay design
+
+---
+ plugins/media-keys/gsd-media-keys-window.c |   69 ++++++++++++++++++++--------
+ 1 files changed, 50 insertions(+), 19 deletions(-)
+
+diff --git a/plugins/media-keys/gsd-media-keys-window.c b/plugins/media-keys/gsd-media-keys-window.c
+index 89071b8..a31edca 100644
+--- a/plugins/media-keys/gsd-media-keys-window.c
++++ b/plugins/media-keys/gsd-media-keys-window.c
+@@ -33,7 +33,7 @@
+ #define DIALOG_FADE_TIMEOUT 1500 /* timeout before fade starts */
+ #define FADE_TIMEOUT 10        /* timeout in ms between each frame of the fade */
+ 
+-#define BG_ALPHA 0.50
++#define BG_ALPHA 0.75
+ #define FG_ALPHA 1.00
+ 
+ static void     gsd_media_keys_window_class_init (GsdMediaKeysWindowClass *klass);
+@@ -593,6 +593,36 @@ render_speaker (GsdMediaKeysWindow *window,
+ }
+ 
+ static void
++color_reverse (const GdkColor *a,
++               GdkColor       *b)
++{
++        gdouble red;
++        gdouble green;
++        gdouble blue;
++        gdouble h;
++        gdouble s;
++        gdouble v;
++
++        red = (gdouble) a->red / 65535.0;
++        green = (gdouble) a->green / 65535.0;
++        blue = (gdouble) a->blue / 65535.0;
++
++        gtk_rgb_to_hsv (red, green, blue, &h, &s, &v);
++
++        v = 0.5 + (0.5 - v);
++        if (v > 1.0)
++                v = 1.0;
++        else if (v < 0.0)
++                v = 0.0;
++
++        gtk_hsv_to_rgb (h, s, v, &red, &green, &blue);
++
++        b->red = red * 65535.0;
++        b->green = green * 65535.0;
++        b->blue = blue * 65535.0;
++}
++
++static void
+ draw_volume_boxes (GsdMediaKeysWindow *window,
+                    cairo_t            *cr,
+                    double              percentage,
+@@ -605,35 +635,36 @@ draw_volume_boxes (GsdMediaKeysWindow *window,
+         GdkColor color;
+         double   r, g, b;
+ 
+-        x1 = width * percentage;
++        x1 = (width - 2) * percentage;
+ 
+         /* bar background */
+-        color = GTK_WIDGET (window)->style->dark [GTK_STATE_NORMAL];
++        color_reverse (&GTK_WIDGET (window)->style->dark[GTK_STATE_NORMAL], &color);
+         r = (float)color.red / 65535.0;
+         g = (float)color.green / 65535.0;
+         b = (float)color.blue / 65535.0;
+-        cairo_rectangle (cr, x0, y0, width, height);
+-        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
+-        cairo_fill (cr);
++        rounded_rectangle (cr, 1.0, x0, y0, height / 6, width, height);
++        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA / 2);
++        cairo_fill_preserve (cr);
+ 
+         /* bar border */
+-        color = GTK_WIDGET (window)->style->dark [GTK_STATE_SELECTED];
++        color_reverse (&GTK_WIDGET (window)->style->light[GTK_STATE_NORMAL], &color);
+         r = (float)color.red / 65535.0;
+         g = (float)color.green / 65535.0;
+         b = (float)color.blue / 65535.0;
+-        cairo_rectangle (cr, x0, y0, width, height);
+-        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
++        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA / 2);
+         cairo_set_line_width (cr, 1);
+         cairo_stroke (cr);
+ 
+         /* bar progress */
+-        color = GTK_WIDGET (window)->style->bg [GTK_STATE_SELECTED];
+-        r = (float)color.red / 65535.0;
+-        g = (float)color.green / 65535.0;
+-        b = (float)color.blue / 65535.0;
+-        cairo_rectangle (cr, x0, y0, x1, height);
+-        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
+-        cairo_fill (cr);
++        if (percentage > 0.01) {
++                color = GTK_WIDGET (window)->style->bg[GTK_STATE_NORMAL];
++                r = (float)color.red / 65535.0;
++                g = (float)color.green / 65535.0;
++                b = (float)color.blue / 65535.0;
++                rounded_rectangle (cr, 1.0, x0 + 1, y0 + 1, height / 8, x1, height - 2);
++                cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
++                cairo_fill (cr);
++        }
+ }
+ 
+ static void
+@@ -791,18 +822,18 @@ on_expose_event (GtkWidget          *widget,
+ 
+         /* draw a box */
+         rounded_rectangle (cr, 1.0, 0.5, 0.5, height / 10, width-1, height-1);
+-        color = GTK_WIDGET (window)->style->bg [GTK_STATE_NORMAL];
++        color_reverse (&GTK_WIDGET (window)->style->bg[GTK_STATE_NORMAL], &color);
+         r = (float)color.red / 65535.0;
+         g = (float)color.green / 65535.0;
+         b = (float)color.blue / 65535.0;
+         cairo_set_source_rgba (cr, r, g, b, BG_ALPHA);
+         cairo_fill_preserve (cr);
+ 
+-        color = GTK_WIDGET (window)->style->fg [GTK_STATE_NORMAL];
++        color_reverse (&GTK_WIDGET (window)->style->text_aa[GTK_STATE_NORMAL], &color);
+         r = (float)color.red / 65535.0;
+         g = (float)color.green / 65535.0;
+         b = (float)color.blue / 65535.0;
+-        cairo_set_source_rgba (cr, r, g, b, BG_ALPHA);
++        cairo_set_source_rgba (cr, r, g, b, BG_ALPHA / 2);
+         cairo_set_line_width (cr, 1);
+         cairo_stroke (cr);
+ 
+-- 
+1.6.4.4
+

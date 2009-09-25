@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -32,6 +32,10 @@ BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:	libcanberra-devel
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=596136
+Patch0: osd-rounded-rectangle.patch
+Patch1: osd-visual-refresh.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -49,6 +53,8 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .osd-rounded-rectangle
+%patch1 -p1 -b .osd-visual-refresh
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -160,6 +166,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Sep 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-3
+- Align the OSD visuals with the notification theme
+
 * Tue Sep 22 2009 Adam Jackson <ajax@redhat.com> 2.28.0-2
 - BuildRequires: libcanberra-devel
 
