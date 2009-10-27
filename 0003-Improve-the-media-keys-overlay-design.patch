@@ -1,14 +1,14 @@
-From cca9a6d853b4c1366cf965750f0a7c6e9c74e3a1 Mon Sep 17 00:00:00 2001
+From 26041c5b936263d3f5aa4aa7fc7ffedd128ed444 Mon Sep 17 00:00:00 2001
 From: William Jon McCann <jmccann@redhat.com>
 Date: Wed, 23 Sep 2009 21:15:45 -0400
-Subject: [PATCH 2/2] Improve the media keys overlay design
+Subject: [PATCH 3/3] Improve the media keys overlay design
 
 ---
- plugins/media-keys/gsd-media-keys-window.c |   69 ++++++++++++++++++++--------
- 1 files changed, 50 insertions(+), 19 deletions(-)
+ plugins/media-keys/gsd-media-keys-window.c |   59 +++++++++++++++++++++-------
+ 1 files changed, 45 insertions(+), 14 deletions(-)
 
 diff --git a/plugins/media-keys/gsd-media-keys-window.c b/plugins/media-keys/gsd-media-keys-window.c
-index 89071b8..a31edca 100644
+index cffbe3e..c33d624 100644
 --- a/plugins/media-keys/gsd-media-keys-window.c
 +++ b/plugins/media-keys/gsd-media-keys-window.c
 @@ -33,7 +33,7 @@
@@ -57,12 +57,12 @@ index 89071b8..a31edca 100644
  draw_volume_boxes (GsdMediaKeysWindow *window,
                     cairo_t            *cr,
                     double              percentage,
-@@ -605,35 +635,36 @@ draw_volume_boxes (GsdMediaKeysWindow *window,
-         GdkColor color;
-         double   r, g, b;
- 
--        x1 = width * percentage;
-+        x1 = (width - 2) * percentage;
+@@ -609,33 +639,34 @@ draw_volume_boxes (GsdMediaKeysWindow *window,
+         y0 += 0.5;
+         height = round (height) - 1;
+         width = round (width) - 1;
+-        x1 = round ((width - 1) * percentage);
++        x1 = round ((width - 2) * percentage);
  
          /* bar background */
 -        color = GTK_WIDGET (window)->style->dark [GTK_STATE_NORMAL];
@@ -91,25 +91,18 @@ index 89071b8..a31edca 100644
  
          /* bar progress */
 -        color = GTK_WIDGET (window)->style->bg [GTK_STATE_SELECTED];
--        r = (float)color.red / 65535.0;
--        g = (float)color.green / 65535.0;
--        b = (float)color.blue / 65535.0;
--        cairo_rectangle (cr, x0, y0, x1, height);
--        cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
--        cairo_fill (cr);
-+        if (percentage > 0.01) {
-+                color = GTK_WIDGET (window)->style->bg[GTK_STATE_NORMAL];
-+                r = (float)color.red / 65535.0;
-+                g = (float)color.green / 65535.0;
-+                b = (float)color.blue / 65535.0;
-+                rounded_rectangle (cr, 1.0, x0 + 1, y0 + 1, height / 8, x1, height - 2);
-+                cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
-+                cairo_fill (cr);
-+        }
++        if (percentage < 0.01)
++                return;
++        color = GTK_WIDGET (window)->style->bg[GTK_STATE_NORMAL];
+         r = (float)color.red / 65535.0;
+         g = (float)color.green / 65535.0;
+         b = (float)color.blue / 65535.0;
+-        cairo_rectangle (cr, x0 + 0.5, y0 + 0.5, x1, height - 1);
++        rounded_rectangle (cr, 1.0, x0 + 0.5, y0 + 0.5, height / 8, x1, height - 2);
+         cairo_set_source_rgba (cr, r, g, b, FG_ALPHA);
+         cairo_fill (cr);
  }
- 
- static void
-@@ -791,18 +822,18 @@ on_expose_event (GtkWidget          *widget,
+@@ -795,18 +826,18 @@ on_expose_event (GtkWidget          *widget,
  
          /* draw a box */
          rounded_rectangle (cr, 1.0, 0.5, 0.5, height / 10, width-1, height-1);
@@ -132,5 +125,5 @@ index 89071b8..a31edca 100644
          cairo_stroke (cr);
  
 -- 
-1.6.4.4
+1.6.5.rc2
 

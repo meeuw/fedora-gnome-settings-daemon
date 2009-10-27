@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.28.0
-Release:	3%{?dist}
+Version:	2.28.1
+Release:	4%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -33,8 +33,16 @@ BuildRequires:  fontconfig-devel
 BuildRequires:	libcanberra-devel
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=596136
-Patch0: osd-rounded-rectangle.patch
-Patch1: osd-visual-refresh.patch
+Patch0: 0002-Use-a-rounded-instead-of-curved-rectangle.patch
+Patch1: 0003-Improve-the-media-keys-overlay-design.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=567249
+Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=498249
+Patch2: left-handed-touchpad.patch
+
+# change font rendering
+Patch3: slight-hinting.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -53,8 +61,11 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch4 -p1 -b .blurry
 %patch0 -p1 -b .osd-rounded-rectangle
 %patch1 -p1 -b .osd-visual-refresh
+%patch2 -p1 -b .left-handed-touchpad
+%patch3 -p1 -b .slight-hinting
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -166,6 +177,12 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Oct 27 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-4
+- Update from F-12 branch
+
+* Tue Oct 27 2009 Bastien Nocera <bnocera@redhat.com> 2.28.0-4
+- Fix blurriness in the OSD display
+
 * Fri Sep 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-3
 - Align the OSD visuals with the notification theme
 
