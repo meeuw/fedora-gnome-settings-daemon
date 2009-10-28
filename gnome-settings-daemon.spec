@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.1
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -177,6 +177,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Oct 28 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-5
+- Tweak OSD blurinness again
+
 * Tue Oct 27 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-4
 - Update from F-12 branch
 
