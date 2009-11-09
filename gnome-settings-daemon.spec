@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.1
-Release:	5%{?dist}
+Release:	7%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -35,14 +35,16 @@ BuildRequires:	libcanberra-devel
 # https://bugzilla.gnome.org/show_bug.cgi?id=596136
 Patch0: 0002-Use-a-rounded-instead-of-curved-rectangle.patch
 Patch1: 0003-Improve-the-media-keys-overlay-design.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=567249
-Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=498249
 Patch2: left-handed-touchpad.patch
-
 # change font rendering
 Patch3: slight-hinting.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=567249
+Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=600770
+Patch5: 0001-Avoid-volumes-going-over-100.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=601203
+Patch6: gsd-screen-changed.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -66,6 +68,8 @@ developing applications that use %{name}.
 %patch1 -p1 -b .osd-visual-refresh
 %patch2 -p1 -b .left-handed-touchpad
 %patch3 -p1 -b .slight-hinting
+%patch5 -p1 -b .too-high-volume
+%patch6 -p1 -b .screen-change
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -177,14 +181,30 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Nov  9 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-7
+- React to screen changes when showing the background (gnome 601203)
+
+* Thu Nov 05 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-6
+- Fix the volume going over 100% in the OSD
+
 * Wed Oct 28 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-5
-- Tweak OSD blurinness again
+- Update OSD code again
 
 * Tue Oct 27 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-4
-- Update from F-12 branch
+- Fix bluriness in OSD
 
-* Tue Oct 27 2009 Bastien Nocera <bnocera@redhat.com> 2.28.0-4
-- Fix blurriness in the OSD display
+* Mon Oct 26 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.1-3
+- Change default font rendering to use slight hinting
+
+* Mon Oct 26 2009 Peter Hutterer <peter.hutterer@redhat.com> 2.28.1-2
+- left-handed-touchpad.patch: change physical touchpad buttons to
+  left-handed, not tapping though (#498249)
+
+* Mon Oct 19 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.1-1
+- Update to 2.28.1
+
+* Thu Oct  1 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-4
+- Fix keyboard variant handling
 
 * Fri Sep 25 2009 Matthias Clasen <mclasen@redhat.com> - 2.28.0-3
 - Align the OSD visuals with the notification theme
