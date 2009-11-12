@@ -1,0 +1,11 @@
+diff -up gnome-settings-daemon-2.28.1/plugins/xrandr/gsd-xrandr-manager.c.iconleak gnome-settings-daemon-2.28.1/plugins/xrandr/gsd-xrandr-manager.c
+--- gnome-settings-daemon-2.28.1/plugins/xrandr/gsd-xrandr-manager.c.iconleak	2009-11-12 08:56:48.161916233 -0500
++++ gnome-settings-daemon-2.28.1/plugins/xrandr/gsd-xrandr-manager.c	2009-11-12 08:54:15.374916024 -0500
+@@ -1792,6 +1792,7 @@ status_icon_stop (GsdXrandrManager *mana
+                         priv->status_icon, G_CALLBACK (status_icon_activate_cb), manager);
+                 g_signal_handlers_disconnect_by_func (
+                         priv->status_icon, G_CALLBACK (status_icon_popup_menu_cb), manager);
++                gtk_status_icon_set_visible (priv->status_icon, FALSE);
+                 g_object_unref (priv->status_icon);
+                 priv->status_icon = NULL;
+         }

@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.1
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -45,6 +45,8 @@ Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
 Patch5: 0001-Avoid-volumes-going-over-100.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=601203
 Patch6: gsd-screen-changed.patch
+# 
+Patch7: iconleak.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -70,6 +72,7 @@ developing applications that use %{name}.
 %patch3 -p1 -b .slight-hinting
 %patch5 -p1 -b .too-high-volume
 %patch6 -p1 -b .screen-change
+%patch7 -p1 -b .iconleak
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -181,8 +184,11 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu Nov 12 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-8
+- Avoid a 'whitespace leak' around the display statusicon (gnome #601696)
+
 * Mon Nov  9 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-7
-- React to screen changes when showing the background (gnome 601203)
+- React to screen changes when showing the background (gnome #601203)
 
 * Thu Nov 05 2009 Bastien Nocera <bnocera@redhat.com> 2.28.1-6
 - Fix the volume going over 100% in the OSD
