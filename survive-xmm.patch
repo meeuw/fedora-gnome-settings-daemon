@@ -1,0 +1,12 @@
+diff -up gnome-settings-daemon-2.28.1/plugins/keyboard/gsd-keyboard-xkb.c.survive-xmm gnome-settings-daemon-2.28.1/plugins/keyboard/gsd-keyboard-xkb.c
+--- gnome-settings-daemon-2.28.1/plugins/keyboard/gsd-keyboard-xkb.c.survive-xmm	2009-12-15 15:39:28.904208015 -0500
++++ gnome-settings-daemon-2.28.1/plugins/keyboard/gsd-keyboard-xkb.c	2009-12-15 15:39:46.554927327 -0500
+@@ -236,7 +236,7 @@ apply_xkb_settings (void)
+ 		GSList *found_node;
+ 		int     max_groups;
+ 
+-		max_groups = xkl_engine_get_max_num_groups (xkl_engine);
++		max_groups = MAX (xkl_engine_get_max_num_groups (xkl_engine), 1);
+ 		layouts = gconf_client_get_list (conf_client,
+ 						 GKBD_KEYBOARD_CONFIG_KEY_LAYOUTS,
+ 						 GCONF_VALUE_STRING, NULL);

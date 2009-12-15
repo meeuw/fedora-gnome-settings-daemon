@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.1
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -45,8 +45,10 @@ Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
 Patch5: 0001-Avoid-volumes-going-over-100.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=601203
 Patch6: gsd-screen-changed.patch
-# 
+#
 Patch7: iconleak.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=604651
+Patch8: survive-xmm.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -73,6 +75,7 @@ developing applications that use %{name}.
 %patch5 -p1 -b .too-high-volume
 %patch6 -p1 -b .screen-change
 %patch7 -p1 -b .iconleak
+%patch8 -p1 -b .survive-xmm
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -184,6 +187,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Dec 15 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-9
+- Survive when running without XKB (#547780)
+
 * Thu Nov 12 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-8
 - Avoid a 'whitespace leak' around the display statusicon (gnome #601696)
 
