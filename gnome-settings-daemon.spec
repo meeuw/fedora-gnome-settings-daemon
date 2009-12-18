@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.28.1
-Release:	9%{?dist}
+Release:	10%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -50,6 +50,9 @@ Patch7: iconleak.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=604651
 Patch8: survive-xmm.patch
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=604918
+Patch9: osd-spam.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -76,6 +79,7 @@ developing applications that use %{name}.
 %patch6 -p1 -b .screen-change
 %patch7 -p1 -b .iconleak
 %patch8 -p1 -b .survive-xmm
+%patch9 -p1 -b .osd-spam
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
@@ -187,6 +191,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Dec 18 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-10
+- Avoid warning messages from the OSD code
+
 * Tue Dec 15 2009 Matthias Clasen <mclasen@redhat.com> 2.28.1-9
 - Survive when running without XKB (#547780)
 
