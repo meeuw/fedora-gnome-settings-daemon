@@ -1,12 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.28.1
-Release:	10%{?dist}
+Version:	2.29.5
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://download.gnome.org/sources/%{name}
-Source0:	http://download.gnome.org/sources/%{name}/2.28/%{name}-%{version}.tar.bz2
+Source0:	http://download.gnome.org/sources/%{name}/2.29/%{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
@@ -32,26 +32,8 @@ BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:	libcanberra-devel
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=596136
-Patch0: 0002-Use-a-rounded-instead-of-curved-rectangle.patch
-Patch1: 0003-Improve-the-media-keys-overlay-design.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=498249
-Patch2: left-handed-touchpad.patch
 # change font rendering
 Patch3: slight-hinting.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=567249
-Patch4: 0001-Fix-bluriness-in-level-bar-and-popup.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=600770
-Patch5: 0001-Avoid-volumes-going-over-100.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=601203
-Patch6: gsd-screen-changed.patch
-#
-Patch7: iconleak.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=604651
-Patch8: survive-xmm.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=604918
-Patch9: osd-spam.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -70,16 +52,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch4 -p1 -b .blurry
-%patch0 -p1 -b .osd-rounded-rectangle
-%patch1 -p1 -b .osd-visual-refresh
-%patch2 -p1 -b .left-handed-touchpad
 %patch3 -p1 -b .slight-hinting
-%patch5 -p1 -b .too-high-volume
-%patch6 -p1 -b .screen-change
-%patch7 -p1 -b .iconleak
-%patch8 -p1 -b .survive-xmm
-%patch9 -p1 -b .osd-spam
 
 %build
 %configure --enable-static=no --enable-profiling --disable-esd
