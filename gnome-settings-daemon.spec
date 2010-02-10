@@ -1,5 +1,5 @@
 Name:		gnome-settings-daemon
-Version:	2.29.6
+Version:	2.29.90
 Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -18,7 +18,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	gnome-vfs2-devel
-BuildRequires:	gnome-desktop-devel >= 2.25.5
+BuildRequires:	gnome-desktop-devel >= 2.26.3
 BuildRequires:	libglade2-devel
 BuildRequires:	libgnomeui-devel
 BuildRequires:	libgnome-devel
@@ -55,6 +55,8 @@ developing applications that use %{name}.
 %patch3 -p1 -b .slight-hinting
 
 %build
+# https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
+export LIBS="-lX11"
 %configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
@@ -164,6 +166,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 10 2010 Tomas Bzatek <tbzatek@redhat.com> 2.29.90-1
+- Update to 2.29.90
+
 * Tue Jan 26 2010 Matthias Clasen <mclasen@redhat.com> 2.29.6-1
 - Update to 2.29.6
 
