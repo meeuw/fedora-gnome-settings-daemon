@@ -56,7 +56,7 @@ developing applications that use %{name}.
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
-export LIBS="-lX11"
+export LIBS="-lX11 -lm"
 %configure --enable-static=no --enable-profiling --disable-esd
 make %{?_smp_mflags}
 
