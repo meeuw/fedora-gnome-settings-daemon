@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.29.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -35,6 +35,9 @@ BuildRequires:	libcanberra-devel
 # change font rendering
 Patch3: slight-hinting.patch
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=610319
+Patch4: keyboard-icon.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -53,6 +56,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch3 -p1 -b .slight-hinting
+%patch4 -p1 -b .keyboard-icon
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -166,6 +170,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 17 2010 Matthias Clasen <mclasen@redhat.com> 2.29.90-2
+- Set a name for the keyboard statusicon
+
 * Wed Feb 10 2010 Tomas Bzatek <tbzatek@redhat.com> 2.29.90-1
 - Update to 2.29.90
 
