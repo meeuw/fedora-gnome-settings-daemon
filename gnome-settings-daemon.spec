@@ -162,6 +162,7 @@ fi
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
+%{_datadir}/icons/hicolor/*/actions/touchpad*
 
 %files devel
 %defattr(-,root,root,-)
