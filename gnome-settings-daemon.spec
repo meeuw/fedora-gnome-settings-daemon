@@ -1,13 +1,12 @@
 Name:		gnome-settings-daemon
-Version:	2.29.90
-Release:	2%{?dist}
+Version:	2.29.91.1
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://download.gnome.org/sources/%{name}
 Source0:	http://download.gnome.org/sources/%{name}/2.29/%{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -170,6 +169,9 @@ fi
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 24 2010 Matthias Clasen <mclasen@redhat.com> 2.29.91.1-1
+- Update to 2.29.91.1
+
 * Wed Feb 17 2010 Matthias Clasen <mclasen@redhat.com> 2.29.90-2
 - Set a name for the keyboard statusicon
 
