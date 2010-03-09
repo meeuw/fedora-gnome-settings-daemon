@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
-Version:	2.29.91.1
-Release:	2%{?dist}
+Version:	2.29.92
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -177,6 +177,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Mar 09 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-1
+- Update to 2.29.92
+
 * Sat Feb 27 2010 Matthias Clasen <mclasen@redhat.com> 2.29.91.1-2
 - Fix Fn-F8 OSD icon
 - Modernize scriptlets
