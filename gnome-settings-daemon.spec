@@ -1,16 +1,12 @@
 Name:		gnome-settings-daemon
 Version:	2.29.92
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://download.gnome.org/sources/%{name}
 Source0:	http://download.gnome.org/sources/%{name}/2.29/%{name}-%{version}.tar.bz2
-# https://bugzilla.gnome.org/show_bug.cgi?id=611348
-Source1:        touchpad-enabled.svg
-Source2:        touchpad-disabled.svg
-
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -60,9 +56,6 @@ developing applications that use %{name}.
 %setup -q
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
-
-cp %{SOURCE1} plugins/media-keys
-cp %{SOURCE2} plugins/media-keys
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -177,6 +170,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Mar 10 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-2
+- Remove unneeded icons, already upstream
+
 * Tue Mar 09 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-1
 - Update to 2.29.92
 
