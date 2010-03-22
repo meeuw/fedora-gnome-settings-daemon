@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.29.92
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -31,6 +31,9 @@ BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:	libcanberra-devel
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=613604
+Patch0: 0001-Disable-font-plugin-by-default.patch
+
 # change font rendering
 Patch3: slight-hinting.patch
 
@@ -54,6 +57,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .no-font-plugin
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
 
@@ -170,6 +174,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Mar 22 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-3
+- Disable the font plugin by default
+
 * Wed Mar 10 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-2
 - Remove unneeded icons, already upstream
 
