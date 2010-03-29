@@ -1,12 +1,13 @@
 Name:		gnome-settings-daemon
-Version:	2.29.92
-Release:	3%{?dist}
+Version:	2.30.0
+Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
 License:	GPLv2+
 URL:		http://download.gnome.org/sources/%{name}
-Source0:	http://download.gnome.org/sources/%{name}/2.29/%{name}-%{version}.tar.bz2
+#VCS: git:git://git.gnome.org/gnome-settings-daemon
+Source0:	http://download.gnome.org/sources/%{name}/2.30/%{name}-%{version}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -31,9 +32,6 @@ BuildRequires:	gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:	libcanberra-devel
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=613604
-Patch0: 0001-Disable-font-plugin-by-default.patch
-
 # change font rendering
 Patch3: slight-hinting.patch
 
@@ -57,7 +55,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .no-font-plugin
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
 
@@ -174,6 +171,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Mar 29 2010 Matthias Clasen <mclasen@redhat.com> 2.30.0-1
+- Update to 2.30.0
+
 * Mon Mar 22 2010 Bastien Nocera <bnocera@redhat.com> 2.29.92-3
 - Disable the font plugin by default
 
