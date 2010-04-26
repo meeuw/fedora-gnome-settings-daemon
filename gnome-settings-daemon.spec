@@ -1,5 +1,5 @@
 Name:		gnome-settings-daemon
-Version:	2.30.0
+Version:	2.30.1
 Release:	1%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -78,7 +78,6 @@ done
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/libsound.so
@@ -86,61 +85,27 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/sound.gnome-settings-p
 
 %find_lang %{name} --with-gnome
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
-export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-gconftool-2 --makefile-install-rule \
-	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
-	%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
-	%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
-	%{_sysconfdir}/gconf/schemas/gnome-settings-daemon.schemas \
-	%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
-	>& /dev/null || :
+%gconf_schema_upgrade apps_gnome_settings_daemon_keybindings \
+                      apps_gnome_settings_daemon_screensaver \
+                      desktop_gnome_font_rendering \
+                      desktop_Gnome_peripherals_touchpad \
+                      gnome-settings-daemon
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 
 %pre
-if [ "$1" -gt 1 ]; then
-	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-	if [ -f %{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas ] ; then
-		gconftool-2 --makefile-uninstall-rule \
-			%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
-			>& /dev/null || :
-	fi
-	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
-		gconftool-2 --makefile-uninstall-rule \
-			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
-			>& /dev/null || :
-	fi
-	gconftool-2 --makefile-uninstall-rule \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
-		%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
-		%{_sysconfdir}/gconf/schemas/gnome-settings-daemon.schemas \
-		>& /dev/null || :
-fi
+%gconf_schema_prepare apps_gnome_settings_daemon_keybindings \
+                      apps_gnome_settings_daemon_screensaver \
+                      desktop_gnome_font_rendering \
+                      desktop_Gnome_peripherals_touchpad \
+                      gnome-settings-daemon
 
 %preun
-if [ "$1" -eq 0 ]; then
-	export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-	if [ -f %{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas ] ; then
-		gconftool-2 --makefile-uninstall-rule \
-			%{_sysconfdir}/gconf/schemas/desktop_gnome_peripherals_touchpad.schemas \
-			>& /dev/null || :
-	fi
-	if [ -f %{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas ] ; then
-		gconftool-2 --makefile-uninstall-rule \
-			%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_default_editor.schemas \
-			>& /dev/null || :
-	fi
-	gconftool-2 --makefile-uninstall-rule \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_keybindings.schemas \
-		%{_sysconfdir}/gconf/schemas/apps_gnome_settings_daemon_screensaver.schemas \
-		%{_sysconfdir}/gconf/schemas/desktop_gnome_font_rendering.schemas \
-		%{_sysconfdir}/gconf/schemas/gnome-settings-daemon.schemas \
-		>& /dev/null || :
-fi
+%gconf_schema_remove  apps_gnome_settings_daemon_keybindings \
+                      apps_gnome_settings_daemon_screensaver \
+                      desktop_gnome_font_rendering \
+                      desktop_Gnome_peripherals_touchpad \
+                      gnome-settings-daemon
 
 %postun
 if [ $1 -eq 0 ]; then
@@ -171,6 +136,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Apr 26 2010 Matthias Clasen <mclasen@redhat.com> 2.30.1-1
+- Update to 2.30.1
+- Spec file cleanups
+
 * Mon Mar 29 2010 Matthias Clasen <mclasen@redhat.com> 2.30.0-1
 - Update to 2.30.0
 
