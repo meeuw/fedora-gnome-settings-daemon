@@ -1,6 +1,6 @@
 Name:		gnome-settings-daemon
 Version:	2.30.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:		System Environment/Daemons
@@ -86,26 +86,14 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/sound.gnome-settings-p
 %find_lang %{name} --with-gnome
 
 %post
-%gconf_schema_upgrade apps_gnome_settings_daemon_keybindings \
-                      apps_gnome_settings_daemon_screensaver \
-                      desktop_gnome_font_rendering \
-                      desktop_gnome_peripherals_touchpad \
-                      gnome-settings-daemon
+%gconf_schema_upgrade apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_screensaver desktop_gnome_font_rendering desktop_gnome_peripherals_touchpad gnome-settings-daemon
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 
 %pre
-%gconf_schema_prepare apps_gnome_settings_daemon_keybindings \
-                      apps_gnome_settings_daemon_screensaver \
-                      desktop_gnome_font_rendering \
-                      desktop_gnome_peripherals_touchpad \
-                      gnome-settings-daemon
+%gconf_schema_prepare apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_screensaver desktop_gnome_font_rendering desktop_gnome_peripherals_touchpad gnome-settings-daemon
 
 %preun
-%gconf_schema_remove  apps_gnome_settings_daemon_keybindings \
-                      apps_gnome_settings_daemon_screensaver \
-                      desktop_gnome_font_rendering \
-                      desktop_gnome_peripherals_touchpad \
-                      gnome-settings-daemon
+%gconf_schema_remove  apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_screensaver desktop_gnome_font_rendering desktop_gnome_peripherals_touchpad gnome-settings-daemon
 
 %postun
 if [ $1 -eq 0 ]; then
@@ -136,6 +124,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Apr 27 2010 Matthias Clasen <mclasen@redhat.com> 2.30.1-3
+- Nobody understands macro processors...
+
 * Tue Apr 27 2010 Matthias Clasen <mclasen@redhat.com> 2.30.1-2
 - Fix a typo
 
