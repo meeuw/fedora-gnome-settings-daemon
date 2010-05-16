@@ -31,6 +31,9 @@ BuildRequires:  libnotify-devel
 BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
+BuildRequires:  autoconf automake libtool
+
+Patch0:         etcetc.patch
 
 # change font rendering
 Patch3: slight-hinting.patch
@@ -55,8 +58,11 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .etcetc
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
+
+autoreconf -i -f
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -108,6 +114,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS
 %{_sysconfdir}/gconf/schemas/*
+%dir %{_sysconfdir/gnome-settings-daemon
+%dir %{_sysconfdir/gnome-settings-daemon/xrandr
 %{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
