@@ -1,36 +1,36 @@
-Name:		gnome-settings-daemon
-Version:	2.30.1
-Release:	4%{?dist}
-Summary:	The daemon sharing settings from GNOME to GTK+/KDE applications
+Name:           gnome-settings-daemon
+Version:        2.31.1
+Release:        1%{?dist}
+Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
-Group:		System Environment/Daemons
-License:	GPLv2+
-URL:		http://download.gnome.org/sources/%{name}
+Group:          System Environment/Daemons
+License:        GPLv2+
+URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source0:	http://download.gnome.org/sources/%{name}/2.30/%{name}-%{version}.tar.bz2
+Source0:        http://download.gnome.org/sources/%{name}/2.31/%{name}-%{version}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
 Requires(post): GConf2 >= 2.14
 Requires: control-center-filesystem
 
-BuildRequires:	dbus-glib-devel
-BuildRequires:	GConf2-devel
-BuildRequires:	gtk2-devel
-BuildRequires:	gnome-vfs2-devel
-BuildRequires:	gnome-desktop-devel >= 2.26.3
-BuildRequires:	libglade2-devel
-BuildRequires:	libgnomeui-devel
-BuildRequires:	libgnome-devel
-BuildRequires:	xorg-x11-proto-devel
-BuildRequires:	gstreamer-devel
-BuildRequires:	gstreamer-plugins-base-devel
+BuildRequires:  dbus-glib-devel
+BuildRequires:  GConf2-devel
+BuildRequires:  gtk2-devel
+BuildRequires:  gnome-vfs2-devel
+BuildRequires:  gnome-desktop-devel >= 2.26.3
+BuildRequires:  libglade2-devel
+BuildRequires:  libgnomeui-devel
+BuildRequires:  libgnome-devel
+BuildRequires:  xorg-x11-proto-devel
+BuildRequires:  gstreamer-devel
+BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
-BuildRequires:	libgnomekbd-devel
-BuildRequires:	libnotify-devel
-BuildRequires:	gettext intltool
+BuildRequires:  libgnomekbd-devel
+BuildRequires:  libnotify-devel
+BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
-BuildRequires:	libcanberra-devel
+BuildRequires:  libcanberra-devel
 
 # change font rendering
 Patch3: slight-hinting.patch
@@ -42,14 +42,14 @@ Patch4: keyboard-icon.patch
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
 
-%package	devel
-Summary:	Development files for %{name}
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	pkgconfig
-Requires:	dbus-glib-devel
+%package        devel
+Summary:        Development files for %{name}
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       pkgconfig
+Requires:       dbus-glib-devel
 
-%description	devel
+%description    devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
@@ -124,6 +124,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sun May 16 2010 Matthias Clasen <mclasen@redhat.com> 2.31.1-1
+- Update to 2.31.1
+
 * Fri Apr 30 2010 Matthias Clasen <mclasen@redhat.com> 2.30.1-4
 - Waah, one more mistake in these macros
 
