@@ -64,7 +64,7 @@ autoreconf -i -f
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
 export LIBS="-lX11 -lm"
-%configure --enable-static=no --enable-profiling --disable-esd
+%configure --enable-static=no --enable-profiling
 make %{?_smp_mflags}
 
 # strip unneeded translations from .mo files
