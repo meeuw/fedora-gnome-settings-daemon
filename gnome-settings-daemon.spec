@@ -39,6 +39,8 @@ Patch3: slight-hinting.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=610319
 Patch4: keyboard-icon.patch
 
+Patch5: not-smart.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -58,6 +60,7 @@ developing applications that use %{name}.
 %setup -q
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
+%patch5 -p1 -b .not-smart
 
 autoreconf -i -f
 
