@@ -7,7 +7,7 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source0:        http://download.gnome.org/sources/%{name}/2.31/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/2.31/%{name}-%{version}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -111,8 +111,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS
 %{_sysconfdir}/gconf/schemas/*
-%dir %{_sysconfdir/gnome-settings-daemon
-%dir %{_sysconfdir/gnome-settings-daemon/xrandr
+%dir %{_sysconfdir}/gnome-settings-daemon
+%dir %{_sysconfdir}/gnome-settings-daemon/xrandr
 %{_libdir}/gnome-settings-daemon-2.0
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
