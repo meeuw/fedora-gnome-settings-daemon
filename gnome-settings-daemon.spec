@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        2.31.1
+Version:        2.31.2
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -132,6 +132,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Thu May 27 2010 Matthias Clasen <mclasen@redhat.com> 2.31.2-1
+- Update to 2.31.2
+
 * Sun May 16 2010 Matthias Clasen <mclasen@redhat.com> 2.31.1-1
 - Update to 2.31.1
 
