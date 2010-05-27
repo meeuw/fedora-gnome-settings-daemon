@@ -33,8 +33,6 @@ BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
 BuildRequires:  autoconf automake libtool
 
-Patch0:         etcetc.patch
-
 # change font rendering
 Patch3: slight-hinting.patch
 
@@ -58,7 +56,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .etcetc
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
 
