@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.31.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -41,6 +41,9 @@ Patch4: keyboard-icon.patch
 
 Patch5: not-smart.patch
 
+# upstream fix
+Patch6: gsd-display-panel.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -61,6 +64,7 @@ developing applications that use %{name}.
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
 %patch5 -p1 -b .not-smart
+%patch6 -p1 -b .display-panel
 
 autoreconf -i -f
 
