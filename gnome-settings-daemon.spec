@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.31.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -90,8 +90,6 @@ done
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
-rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/libsound.so
-rm -f $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-2.0/sound.gnome-settings-plugin
 
 %find_lang %{name} --with-gnome
 
@@ -136,6 +134,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Jun 28 2010 Bastien Nocera <bnocera@redhat.com> 2.31.3-3
+- Don't remove the sound plugin if we want the caches to be
+  updated
+
 * Tue Jun  8 2010 Matthias Clasen <mclasen@redhat.com> 2.31.3-1
 - Update to 2.31.3
 
