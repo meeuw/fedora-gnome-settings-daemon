@@ -31,6 +31,7 @@ BuildRequires:  libnotify-devel
 BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
+BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 
 # change font rendering
