@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.31.3
-Release:        3%{?dist}
+Version:        2.31.4
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -39,11 +39,6 @@ Patch3: slight-hinting.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=610319
 Patch4: keyboard-icon.patch
 
-Patch5: not-smart.patch
-
-# upstream fix
-Patch6: gsd-display-panel.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -63,14 +58,10 @@ developing applications that use %{name}.
 %setup -q
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
-%patch5 -p1 -b .not-smart
-%patch6 -p1 -b .display-panel
-
-autoreconf -i -f
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
-export LIBS="-lX11 -lm"
+#export LIBS="-lX11 -lm"
 %configure --enable-static=no --enable-profiling
 make %{?_smp_mflags}
 
@@ -127,6 +118,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
 %{_datadir}/icons/hicolor/*/actions/touchpad*
+%{_libexecdir}/gsd-datetime-mechanism
+%{_sysconfdir}/dbus-1/system.d/org.gnome.SettingsDaemon.DateTimeMechanism.conf
+%{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
+%{_datadir}/polkit-1/actions/org.gnome.settingsdaemon.datetimemechanism.policy
 
 %files devel
 %defattr(-,root,root,-)
@@ -134,6 +129,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Jun 29 2010 Matthias Clasen <mclasen@redhat.com> 2.31.4-1
+- Update to 2.31.4
+
 * Mon Jun 28 2010 Bastien Nocera <bnocera@redhat.com> 2.31.3-3
 - Don't remove the sound plugin if we want the caches to be
   updated
