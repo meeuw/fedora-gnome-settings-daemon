@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        2.31.4.2
+Version:        2.31.5
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -16,9 +16,8 @@ Requires: control-center-filesystem
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
-BuildRequires:  gtk2-devel
-BuildRequires:  gnome-vfs2-devel
-BuildRequires:  gnome-desktop-devel >= 2.26.3
+BuildRequires:  gtk3-devel
+BuildRequires:  gnome-desktop3-devel
 BuildRequires:  libglade2-devel
 BuildRequires:  libgnomeui-devel
 BuildRequires:  libgnome-devel
@@ -130,6 +129,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Jul 12 2010 Matthias Clasen <mclasen@redhat.com> 2.31.5-1
+- Update to 2.31.5
+
 * Wed Jun 30 2010 Matthias Clasen <mclasen@redhat.com> 2.31.4.2-1
 - Update to 2.31.4.2
 
