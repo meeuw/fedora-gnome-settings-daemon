@@ -39,9 +39,6 @@ Patch3: slight-hinting.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=610319
 Patch4: keyboard-icon.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=628538
-Patch5: display-capplet.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -60,7 +57,6 @@ developing applications that use %{name}.
 %setup -q
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
-%patch5 -p1 -b .display-capplet
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -132,9 +128,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
-* Wed Sep  1 2010 Matthias Clasen <mclasen@redhat.com> 2.31.91-2
-- Fix display capplet invokation (#628835)
-
 * Tue Aug 31 2010 Matthias Clasen <mclasen@redhat.com> 2.31.91-1
 - Update to 2.31.91
 
