@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.31.6
-Release:        2%{?dist}
+Version:        2.31.91
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -39,9 +39,6 @@ Patch3: slight-hinting.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=610319
 Patch4: keyboard-icon.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=628056
-Patch5: dark-config.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -50,7 +47,6 @@ handles global keybindings, as well as a number of desktop-wide settings.
 Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
-Requires:       pkgconfig
 Requires:       dbus-glib-devel
 
 %description    devel
@@ -61,7 +57,6 @@ developing applications that use %{name}.
 %setup -q
 %patch3 -p1 -b .slight-hinting
 %patch4 -p1 -b .keyboard-icon
-%patch5 -p1 -b .dark-config
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -133,6 +128,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Aug 31 2010 Matthias Clasen <mclasen@redhat.com> 2.31.91-1
+- Update to 2.31.91
+
 * Fri Aug 27 2010 Matthias Clasen <mclasen@redhat.com> 2.31.6-2
 - Fix a problem with warning bubbles in virtual machines (#624624)
 
