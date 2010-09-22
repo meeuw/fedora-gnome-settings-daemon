@@ -105,7 +105,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_sysconfdir}/gconf/schemas/*
 %dir %{_sysconfdir}/gnome-settings-daemon
 %dir %{_sysconfdir}/gnome-settings-daemon/xrandr
-%{_libdir}/gnome-settings-daemon-2.0
+%{_libdir}/gnome-settings-daemon-3.0
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_datadir}/gnome-settings-daemon/
