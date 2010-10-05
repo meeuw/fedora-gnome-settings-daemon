@@ -1,13 +1,13 @@
 Name:           gnome-settings-daemon
-Version:        2.90.1
-Release:        2%{?dist}
+Version:        2.91.0
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/2.90/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -33,9 +33,6 @@ BuildRequires:  autoconf automake libtool
 # change font rendering
 Patch3: slight-hinting.patch
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=610319
-Patch4: keyboard-icon.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -53,25 +50,12 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch3 -p1 -b .slight-hinting
-%patch4 -p1 -b .keyboard-icon
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
 #export LIBS="-lX11 -lm"
 %configure --enable-static=no --enable-profiling
 make %{?_smp_mflags}
-
-# strip unneeded translations from .mo files
-# ideally intltool (ha!) would do that for us
-# http://bugzilla.gnome.org/show_bug.cgi?id=474987
-cd po
-grep -v ".*[.]desktop[.]in[.]in$\|.*[.]server[.]in[.]in$" POTFILES.in > POTFILES.keep
-mv POTFILES.keep POTFILES.in
-intltool-update --pot
-for p in *.po; do
-  msgmerge $p %{name}.pot > $p.out
-  msgfmt -o `basename $p .po`.gmo $p.out
-done
 
 
 %install
@@ -125,6 +109,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Mon Oct  4 2010 Matthias Clasen <mclasen@redhat.com> - 2.91.0-1
+- Update to 2.91.0
+
 * Wed Sep 29 2010 jkeating - 2.90.1-2
 - Rebuilt for gcc bug 634757
 
