@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -62,6 +62,9 @@ make %{?_smp_mflags}
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+# i have no idea what bastien was smokin' :-)
+mv $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon- $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon-3.0
+
 %find_lang %{name} --with-gnome
 
 %post
@@ -105,10 +108,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/gnome-settings-daemon-2.0
+%{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Oct 06 2010 Richard Hughes <rhughes@redhat.com> 2.91.0-2
+- Rebuild against the new libgnomekbd library
+
 * Mon Oct  4 2010 Matthias Clasen <mclasen@redhat.com> - 2.91.0-1
 - Update to 2.91.0
 
