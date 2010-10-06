@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -29,6 +29,7 @@ BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
+BuildRequires:  libxklavier-devel
 
 # change font rendering
 Patch3: slight-hinting.patch
@@ -64,6 +65,7 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 # i have no idea what bastien was smokin' :-)
 mv $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon- $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon-3.0
+sed -i -e "s|\@gsd_api_version@|3.0|" $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %find_lang %{name} --with-gnome
 
@@ -112,6 +114,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Oct 06 2010 Richard Hughes <rhughes@redhat.com> 2.91.0-3
+- Fix the pkgconfig file manually
+
 * Wed Oct 06 2010 Richard Hughes <rhughes@redhat.com> 2.91.0-2
 - Rebuild against the new libgnomekbd library
 
