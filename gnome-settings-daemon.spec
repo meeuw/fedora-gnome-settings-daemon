@@ -1,13 +1,15 @@
+%define alphatag                                20101102
+
 Name:           gnome-settings-daemon
-Version:        2.91.0
-Release:        3%{?dist}
+Version:        2.91.2
+Release:        0.1.%{?alphatag}%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}-%{?alphatag}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -32,7 +34,7 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 
 # change font rendering
-Patch3: slight-hinting.patch
+#Patch3: slight-hinting.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -49,8 +51,8 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q
-%patch3 -p1 -b .slight-hinting
+%setup -q -n %{name}-%{version}-%{?alphatag}
+#%patch3 -p1 -b .slight-hinting
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -63,27 +65,18 @@ make %{?_smp_mflags}
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
-# i have no idea what bastien was smokin' :-)
-mv $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon- $RPM_BUILD_ROOT%{_includedir}/gnome-settings-daemon-3.0
-sed -i -e "s|\@gsd_api_version@|3.0|" $RPM_BUILD_ROOT%{_libdir}/pkgconfig/gnome-settings-daemon.pc
-
 %find_lang %{name} --with-gnome
 
 %post
-%gconf_schema_upgrade apps_gnome_settings_daemon_housekeeping apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_xrandr desktop_gnome_font_rendering desktop_gnome_keybindings desktop_gnome_peripherals_touchpad gnome-settings-daemon
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-
-%pre
-%gconf_schema_prepare apps_gnome_settings_daemon_housekeeping apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_xrandr desktop_gnome_font_rendering desktop_gnome_keybindings desktop_gnome_peripherals_touchpad gnome-settings-daemon
-
-%preun
-%gconf_schema_remove apps_gnome_settings_daemon_keybindings apps_gnome_settings_daemon_screensaver desktop_gnome_font_rendering desktop_gnome_peripherals_touchpad gnome-settings-daemon
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %postun
 if [ $1 -eq 0 ]; then
   touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
   gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 fi
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
@@ -91,7 +84,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS
-%{_sysconfdir}/gconf/schemas/*
 %dir %{_sysconfdir}/gnome-settings-daemon
 %dir %{_sysconfdir}/gnome-settings-daemon/xrandr
 %{_libdir}/gnome-settings-daemon-3.0
@@ -107,6 +99,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_sysconfdir}/dbus-1/system.d/org.gnome.SettingsDaemon.DateTimeMechanism.conf
 %{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
 %{_datadir}/polkit-1/actions/org.gnome.settingsdaemon.datetimemechanism.policy
+%{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
+%{_datadir}/glib-2.0/schemas/*.xml
+%{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 %files devel
 %defattr(-,root,root,-)
@@ -114,6 +109,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.1.20101102
+- Update to a git snapshot to fix rawhide.
+
 * Wed Oct 06 2010 Richard Hughes <rhughes@redhat.com> 2.91.0-3
 - Fix the pkgconfig file manually
 
