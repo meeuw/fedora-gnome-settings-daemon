@@ -2,7 +2,7 @@
 
 Name:           gnome-settings-daemon
 Version:        2.91.2
-Release:        0.1.%{?alphatag}%{?dist}
+Release:        0.2.%{?alphatag}%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -32,6 +32,7 @@ BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
+BuildRequires:  gsettings-desktop-schemas-devel >= 0.0.2
 
 # change font rendering
 #Patch3: slight-hinting.patch
@@ -109,6 +110,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.2.20101102
+- Add BR gsettings-desktop-schemas-devel
+
 * Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.1.20101102
 - Update to a git snapshot to fix rawhide.
 
