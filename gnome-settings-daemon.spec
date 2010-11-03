@@ -2,7 +2,7 @@
 
 Name:           gnome-settings-daemon
 Version:        2.91.2
-Release:        0.2.%{?alphatag}%{?dist}
+Release:        0.3.%{?alphatag}%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -37,6 +37,9 @@ BuildRequires:  gsettings-desktop-schemas-devel >= 0.0.2
 # change font rendering
 #Patch3: slight-hinting.patch
 
+# upstream fix
+Patch0: change.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -54,6 +57,7 @@ developing applications that use %{name}.
 %prep
 %setup -q -n %{name}-%{version}-%{?alphatag}
 #%patch3 -p1 -b .slight-hinting
+%patch0 -p1 -b .change
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -110,6 +114,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Nov  2 2010 Matthias Clasen <mclasen@redhat.com> 2.91.2-0.3.20101102
+- Make theme changing work
+
 * Tue Nov 02 2010 Richard Hughes <richard@hughsie.com> 2.91.2-0.2.20101102
 - Add BR gsettings-desktop-schemas-devel
 
