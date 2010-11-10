@@ -35,9 +35,6 @@ BuildRequires:  gsettings-desktop-schemas-devel >= 0.0.2
 # change font rendering
 #Patch3: slight-hinting.patch
 
-# upstream fix
-Patch0: change.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
