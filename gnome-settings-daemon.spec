@@ -55,7 +55,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 #%patch3 -p1 -b .slight-hinting
-%patch0 -p1 -b .change
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
