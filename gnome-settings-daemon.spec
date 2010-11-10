@@ -64,6 +64,10 @@ make %{?_smp_mflags}
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+# Remove the useless xrdb plugin
+rm -rf $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/*xrdb* \
+	$RPM_BUILD_ROOT%{_sysconfdir}/xrdb/
+
 %find_lang %{name} --with-gnome
 
 %post
