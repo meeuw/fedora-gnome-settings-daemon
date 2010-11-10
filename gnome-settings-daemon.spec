@@ -53,7 +53,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q -n %{name}-%{version}-%{?alphatag}
+%setup -q
 #%patch3 -p1 -b .slight-hinting
 %patch0 -p1 -b .change
 
