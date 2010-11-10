@@ -1,15 +1,13 @@
-%define alphatag                                20101102
-
 Name:           gnome-settings-daemon
-Version:        2.91.2
-Release:        0.4.%{?alphatag}%{?dist}
+Version:        2.91.2.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}-%{?alphatag}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
 
 Requires(pre): GConf2 >= 2.14
 Requires(preun): GConf2 >= 2.14
@@ -114,6 +112,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Nov 10 2010 Bastien Nocera <bnocera@redhat.com> 2.91.2.1-0.4.
+- Update to 2.91.2.1
+
 * Wed Nov  3 2010 Matthias Clasen <mclasen@redhat.com> 2.91.2-0.4.20101102
 - Rebuild against new libnotify
 
