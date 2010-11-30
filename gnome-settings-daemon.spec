@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.91.4
-Release:        2%{?dist}
+Version:        2.91.5
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -32,8 +32,6 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.0.2
 
-Patch0: 0001-daemon-Don-t-pass-NULL-strings-to-g_variant_new.patch
-
 # change font rendering
 #Patch3: slight-hinting.patch
 
@@ -53,7 +51,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .gvariant
 #%patch3 -p1 -b .slight-hinting
 
 %build
@@ -115,6 +112,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Nov 30 2010 Tomas Bzatek <tbzatek@redhat.com> 2.91.5-1
+- Update to 2.91.5
+
 * Fri Nov 26 2010 Bastien Nocera <bnocera@redhat.com> 2.91.4-2
 - Fix crasher on startup
 
