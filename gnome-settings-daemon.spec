@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -32,9 +32,14 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=636191
+Patch0: background-draw-the-background-on-startup-if-show-.patch
+
+# https://bugzilla.gnome.org/show_bug.cgi?id=636233
+Patch1: background-convert-to-gdbus.patch
+
 # change font rendering
 #Patch3: slight-hinting.patch
-Patch4: autorun-Handle-rename-of-org.gnome.media-handling.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -52,9 +57,9 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .draw-background
+%patch1 -p1 -b .draw-no-nautilus
 #%patch3 -p1 -b .slight-hinting
-# Upstream commit cb9a3a0e4144d
-%patch4 -p1 -b .media-handling
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -115,6 +120,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Dec  1 2010 Dan Williams <dcbw@redhat.com> - 2.91.5-3
+- Fix various cases of forgetting to draw the background
+
 * Tue Nov 30 2010 Owen Taylor <otaylor@redhat.com> - 2.91.5-2
 - Add a patch handling org.gnome.media-handling gsettings schema rename
 

@@ -1,0 +1,41 @@
+From 5f4d6e23c0f1d37b36e3f4fcad2894af49a4dd33 Mon Sep 17 00:00:00 2001
+From: Owen W. Taylor <otaylor@fishsoup.net>
+Date: Tue, 30 Nov 2010 23:04:17 -0500
+Subject: [PATCH] background: draw the background on startup if show-desktop-icons unset
+
+When show-desktop-icons is not set, we need to call draw_bg() not just
+setup_bg(). Also remove a duplicate call to gnome_bg_load_from_preferences()
+which setup_bg already does.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=636191
+---
+ plugins/background/gsd-background-manager.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/plugins/background/gsd-background-manager.c b/plugins/background/gsd-background-manager.c
+index 30370fa..0e96f1e 100644
+--- a/plugins/background/gsd-background-manager.c
++++ b/plugins/background/gsd-background-manager.c
+@@ -225,9 +225,10 @@ background_changed (GsdBackgroundManager *manager,
+         if (!nautilus_is_running () || !show_desktop_icons) {
+                 if (manager->priv->bg == NULL) {
+                         setup_bg (manager);
++                } else {
++                        gnome_bg_load_from_preferences (manager->priv->bg,
++                                                        manager->priv->settings);
+                 }
+-                gnome_bg_load_from_preferences (manager->priv->bg,
+-                                                manager->priv->settings);
+                 draw_background (manager, use_crossfade);
+         }
+ }
+@@ -403,6 +404,7 @@ gsd_background_manager_start (GsdBackgroundManager *manager,
+ 
+         if (!show_desktop_icons) {
+                 setup_bg (manager);
++                draw_background (manager, FALSE);
+         } else {
+                 draw_background_after_session_loads (manager);
+         }
+-- 
+1.7.3.2
