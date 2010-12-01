@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -30,10 +30,11 @@ BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
-BuildRequires:  gsettings-desktop-schemas-devel >= 0.0.2
+BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
 
 # change font rendering
 #Patch3: slight-hinting.patch
+Patch4: autorun-Handle-rename-of-org.gnome.media-handling.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -52,6 +53,8 @@ developing applications that use %{name}.
 %prep
 %setup -q
 #%patch3 -p1 -b .slight-hinting
+# Upstream commit cb9a3a0e4144d
+%patch4 -p1 -b .media-handling
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -112,6 +115,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Nov 30 2010 Owen Taylor <otaylor@redhat.com> - 2.91.5-2
+- Add a patch handling org.gnome.media-handling gsettings schema rename
+
 * Tue Nov 30 2010 Tomas Bzatek <tbzatek@redhat.com> 2.91.5-1
 - Update to 2.91.5
 
