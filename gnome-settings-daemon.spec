@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.91.5
-Release:        4%{?dist}
+Version:        2.91.5.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -77,8 +77,8 @@ make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 # Remove the useless xrdb plugin
-rm -rf $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/*xrdb* \
-	$RPM_BUILD_ROOT%{_sysconfdir}/xrdb/
+#rm -rf $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/*xrdb* \
+#        $RPM_BUILD_ROOT%{_sysconfdir}/xrdb/
 
 %find_lang %{name} --with-gnome
 
@@ -124,6 +124,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Dec  3 2010 Matthias Clasen <mclasen@redhat.com> 2.91.5.1-1
+- Update to 2.91.5.1
+
 * Thu Dec  2 2010 Dan Williams <dcbw@redhat.com> - 2.91.5-4
 - Re-add patch handling org.gnome.media-handling gsettings schema rename
 
