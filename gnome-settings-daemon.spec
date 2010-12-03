@@ -38,9 +38,6 @@ Patch0: background-draw-the-background-on-startup-if-show-.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=636233
 Patch1: background-convert-to-gdbus.patch
 
-# Upstream commit cb9a3a0e
-Patch2: autorun-Handle-rename-of-org.gnome.media-handling.patch
-
 # change font rendering
 #Patch3: slight-hinting.patch
 
@@ -62,7 +59,6 @@ developing applications that use %{name}.
 %setup -q
 %patch0 -p1 -b .draw-background
 %patch1 -p1 -b .draw-no-nautilus
-%patch2 -p1 -b .media-handling
 #%patch3 -p1 -b .slight-hinting
 
 %build
