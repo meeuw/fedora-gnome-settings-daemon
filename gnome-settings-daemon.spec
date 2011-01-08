@@ -35,12 +35,6 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
 
-# https://bugzilla.gnome.org/show_bug.cgi?id=636191
-Patch0: background-draw-the-background-on-startup-if-show-.patch
-
-# https://bugzilla.gnome.org/show_bug.cgi?id=636233
-Patch1: background-convert-to-gdbus.patch
-
 # change font rendering
 #Patch3: slight-hinting.patch
 
@@ -60,8 +54,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .draw-background
-%patch1 -p1 -b .draw-no-nautilus
 #%patch3 -p1 -b .slight-hinting
 
 %build
