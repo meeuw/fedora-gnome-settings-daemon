@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        2.91.5.1
+Version:        2.91.6.2
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -9,14 +9,17 @@ URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
 
-Requires(pre): GConf2 >= 2.14
-Requires(preun): GConf2 >= 2.14
-Requires(post): GConf2 >= 2.14
+Requires(pre):    GConf2 >= 2.14
+Requires(preun):  GConf2 >= 2.14
+Requires(post):   GConf2 >= 2.14
+Requires(post):   /usr/bin/gtk-update-icon-cache
+Requires(postun): /usr/bin/gtk-update-icon-cache
+
 Requires: control-center-filesystem
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
-BuildRequires:  gtk3-devel
+BuildRequires:  gtk3-devel >= 2.99.0
 BuildRequires:  gnome-desktop3-devel
 BuildRequires:  xorg-x11-proto-devel
 BuildRequires:  gstreamer-devel
@@ -120,6 +123,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Sat Jan  8 2011 Matthias Clasen <mclasen@redhat.com> 2.91.6.2-1
+- Update to 2.91.6.2
+
 * Fri Dec  3 2010 Matthias Clasen <mclasen@redhat.com> 2.91.5.1-1
 - Update to 2.91.5.1
 
