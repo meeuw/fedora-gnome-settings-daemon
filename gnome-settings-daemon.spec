@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -73,6 +73,8 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 %find_lang %{name} --with-gnome
 
+mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
+
 %post
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
@@ -86,6 +88,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -109,12 +112,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/glib-2.0/schemas/*.xml
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
+
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Jan 11 2011 Matthias Clasen <mclasen@redhat.com> 2.91.7-2
+- Own %%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
+
 * Mon Jan 10 2011 Matthias Clasen <mclasen@redhat.com> 2.91.7-1
 - Update to 2.91.7
 
