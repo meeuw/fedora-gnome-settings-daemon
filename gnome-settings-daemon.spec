@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -35,6 +35,7 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
 
+Patch0: 0001-datetime-Fix-gsd_datetime_check_tz_name-never-workin.patch
 # change font rendering
 #Patch3: slight-hinting.patch
 
@@ -54,6 +55,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .tz-setting
 #%patch3 -p1 -b .slight-hinting
 
 %build
@@ -119,6 +121,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Feb 08 2011 Bastien Nocera <bnocera@redhat.com> 2.91.9-2
+- Fix setting timezones in the date & time panel (#674999)
+
 * Wed Feb  2 2011 Matthias Clasen <mclasen@redhat.com> 2.91.9-1
 - 2.91.9
 
