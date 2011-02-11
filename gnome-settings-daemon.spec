@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -121,6 +121,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Feb 11 2011 Matthias Clasen <mclasen@redhat.com> 2.91.9-4
+- Rebuild against newer gtk
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.91.9-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
