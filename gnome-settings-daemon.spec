@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.9
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -36,6 +36,7 @@ BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
 
 Patch0: 0001-datetime-Fix-gsd_datetime_check_tz_name-never-workin.patch
+Patch1: 0001-media-keys-Fix-crash-when-keybindings-change.patch
 # change font rendering
 #Patch3: slight-hinting.patch
 
@@ -56,6 +57,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .tz-setting
+%patch1 -p1 -b .media-keys
 #%patch3 -p1 -b .slight-hinting
 
 %build
@@ -121,6 +123,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 16 2011 Bastien Nocera <bnocera@redhat.com> 2.91.9-6
+- Fix crasher when media keys GSettings value changes
+
 * Sun Feb 13 2011 Christopher Aillon <caillon@redhat.com> - 2.91.9-5
 - Rebuild for new libxklavier
 

@@ -1,0 +1,28 @@
+From 89b4b516edfd5ec19f8987d63624c28fc2f30f8f Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Wed, 16 Feb 2011 16:26:45 +0000
+Subject: [PATCH] media-keys: Fix crash when keybindings change
+
+We need to skip over hard-coded keys which don't have a
+key name.
+---
+ plugins/media-keys/gsd-media-keys-manager.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/plugins/media-keys/gsd-media-keys-manager.c b/plugins/media-keys/gsd-media-keys-manager.c
+index 1c1b2cf..7d42f49 100644
+--- a/plugins/media-keys/gsd-media-keys-manager.c
++++ b/plugins/media-keys/gsd-media-keys-manager.c
+@@ -292,6 +292,9 @@ update_kbd_cb (GSettings           *settings,
+ 
+         /* Find the key that was modified */
+         for (i = 0; i < HANDLED_KEYS; i++) {
++                /* Skip over hard-coded keys */
++                if (keys[i].settings_key == NULL)
++                        continue;
+                 if (strcmp (key, keys[i].settings_key) == 0) {
+                         char *tmp;
+                         Key  *key;
+-- 
+1.7.4
+
