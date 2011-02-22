@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.91.9
-Release:        6%{?dist}
+Version:        2.91.90
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -33,12 +33,7 @@ BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
-BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
-
-Patch0: 0001-datetime-Fix-gsd_datetime_check_tz_name-never-workin.patch
-Patch1: 0001-media-keys-Fix-crash-when-keybindings-change.patch
-# change font rendering
-#Patch3: slight-hinting.patch
+BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -56,9 +51,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .tz-setting
-%patch1 -p1 -b .media-keys
-#%patch3 -p1 -b .slight-hinting
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -123,6 +115,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Feb 22 2011 Matthias Clasen <mclasen@redhat.com> 2.91.90-1
+- Update to 2.91.90
+
 * Wed Feb 16 2011 Bastien Nocera <bnocera@redhat.com> 2.91.9-6
 - Fix crasher when media keys GSettings value changes
 
