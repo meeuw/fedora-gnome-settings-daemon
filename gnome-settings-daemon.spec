@@ -95,7 +95,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_datadir}/gnome-settings-daemon/
-%{_datadir}/gnome-control-center/keybindings/50-accessibility.xml
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
