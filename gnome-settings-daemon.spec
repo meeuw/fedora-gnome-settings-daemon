@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.90
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -12,8 +12,6 @@ Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
-Requires(post):   /usr/bin/gtk-update-icon-cache
-Requires(postun): /usr/bin/gtk-update-icon-cache
 
 Requires: control-center-filesystem
 
@@ -34,6 +32,8 @@ BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
+BuildRequires:  PackageKit-glib-devel
+BuildRequires:  cups-devel
 
 Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
 
@@ -59,7 +59,9 @@ developing applications that use %{name}.
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
 #export LIBS="-lX11 -lm"
-%configure --enable-static=no --enable-profiling
+%configure --disable-static \
+           --enable-profiling \
+           --enable-packagekit
 make %{?_smp_mflags}
 
 
@@ -95,7 +97,69 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %doc AUTHORS COPYING NEWS
 %dir %{_sysconfdir}/gnome-settings-daemon
 %dir %{_sysconfdir}/gnome-settings-daemon/xrandr
-%{_libdir}/gnome-settings-daemon-3.0
+
+# list plugins explicitly, so we notice if one goes missing
+# some of these don't have a separate gschema
+%{_libdir}/gnome-settings-daemon-3.0/a11y-keyboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/liba11y-keyboard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/automount.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libautomount.so
+
+%{_libdir}/gnome-settings-daemon-3.0/background.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libbackground.so
+
+%{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/housekeeping.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.housekeeping.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/keybindings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libkeybindings.so
+
+%{_libdir}/gnome-settings-daemon-3.0/keyboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libkeyboard.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.keyboard.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/media-keys.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libmedia-keys.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.media-keys.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/mouse.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libmouse.so
+
+# no power plugin yet, just a schema
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/print-notifications.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libprint-notifications.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.print-notifications.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/sound.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libsound.so
+
+%{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libupdates.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libwacom.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/xrandr.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libxrandr.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xrandr.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/xsettings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libxsettings.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xsettings.gschema.xml
+
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_datadir}/gnome-settings-daemon/
@@ -108,7 +172,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
 %{_datadir}/polkit-1/actions/org.gnome.settingsdaemon.datetimemechanism.policy
 %{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
-%{_datadir}/glib-2.0/schemas/*.xml
+
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
+
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 
@@ -118,6 +185,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 23 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-3
+- BR PackageKit and cups
+- Explicitly list plugins so we notice if they go missing
+
 * Wed Feb 23 2011 Cosimo Cecchi <cosimoc@redhat.com> - 2.91.90-2
 - Include an upstream patch to fix a possible crasher
 
