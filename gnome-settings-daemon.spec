@@ -35,6 +35,8 @@ BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 BuildRequires:  PackageKit-glib-devel
 BuildRequires:  cups-devel
 BuildRequires:  upower-devel
+BuildRequires:  libgudev1-devel
+BuildRequires:  nss-devel
 
 Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
 
