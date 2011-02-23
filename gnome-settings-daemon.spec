@@ -34,6 +34,7 @@ BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 BuildRequires:  PackageKit-glib-devel
 BuildRequires:  cups-devel
+BuildRequires:  upower-devel
 
 Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
 
