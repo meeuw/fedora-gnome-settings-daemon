@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.90
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -35,6 +35,8 @@ BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 
+Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -51,6 +53,8 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+
+%patch1 -p1 -b .unlock
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -114,6 +118,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Wed Feb 23 2011 Cosimo Cecchi <cosimoc@redhat.com> - 2.91.90-2
+- Include an upstream patch to fix a possible crasher
+
 * Tue Feb 22 2011 Matthias Clasen <mclasen@redhat.com> 2.91.90-1
 - Update to 2.91.90
 
