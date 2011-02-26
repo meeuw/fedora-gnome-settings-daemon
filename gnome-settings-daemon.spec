@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.90
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -39,6 +39,7 @@ BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
 
 Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
+Patch2: g-s-d-undefined-symbols.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -58,6 +59,9 @@ developing applications that use %{name}.
 %setup -q
 
 %patch1 -p1 -b .unlock
+%patch2 -p1 -b .undefined-symbols
+
+autoreconf -i -f
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -188,6 +192,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Feb 25 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-4
+- Fix undefined symbols in the updates plugin
+
 * Wed Feb 23 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-3
 - BR PackageKit and cups
 - Explicitly list plugins so we notice if they go missing
