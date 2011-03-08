@@ -38,9 +38,6 @@ BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
 
-Patch1: g-s-d-fix-crasher-screensaver-unlock.patch
-Patch2: g-s-d-undefined-symbols.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -57,9 +54,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-
-%patch1 -p1 -b .unlock
-%patch2 -p1 -b .undefined-symbols
 
 autoreconf -i -f
 
