@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        2.91.90
-Release:        4%{?dist}
+Version:        2.91.91
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -192,6 +192,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Tue Mar 08 2011 Bastien Nocera <bnocera@redhat.com> 2.91.91-1
+- Update to 2.91.91
+
 * Fri Feb 25 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-4
 - Fix undefined symbols in the updates plugin
 
