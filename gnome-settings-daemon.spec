@@ -177,6 +177,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
 
+%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
+
+
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 
