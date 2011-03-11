@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        2.91.91
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -19,7 +19,7 @@ BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
 BuildRequires:  gtk3-devel >= 2.99.0
 BuildRequires:  gnome-desktop3-devel
-BuildRequires:  xorg-x11-proto-devel
+BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
@@ -189,6 +189,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 
 %changelog
+* Fri Mar 11 2011 Bastien Nocera <bnocera@redhat.com> 2.91.91-2
+- Add libXxf86misc-devel requires so that key repeat/delay works
+
 * Tue Mar 08 2011 Bastien Nocera <bnocera@redhat.com> 2.91.91-1
 - Update to 2.91.91
 
