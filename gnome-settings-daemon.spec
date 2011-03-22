@@ -163,6 +163,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
+%{_libexecdir}/gsd-printer
+
 %{_datadir}/gnome-settings-daemon/
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
@@ -187,6 +189,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %defattr(-,root,root,-)
 %{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
+%dir %{_datadir}/gnome-settings-daemon-3.0
+%{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
 * Mon Mar 21 2011 Matthias Clasen <mclasen@redhat.com> 2.91.92-1
