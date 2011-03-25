@@ -161,6 +161,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libxsettings.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xsettings.gschema.xml
 
+%{_libdir}/gnome-settings-daemon-3.0/a11y-settings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/liba11y-settings.so
+
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_libexecdir}/gsd-printer
