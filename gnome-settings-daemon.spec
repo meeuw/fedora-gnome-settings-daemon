@@ -1,13 +1,13 @@
 Name:           gnome-settings-daemon
-Version:        2.91.93
-Release:        2%{?dist}
+Version:        3.0.0
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/3.0/%{name}-%{version}.tar.bz2
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -38,8 +38,6 @@ BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
 
-Patch0: printing-expirable-subscriptions.patch
-
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -56,7 +54,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .subscriptions
 
 autoreconf -i -f
 
@@ -199,6 +196,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Apr 04 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0-1
+- Update to 3.0.0
+
 * Wed Mar 30 2011 Marek Kasik <mkasik@redhat.com> 2.91.93-2
 - Make CUPS' subscriptions expirable
 
