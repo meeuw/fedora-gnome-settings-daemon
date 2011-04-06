@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.0.0
+Version:        3.0.0.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -196,6 +196,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Apr 06 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0.1-1
+- Update to 3.0.0.1
+
 * Mon Apr 04 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0-1
 - Update to 3.0.0
 
