@@ -1,19 +1,17 @@
 Name:           gnome-settings-daemon
-Version:        2.91.9
-Release:        6%{?dist}
+Version:        3.0.0.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/2.91/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/3.0/%{name}-%{version}.tar.bz2
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
-Requires(post):   /usr/bin/gtk-update-icon-cache
-Requires(postun): /usr/bin/gtk-update-icon-cache
 
 Requires: control-center-filesystem
 
@@ -21,7 +19,7 @@ BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
 BuildRequires:  gtk3-devel >= 2.99.0
 BuildRequires:  gnome-desktop3-devel
-BuildRequires:  xorg-x11-proto-devel
+BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
@@ -33,12 +31,12 @@ BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
-BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.2
-
-Patch0: 0001-datetime-Fix-gsd_datetime_check_tz_name-never-workin.patch
-Patch1: 0001-media-keys-Fix-crash-when-keybindings-change.patch
-# change font rendering
-#Patch3: slight-hinting.patch
+BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
+BuildRequires:  PackageKit-glib-devel
+BuildRequires:  cups-devel
+BuildRequires:  upower-devel
+BuildRequires:  libgudev1-devel
+BuildRequires:  nss-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -56,14 +54,15 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .tz-setting
-%patch1 -p1 -b .media-keys
-#%patch3 -p1 -b .slight-hinting
+
+autoreconf -i -f
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
 #export LIBS="-lX11 -lm"
-%configure --enable-static=no --enable-profiling
+%configure --disable-static \
+           --enable-profiling \
+           --enable-packagekit
 make %{?_smp_mflags}
 
 
@@ -99,11 +98,77 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %doc AUTHORS COPYING NEWS
 %dir %{_sysconfdir}/gnome-settings-daemon
 %dir %{_sysconfdir}/gnome-settings-daemon/xrandr
-%{_libdir}/gnome-settings-daemon-3.0
+
+# list plugins explicitly, so we notice if one goes missing
+# some of these don't have a separate gschema
+%{_libdir}/gnome-settings-daemon-3.0/a11y-keyboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/liba11y-keyboard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/automount.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libautomount.so
+
+%{_libdir}/gnome-settings-daemon-3.0/background.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libbackground.so
+
+%{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/housekeeping.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.housekeeping.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/keybindings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libkeybindings.so
+
+%{_libdir}/gnome-settings-daemon-3.0/keyboard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libkeyboard.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.keyboard.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/media-keys.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libmedia-keys.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.media-keys.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/mouse.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libmouse.so
+
+# no power plugin yet, just a schema
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/print-notifications.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libprint-notifications.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.print-notifications.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/sound.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libsound.so
+
+%{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libupdates.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libwacom.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/xrandr.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libxrandr.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xrandr.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/xsettings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libxsettings.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xsettings.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/a11y-settings.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/liba11y-settings.so
+
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
+%{_libexecdir}/gsd-printer
+
 %{_datadir}/gnome-settings-daemon/
-%{_datadir}/gnome-control-center/keybindings/50-accessibility.xml
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
@@ -113,7 +178,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
 %{_datadir}/polkit-1/actions/org.gnome.settingsdaemon.datetimemechanism.policy
 %{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
-%{_datadir}/glib-2.0/schemas/*.xml
+
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
+
+%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
+
+
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 
@@ -121,8 +192,47 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %defattr(-,root,root,-)
 %{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
+%dir %{_datadir}/gnome-settings-daemon-3.0
+%{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Apr 06 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0.1-1
+- Update to 3.0.0.1
+
+* Mon Apr 04 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0-1
+- Update to 3.0.0
+
+* Wed Mar 30 2011 Marek Kasik <mkasik@redhat.com> 2.91.93-2
+- Make CUPS' subscriptions expirable
+
+* Fri Mar 25 2011 Bastien Nocera <bnocera@redhat.com> 2.91.93-1
+- Update to 2.91.93
+
+* Mon Mar 21 2011 Matthias Clasen <mclasen@redhat.com> 2.91.92-1
+- Update 2.91.92
+
+* Wed Mar 16 2011 Richard Hughes <rhughes@redhat.com> 2.91.91-3
+- Add a patch from upstream to fix the updates plugin.
+
+* Fri Mar 11 2011 Bastien Nocera <bnocera@redhat.com> 2.91.91-2
+- Add libXxf86misc-devel requires so that key repeat/delay works
+
+* Tue Mar 08 2011 Bastien Nocera <bnocera@redhat.com> 2.91.91-1
+- Update to 2.91.91
+
+* Fri Feb 25 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-4
+- Fix undefined symbols in the updates plugin
+
+* Wed Feb 23 2011 Matthias Clasen <mclasen@redhat.com> - 2.91.90-3
+- BR PackageKit and cups
+- Explicitly list plugins so we notice if they go missing
+
+* Wed Feb 23 2011 Cosimo Cecchi <cosimoc@redhat.com> - 2.91.90-2
+- Include an upstream patch to fix a possible crasher
+
+* Tue Feb 22 2011 Matthias Clasen <mclasen@redhat.com> 2.91.90-1
+- Update to 2.91.90
+
 * Wed Feb 16 2011 Bastien Nocera <bnocera@redhat.com> 2.91.9-6
 - Fix crasher when media keys GSettings value changes
 
