@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.0.0.1
+Version:        3.0.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -14,6 +14,7 @@ Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
 
 Requires: control-center-filesystem
+Requires: system-config-printer-udev
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
@@ -196,6 +197,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Apr 26 2011 Bastien Nocera <bnocera@redhat.com> 3.0.1-1
+- Update to 3.0.1
+
 * Wed Apr 06 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0.1-1
 - Update to 3.0.0.1
 
