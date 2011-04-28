@@ -1,0 +1,27 @@
+From 2c748a6d841dc2b673df975b28ebffcbe76b4bce Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Thu, 28 Apr 2011 15:51:13 +0100
+Subject: [PATCH] datetime: Fix setting NTP on Fedora 15
+
+https://bugzilla.gnome.org/show_bug.cgi?id=648556
+---
+ plugins/datetime/gsd-datetime-mechanism.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/plugins/datetime/gsd-datetime-mechanism.c b/plugins/datetime/gsd-datetime-mechanism.c
+index 2c43a4a..6ea8d83 100644
+--- a/plugins/datetime/gsd-datetime-mechanism.c
++++ b/plugins/datetime/gsd-datetime-mechanism.c
+@@ -745,7 +745,8 @@ gsd_datetime_mechanism_set_using_ntp  (GsdDatetimeMechanism    *mechanism,
+                 return FALSE;
+ 
+         if (g_file_test ("/sbin/chkconfig", G_FILE_TEST_EXISTS)) /* Fedora */
+-                cmd = g_strconcat ("/sbin/chkconfig --level 2345 ntpd ", using_ntp ? "on" : "off", NULL);
++                /* We omit --level 2345 so that systemd doesn't try to use the SysV init scripts */
++                cmd = g_strconcat ("/sbin/chkconfig ntpd ", using_ntp ? "on" : "off", NULL);
+         else if (g_file_test ("/usr/sbin/update-rc.d", G_FILE_TEST_EXISTS)) /* Debian */
+                 cmd = g_strconcat ("/usr/sbin/update-rc.d ntp ", using_ntp ? "enable" : "disable", NULL);
+         else {
+-- 
+1.7.4.4
+
