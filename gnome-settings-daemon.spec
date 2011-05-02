@@ -202,7 +202,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
-* Mon Mon  2 2011 Matthias Clasen <mclasen@redhat.com> 3.0.1-3
+* Mon May  2 2011 Matthias Clasen <mclasen@redhat.com> 3.0.1-3
 - Try to fix a crash (#698533)
 
 * Thu Apr 28 2011 Bastien Nocera <bnocera@redhat.com> 3.0.1-2
