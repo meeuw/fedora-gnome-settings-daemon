@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -40,6 +40,7 @@ BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
 
 Patch0: 0001-datetime-Fix-setting-NTP-on-Fedora-15.patch
+Patch1: 0001-updates-deal-with-absence-of-gnome-session-gracefull.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -58,6 +59,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .sysv
+%patch1 -p1 -b .updates-crash
 
 autoreconf -i -f
 
@@ -200,6 +202,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Mon  2 2011 Matthias Clasen <mclasen@redhat.com> 3.0.1-3
+- Try to fix a crash (#698533)
+
 * Thu Apr 28 2011 Bastien Nocera <bnocera@redhat.com> 3.0.1-2
 - Fix setting ntpd usage with SystemD
 
