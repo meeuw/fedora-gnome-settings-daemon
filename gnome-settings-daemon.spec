@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.0.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -86,17 +86,17 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 
 %post
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %postun
 if [ $1 -eq 0 ]; then
   touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
   gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+  glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 fi
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 
 %files -f %{name}.lang
@@ -202,6 +202,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Sat May 07 2011 Christopher Aillon <caillon@redhat.com> - 3.0.1-5
+- Update gsettings schema scriptlet
+
 * Mon May  2 2011 Matthias Clasen <mclasen@redhat.com> 3.0.1-4
 - Try to fix a crash (#698533)
 
