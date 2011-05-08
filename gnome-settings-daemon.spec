@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.0.0.1
-Release:        1%{?dist}
+Version:        3.0.1
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -14,6 +14,7 @@ Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
 
 Requires: control-center-filesystem
+Requires: system-config-printer-udev
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
@@ -38,6 +39,9 @@ BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
 
+Patch0: 0001-datetime-Fix-setting-NTP-on-Fedora-15.patch
+Patch1: 0001-updates-deal-with-absence-of-gnome-session-gracefull.patch
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -54,6 +58,8 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .sysv
+%patch1 -p1 -b .updates-crash
 
 autoreconf -i -f
 
@@ -196,6 +202,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon May  2 2011 Matthias Clasen <mclasen@redhat.com> 3.0.1-4
+- Try to fix a crash (#698533)
+
+* Thu Apr 28 2011 Bastien Nocera <bnocera@redhat.com> 3.0.1-2
+- Fix setting ntpd usage with SystemD
+
+* Tue Apr 26 2011 Bastien Nocera <bnocera@redhat.com> 3.0.1-1
+- Update to 3.0.1
+
 * Wed Apr 06 2011 Bastien Nocera <bnocera@redhat.com> 3.0.0.1-1
 - Update to 3.0.0.1
 
