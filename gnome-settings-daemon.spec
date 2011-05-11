@@ -1,13 +1,13 @@
 Name:           gnome-settings-daemon
-Version:        3.0.1
-Release:        5%{?dist}
+Version:        3.1.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.0/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.bz2
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -18,7 +18,7 @@ Requires: system-config-printer-udev
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
-BuildRequires:  gtk3-devel >= 2.99.0
+BuildRequires:  gtk3-devel >= 2.99.3
 BuildRequires:  gnome-desktop3-devel
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
@@ -30,7 +30,7 @@ BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
-BuildRequires:  autoconf automake libtool
+# BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 BuildRequires:  PackageKit-glib-devel
@@ -38,9 +38,6 @@ BuildRequires:  cups-devel
 BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
-
-Patch0: 0001-datetime-Fix-setting-NTP-on-Fedora-15.patch
-Patch1: 0001-updates-deal-with-absence-of-gnome-session-gracefull.patch
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -58,10 +55,8 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .sysv
-%patch1 -p1 -b .updates-crash
 
-autoreconf -i -f
+# autoreconf -i -f
 
 %build
 # https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
@@ -202,6 +197,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed May 11 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.1-1
+- Update to 3.1.1
+
 * Sat May 07 2011 Christopher Aillon <caillon@redhat.com> - 3.0.1-5
 - Update gsettings schema scriptlet
 
