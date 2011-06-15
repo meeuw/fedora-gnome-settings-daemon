@@ -1,13 +1,13 @@
 Name:           gnome-settings-daemon
-Version:        3.1.1
-Release:        3%{?dist}
+Version:        3.1.2
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.bz2
+Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -18,7 +18,7 @@ Requires: control-center-filesystem
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
 BuildRequires:  gtk3-devel >= 2.99.3
-BuildRequires:  gnome-desktop3-devel
+BuildRequires:  gnome-desktop3-devel >= 3.1.2
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
@@ -37,6 +37,9 @@ BuildRequires:  cups-devel
 BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  nss-devel
+BuildRequires:  colord-devel >= 0.1.9
+BuildRequires:  lcms2-devel >= 2.2
+BuildRequires:  libXi-devel libXfixes-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -113,6 +116,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
 
+%{_libdir}/gnome-settings-daemon-3.0/color.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libcolor.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.color.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libcursor.so
+
 %{_libdir}/gnome-settings-daemon-3.0/housekeeping.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.housekeeping.gschema.xml
@@ -130,6 +140,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %{_libdir}/gnome-settings-daemon-3.0/mouse.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libmouse.so
+
+%{_libdir}/gnome-settings-daemon-3.0/orientation.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/liborientation.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.orientation.gschema.xml
 
 # no power plugin yet, just a schema
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
@@ -196,6 +210,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Jun 15 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.2-1
+- Update to 3.1.2
+
 * Wed Jun 15 2011 Bastien Nocera <bnocera@redhat.com> 3.1.1-3
 - Rebuild for new gnome-desktop3 libs
 
