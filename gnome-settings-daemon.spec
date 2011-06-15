@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.1.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -196,6 +196,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Jun 15 2011 Bastien Nocera <bnocera@redhat.com> 3.1.1-3
+- Rebuild for new gnome-desktop3 libs
+
 * Mon Jun 13 2011 Marek Kasik <mkasik@redhat.com> 3.1.1-2
 - Remove requirement of system-config-printer-udev (#704381)
 
