@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.1.2
-Release:        2%{?dist}
+Version:        3.1.3
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,9 +8,6 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
-
-# from upstream
-Patch0: gnome-settings-daemon-3.1.3-color-widestring.patch
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -22,6 +19,7 @@ BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
 BuildRequires:  gtk3-devel >= 2.99.3
 BuildRequires:  gnome-desktop3-devel >= 3.1.2
+BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
@@ -60,7 +58,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .color-wide
 
 # autoreconf -i -f
 
@@ -182,6 +179,17 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/a11y-settings.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/liba11y-settings.so
 
+%{_libdir}/gnome-settings-daemon-3.0/color.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libcolor.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.color.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/liborientation.so
+%{_libdir}/gnome-settings-daemon-3.0/orientation.gnome-settings-plugin
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.orientation.gschema.xml
+
+%{_libdir}/gnome-settings-daemon-3.0/libcursor.so
+%{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
+
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_libexecdir}/gsd-printer
@@ -214,6 +222,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Jul 04 2011 Bastien Nocera <bnocera@redhat.com> 3.1.3.-1
+- Update to 3.1.3
+
 * Tue Jun 21 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.2-2
 - Fix fortify fail in gsd-color-manager.c (#714625)
 
