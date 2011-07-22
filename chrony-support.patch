@@ -1,0 +1,84 @@
+commit 44d7412eb6eb893a20bd82fb65d17e2da65636ee
+Author: Miroslav Lichvar <mlichvar@redhat.com>
+Date:   Tue Jul 19 14:09:23 2011 +0200
+
+    datetime: Add support for chrony NTP client
+
+diff --git a/plugins/datetime/gsd-datetime-mechanism-fedora.c b/plugins/datetime/gsd-datetime-mechanism-fedora.c
+index 9333d24..b0ad6e5 100644
+--- a/plugins/datetime/gsd-datetime-mechanism-fedora.c
++++ b/plugins/datetime/gsd-datetime-mechanism-fedora.c
+@@ -28,6 +28,18 @@
+ #include "gsd-datetime-mechanism-fedora.h"
+ #include "gsd-datetime-mechanism.h"
+ 
++/* Return the name of the installed NTP client, prefer chrony if both chrony
++ * and ntp are installed */
++static const char
++*get_ntp_client ()
++{
++        if (g_file_test ("/etc/chrony.conf", G_FILE_TEST_EXISTS))
++                return "chrony";
++        else if (g_file_test ("/etc/ntp.conf", G_FILE_TEST_EXISTS))
++                return "ntp";
++        return NULL;
++}
++
+ gboolean
+ _get_using_ntp_fedora  (DBusGMethodInvocation   *context)
+ {
+@@ -35,10 +47,14 @@ _get_using_ntp_fedora  (DBusGMethodInvocation   *context)
+         GError *error = NULL;
+         gboolean can_use_ntp;
+         gboolean is_using_ntp;
++        const char *ntp_client;
++        char *cmd;
+ 
+-        if (g_file_test ("/etc/ntp.conf", G_FILE_TEST_EXISTS)) {
++        ntp_client = get_ntp_client();
++        if (ntp_client) {
+                 can_use_ntp = TRUE;
+-                if (!g_spawn_command_line_sync ("/sbin/service ntpd status",
++                cmd = g_strconcat ("/sbin/service ", ntp_client, "d status", NULL);
++                if (!g_spawn_command_line_sync (cmd,
+                                                 NULL, NULL, &exit_status, &error)) {
+                         GError *error2;
+                         error2 = g_error_new (GSD_DATETIME_MECHANISM_ERROR,
+@@ -47,8 +63,10 @@ _get_using_ntp_fedora  (DBusGMethodInvocation   *context)
+                         g_error_free (error);
+                         dbus_g_method_return_error (context, error2);
+                         g_error_free (error2);
++                        g_free (cmd);
+                         return FALSE;
+                 }
++                g_free (cmd);
+                 if (exit_status == 0)
+                         is_using_ntp = TRUE;
+                 else
+@@ -69,13 +87,16 @@ _set_using_ntp_fedora  (DBusGMethodInvocation   *context,
+ {
+         GError *error;
+         int exit_status;
++        const char *ntp_client;
+         char *cmd;
+ 
+         error = NULL;
+ 
++        ntp_client = get_ntp_client();
++
+         /* We omit --level 2345 so that systemd doesn't try to use the
+          * SysV init scripts */
+-        cmd = g_strconcat ("/sbin/chkconfig ntpd ", using_ntp ? "on" : "off", NULL);
++        cmd = g_strconcat ("/sbin/chkconfig ", ntp_client, "d ", using_ntp ? "on" : "off", NULL);
+ 
+         if (!g_spawn_command_line_sync (cmd,
+                                         NULL, NULL, &exit_status, &error)) {
+@@ -92,7 +113,7 @@ _set_using_ntp_fedora  (DBusGMethodInvocation   *context,
+ 
+         g_free (cmd);
+ 
+-        cmd = g_strconcat ("/sbin/service ntpd ", using_ntp ? "restart" : "stop", NULL);;
++        cmd = g_strconcat ("/sbin/service ", ntp_client, "d ", using_ntp ? "restart" : "stop", NULL);;
+ 
+         if (!g_spawn_command_line_sync (cmd,
+                                         NULL, NULL, &exit_status, &error)) {

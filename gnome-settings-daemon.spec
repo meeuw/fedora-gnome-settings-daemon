@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.1.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,6 +8,10 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
+
+# RFE: add support for chrony
+# https://bugzilla.redhat.com/show_bug.cgi?id=723212
+Patch0:         chrony-support.patch
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -58,6 +62,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .chrony
 
 # autoreconf -i -f
 
@@ -222,7 +227,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
-* Mon Jul 04 2011 Bastien Nocera <bnocera@redhat.com> 3.1.3.-1
+* Fri Jul 22 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.3-2
+- Add support for chrony (#723212)
+
+* Mon Jul 04 2011 Bastien Nocera <bnocera@redhat.com> 3.1.3-1
 - Update to 3.1.3
 
 * Tue Jun 21 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.2-2
