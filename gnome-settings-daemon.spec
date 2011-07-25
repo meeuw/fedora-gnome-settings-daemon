@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.1.3
-Release:        2%{?dist}
+Version:        3.1.4
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -227,6 +227,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Jul 25 2011 Matthias Clasen <mclasen@redhat.com> - 3.1.4-1
+- Update to 3.1.4
+
 * Fri Jul 22 2011 Tomas Bzatek <tbzatek@redhat.com> - 3.1.3-2
 - Add support for chrony (#723212)
 
