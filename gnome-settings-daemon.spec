@@ -22,7 +22,7 @@ Requires: control-center-filesystem
 BuildRequires:  dbus-glib-devel
 BuildRequires:  GConf2-devel
 BuildRequires:  gtk3-devel >= 2.99.3
-BuildRequires:  gnome-desktop3-devel >= 3.1.2
+BuildRequires:  gnome-desktop3-devel >= 3.1.4
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
