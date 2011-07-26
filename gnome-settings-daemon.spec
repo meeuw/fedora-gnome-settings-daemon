@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
