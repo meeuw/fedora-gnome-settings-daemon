@@ -13,6 +13,8 @@ Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}
 # https://bugzilla.redhat.com/show_bug.cgi?id=723212
 Patch0:         chrony-support.patch
 
+Patch1:         fallback-mounter.patch
+
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
@@ -63,6 +65,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .chrony
+%patch1 -p1 -b .fallback
 
 # autoreconf -i -f
 
@@ -113,8 +116,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/a11y-keyboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/liba11y-keyboard.so
 
-%{_libdir}/gnome-settings-daemon-3.0/automount.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libautomount.so
+# The automount plugin is a separate executable used in fallback
+# mode only
+%{_libexecdir}/gnome-fallback-mount-helper
+%{_sysconfdir}/xdg/autostart/gnome-fallback-mount-helper.desktop
 
 %{_libdir}/gnome-settings-daemon-3.0/background.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libbackground.so
@@ -151,7 +156,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/liborientation.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.orientation.gschema.xml
 
-# no power plugin yet, just a schema
+%{_libdir}/gnome-settings-daemon-3.0/power.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libpower.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
 
 %{_libdir}/gnome-settings-daemon-3.0/print-notifications.gnome-settings-plugin
@@ -227,6 +233,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Jul 26 2011 Cosimo Cecchi <cosimoc@redhat.com> - 3.1.4-2
+- Add a patch to make the fallback mounter to build correctly
+- Include the new power plugin
+
 * Mon Jul 25 2011 Matthias Clasen <mclasen@redhat.com> - 3.1.4-1
 - Update to 3.1.4
 
