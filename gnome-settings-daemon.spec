@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.1.4
-Release:        2%{?dist}
+Version:        3.1.91
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -106,7 +106,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc AUTHORS COPYING NEWS
 %dir %{_sysconfdir}/gnome-settings-daemon
 %dir %{_sysconfdir}/gnome-settings-daemon/xrandr
@@ -226,13 +225,15 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %dir %{_datadir}/gnome-settings-daemon-3.0
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Sep  6 2011 Matthias Clasen <mclasen@redhat.com> - 3.1.91-1
+- Update to 3.1.91
+
 * Tue Jul 26 2011 Cosimo Cecchi <cosimoc@redhat.com> - 3.1.4-2
 - Add a patch to make the fallback mounter to build correctly
 - Include the new power plugin
