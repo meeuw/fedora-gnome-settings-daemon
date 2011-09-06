@@ -123,13 +123,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
 
-%{_libdir}/gnome-settings-daemon-3.0/color.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libcolor.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.color.gschema.xml
-
-%{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libcursor.so
-
 %{_libdir}/gnome-settings-daemon-3.0/housekeeping.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.housekeeping.gschema.xml
@@ -148,10 +141,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/mouse.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libmouse.so
 
-%{_libdir}/gnome-settings-daemon-3.0/orientation.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/liborientation.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.orientation.gschema.xml
-
+%{_libexecdir}/gsd-backlight-helper
+%{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.power.policy
 %{_libdir}/gnome-settings-daemon-3.0/power.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libpower.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
