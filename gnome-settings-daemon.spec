@@ -13,8 +13,6 @@ Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}
 # https://bugzilla.redhat.com/show_bug.cgi?id=723212
 Patch0:         chrony-support.patch
 
-Patch1:         fallback-mounter.patch
-
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
 Requires(post):   GConf2 >= 2.14
@@ -65,7 +63,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .chrony
-%patch1 -p1 -b .fallback
 
 # autoreconf -i -f
 
