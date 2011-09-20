@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.1.91
+Version:        3.1.92
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -8,10 +8,6 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
-
-# RFE: add support for chrony
-# https://bugzilla.redhat.com/show_bug.cgi?id=723212
-Patch0:         chrony-support.patch
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -62,7 +58,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .chrony
 
 # autoreconf -i -f
 
@@ -196,7 +191,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
-%{_datadir}/icons/hicolor/*/actions/touchpad*
 %{_libexecdir}/gsd-datetime-mechanism
 %{_sysconfdir}/dbus-1/system.d/org.gnome.SettingsDaemon.DateTimeMechanism.conf
 %{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
@@ -219,6 +213,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Sep 20 2011 Matthias Clasen <mclasen@redhat.com> - 3.1.92-1
+- Update to 3.1.92
+
 * Tue Sep  6 2011 Matthias Clasen <mclasen@redhat.com> - 3.1.91-1
 - Update to 3.1.91
 
