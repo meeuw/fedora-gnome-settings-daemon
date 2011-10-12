@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,6 +8,12 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
+
+# These are all 3.2.1 backports to be dropped when building 3.2.1
+Patch0:		gnome-settings-daemon-3.2.0-dont_restore_brightness.patch
+Patch1:		gnome-settings-daemon-3.2.0-idle_brightness_revert.patch
+Patch2:		gnome-settings-daemon-3.2.0-no_default_sleep.patch
+Patch3:		gnome-settings-daemon-3.2.0-dpms_on.patch
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -58,6 +64,10 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # autoreconf -i -f
 
@@ -213,6 +223,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Oct 12 2011 Adam Williamson <awilliam@redhat.com> - 3.2.0-2
+- backport some greatest hits from git to stop the same bugs being
+  reported over and over (all will be in 3.2.1)
+
 * Tue Sep 27 2011 Ray <rstrode@redhat.com> - 3.2.0-1
 - Update to 3.2.0
 
