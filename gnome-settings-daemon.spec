@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,6 +8,7 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.1/%{name}-%{version}.tar.xz
+Patch0: gsd-calculator.patch
 
 Requires(pre):    GConf2 >= 2.14
 Requires(preun):  GConf2 >= 2.14
@@ -58,6 +59,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 
 
 # autoreconf -i -f
 
@@ -213,6 +215,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Oct 24 2011 Matthias Clasen <mclasen@redhat.com> - 3.2.1-2
+- Fix calculator keybinding (#745367)
+
 * Mon Oct 17 2011 Bastien Nocera <bnocera@redhat.com> 3.2.1-1
 - Update to 3.2.1
 
