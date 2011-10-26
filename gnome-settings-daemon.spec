@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.2.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -217,6 +217,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Oct 26 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-4
+- Rebuilt for glibc bug#747377
+
 * Tue Oct 25 2011 Marek Kasik <mkasik@redhat.com> - 3.2.1-3
 - Fix a typo in registration of an object on DBus (#747318)
 
