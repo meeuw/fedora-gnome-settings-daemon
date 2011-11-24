@@ -121,9 +121,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.housekeeping.gschema.xml
 
-%{_libdir}/gnome-settings-daemon-3.0/keybindings.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libkeybindings.so
-
 %{_libdir}/gnome-settings-daemon-3.0/keyboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libkeyboard.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.keyboard.gschema.xml
