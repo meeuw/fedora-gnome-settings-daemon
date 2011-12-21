@@ -209,6 +209,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Dec 21 2011 Matthias Clasen <mclasen@redhat.com> - 3.3.3-1
+- Update to 3.3.3
+
 * Wed Nov 23 2011 Matthias Clasen <mclasen@redhat.com> - 3.3.2-1
 - Update to 3.3.2
 
