@@ -39,6 +39,7 @@ BuildRequires:  nss-devel
 BuildRequires:  colord-devel >= 0.1.12
 BuildRequires:  lcms2-devel >= 2.2
 BuildRequires:  libXi-devel libXfixes-devel
+BuildRequires:  libwacom-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
