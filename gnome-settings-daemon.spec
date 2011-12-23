@@ -154,7 +154,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libwacom.so
+%{_libdir}/gnome-settings-daemon-3.0/libgsdwacom.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
 
