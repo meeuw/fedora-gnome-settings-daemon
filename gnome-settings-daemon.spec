@@ -28,7 +28,7 @@ BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
 BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
-# BuildRequires:  autoconf automake libtool
+BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
 BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
 BuildRequires:  PackageKit-glib-devel
