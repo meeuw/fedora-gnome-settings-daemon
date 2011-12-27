@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.3.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -59,11 +59,11 @@ developing applications that use %{name}.
 %setup -q
 %patch0 -p1 -b .calc
 
-# autoreconf -i -f
+rm data/gnome-settings-daemon.desktop.in
+
+autoreconf -i -f
 
 %build
-# https://fedoraproject.org/wiki/Features/ChangeInImplicitDSOLinking
-#export LIBS="-lX11 -lm"
 %configure --disable-static \
            --enable-profiling \
            --enable-packagekit
@@ -210,6 +210,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Dec 27 2011 Matthias Clasen <mclasen@redhat.com> - 3.3.3.1-2
+- Fix a path problem in the gnome-settings-daemon autostart file
+
 * Fri Dec 23 2011 Matthias Clasen <mclasen@redhat.com> - 3.3.3.1-1
 - Update to 3.3.3.1
 
