@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.3.3.1
-Release:        3%{?dist}
+Version:        3.3.4
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -59,8 +59,6 @@ developing applications that use %{name}.
 %setup -q
 %patch0 -p1 -b .calc
 
-rm data/gnome-settings-daemon.desktop.in
-
 autoreconf -i -f
 
 %build
@@ -73,10 +71,6 @@ make %{?_smp_mflags}
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
-
-# Remove the useless xrdb plugin
-#rm -rf $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/*xrdb* \
-#        $RPM_BUILD_ROOT%{_sysconfdir}/xrdb/
 
 %find_lang %{name} --with-gnome
 
@@ -210,6 +204,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Jan 17 2012 Bastien Nocera <bnocera@redhat.com> 3.3.4-1
+- Update to 3.3.4
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.3.3.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
