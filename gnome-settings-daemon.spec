@@ -16,7 +16,7 @@ Patch0: gsd-calculator.patch
 Patch1: 0001-Updates-Don-t-call-g_object_unref-on-a-GPtrArray.patch
 Patch2: 0001-media-keys-Be-more-careful-when-finalizing.patch
 Patch3: 0001-XSettings-be-more-careful-when-shutting-down.patch
-Patch4: 0001-Media-keys-Even-more-careful-when-finalizing.patch
+Patch4: 0001-Media-keys-Even-more-careful-when-shutting-down.patch
 
 Requires: control-center-filesystem
 
