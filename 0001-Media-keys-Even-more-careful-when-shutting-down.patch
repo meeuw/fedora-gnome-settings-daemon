@@ -1,0 +1,31 @@
+From ae303fb2b05265888f8b65ba2236782693369da7 Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Fri, 20 Jan 2012 09:11:14 -0500
+Subject: [PATCH] Media keys: Be more careful when shutting down
+
+The gtksettings instance is also initialized in an idle, so
+we must handle it still being NULL when we shut down.
+---
+ plugins/media-keys/gsd-media-keys-manager.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/plugins/media-keys/gsd-media-keys-manager.c b/plugins/media-keys/gsd-media-keys-manager.c
+index e4052f3..51053ea 100644
+--- a/plugins/media-keys/gsd-media-keys-manager.c
++++ b/plugins/media-keys/gsd-media-keys-manager.c
+@@ -2147,8 +2147,10 @@ gsd_media_keys_manager_stop (GsdMediaKeysManager *manager)
+                                           manager);
+         }
+ 
+-        g_signal_handlers_disconnect_by_func (manager->priv->gtksettings, sound_theme_changed, manager);
+-        manager->priv->gtksettings = NULL;
++        if (manager->priv->gtksettings != NULL) {
++                g_signal_handlers_disconnect_by_func (manager->priv->gtksettings, sound_theme_changed, manager);
++                manager->priv->gtksettings = NULL;
++        }
+ 
+         if (manager->priv->ca) {
+                 ca_context_destroy (manager->priv->ca);
+-- 
+1.7.8.4
+

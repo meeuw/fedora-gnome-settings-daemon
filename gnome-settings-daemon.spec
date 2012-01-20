@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.3.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -11,6 +11,12 @@ Source:         http://download.gnome.org/sources/%{name}/3.3/%{name}-%{version}
 
 # Fedora specific patch
 Patch0: gsd-calculator.patch
+
+# upstream fixes
+Patch1: 0001-Updates-Don-t-call-g_object_unref-on-a-GPtrArray.patch
+Patch2: 0001-media-keys-Be-more-careful-when-finalizing.patch
+Patch3: 0001-XSettings-be-more-careful-when-shutting-down.patch
+Patch4: 0001-Media-keys-Even-more-careful-when-finalizing.patch
 
 Requires: control-center-filesystem
 
@@ -58,6 +64,10 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .calc
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 autoreconf -i -f
 
@@ -204,6 +214,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Fri Jan 20 2012 Matthias Clasen <mclasen@redhat.com> 3.3.4-2
+- Some crash fixes
+
 * Tue Jan 17 2012 Bastien Nocera <bnocera@redhat.com> 3.3.4-1
 - Update to 3.3.4
 

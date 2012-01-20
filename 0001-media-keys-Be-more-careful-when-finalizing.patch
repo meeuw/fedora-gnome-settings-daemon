@@ -1,0 +1,45 @@
+From 42f9427729d763e7fd62aec9e15b036531489682 Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Fri, 20 Jan 2012 09:00:54 -0500
+Subject: [PATCH] media-keys: Be more careful when finalizing
+
+The keys array is initalized in an idle, so if we go right back down
+because another instance of gsd is already running, we crash in
+finalize, trying to clear a nonexisting array.
+---
+ plugins/media-keys/gsd-media-keys-manager.c |   16 +++++++++-------
+ 1 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/plugins/media-keys/gsd-media-keys-manager.c b/plugins/media-keys/gsd-media-keys-manager.c
+index 14ff09f..61e3a56 100644
+--- a/plugins/media-keys/gsd-media-keys-manager.c
++++ b/plugins/media-keys/gsd-media-keys-manager.c
+@@ -2209,16 +2209,18 @@ gsd_media_keys_manager_stop (GsdMediaKeysManager *manager)
+ 
+         gdk_error_trap_push ();
+ 
+-        for (i = 0; i < priv->keys->len; ++i) {
+-                MediaKey *key;
++        if (priv->keys != NULL) {
++                for (i = 0; i < priv->keys->len; ++i) {
++                        MediaKey *key;
+ 
+-                key = g_ptr_array_index (manager->priv->keys, i);
++                        key = g_ptr_array_index (manager->priv->keys, i);
+ 
+-                if (key->key)
+-                        grab_key_unsafe (key->key, FALSE, priv->screens);
++                        if (key->key)
++                                grab_key_unsafe (key->key, FALSE, priv->screens);
++                }
++                g_ptr_array_free (priv->keys, TRUE);
++                priv->keys = NULL;
+         }
+-        g_ptr_array_free (priv->keys, TRUE);
+-        priv->keys = NULL;
+ 
+         gdk_flush ();
+         gdk_error_trap_pop_ignored ();
+-- 
+1.7.8.4
+
