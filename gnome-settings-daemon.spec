@@ -12,12 +12,6 @@ Source:         http://download.gnome.org/sources/%{name}/3.3/%{name}-%{version}
 # Fedora specific patch
 Patch0: gsd-calculator.patch
 
-# upstream fixes
-Patch1: 0001-Updates-Don-t-call-g_object_unref-on-a-GPtrArray.patch
-Patch2: 0001-media-keys-Be-more-careful-when-finalizing.patch
-Patch3: 0001-XSettings-be-more-careful-when-shutting-down.patch
-Patch4: 0001-Media-keys-Even-more-careful-when-shutting-down.patch
-
 Requires: control-center-filesystem
 
 BuildRequires:  dbus-glib-devel
@@ -64,10 +58,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .calc
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 autoreconf -i -f
 
