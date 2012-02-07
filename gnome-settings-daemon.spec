@@ -182,10 +182,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
-%{_libexecdir}/gsd-datetime-mechanism
-%{_sysconfdir}/dbus-1/system.d/org.gnome.SettingsDaemon.DateTimeMechanism.conf
-%{_datadir}/dbus-1/system-services/org.gnome.SettingsDaemon.DateTimeMechanism.service
-%{_datadir}/polkit-1/actions/org.gnome.settingsdaemon.datetimemechanism.policy
 %{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
 
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
