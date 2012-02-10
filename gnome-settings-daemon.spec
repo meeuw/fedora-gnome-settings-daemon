@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.3.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -40,6 +40,7 @@ BuildRequires:  colord-devel >= 0.1.12
 BuildRequires:  lcms2-devel >= 2.2
 BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  libwacom-devel
+BuildRequires:  systemd-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -64,7 +65,8 @@ autoreconf -i -f
 %build
 %configure --disable-static \
            --enable-profiling \
-           --enable-packagekit
+           --enable-packagekit \
+           --enable-systemd
 make %{?_smp_mflags}
 
 
@@ -200,6 +202,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Thu Feb  9 2012 Matthias Clasen <mclasen@redhat.com> 3.3.5-2
+- Use systemd for session tracking
+
 * Tue Feb  7 2012 Matthias Clasen <mclasen@redhat.com> 3.3.5-1
 - Update to 3.3.5
 
