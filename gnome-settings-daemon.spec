@@ -41,6 +41,8 @@ BuildRequires:  lcms2-devel >= 2.2
 BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  libwacom-devel
 BuildRequires:  systemd-devel
+BuildRequires:  libXtst-devel
+BuildRequires:  xorg-x11-drv-wacom-devel
 
 %description
 A daemon to share settings from GNOME to other applications. It also
