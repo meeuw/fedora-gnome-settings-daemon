@@ -81,11 +81,9 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 
 %post
-/sbin/ldconfig
 touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
 
 %postun
-/sbin/ldconfig
 if [ $1 -eq 0 ]; then
   touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
   gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
@@ -180,7 +178,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libcursor.so
 %{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
 
-%{_libdir}/libgsd.so.*
+%{_libdir}/gnome-settings-daemon/libgsd.so.*
 
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
@@ -206,7 +204,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %dir %{_datadir}/gnome-settings-daemon-3.0
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
-%{_libdir}/libgsd.so
+%{_libdir}/gnome-settings-daemon/libgsd.so
 
 %changelog
 * Wed Feb 22 2012 Bastien Nocera <bnocera@redhat.com> 3.3.90.1-1
