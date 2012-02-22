@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.3.5
-Release:        2%{?dist}
+Version:        3.3.90.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -202,6 +202,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Feb 22 2012 Bastien Nocera <bnocera@redhat.com> 3.3.90.1-1
+- Update to 3.3.90.1
+
 * Thu Feb  9 2012 Matthias Clasen <mclasen@redhat.com> 3.3.5-2
 - Use systemd for session tracking
 
