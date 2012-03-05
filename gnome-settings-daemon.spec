@@ -178,7 +178,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libcursor.so
 %{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
 
-%{_libdir}/gnome-settings-daemon/libgsd.so.*
+%{_libdir}/gnome-settings-daemon/libgsd.so
 
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
@@ -204,7 +204,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %dir %{_datadir}/gnome-settings-daemon-3.0
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
-%{_libdir}/gnome-settings-daemon/libgsd.so
 
 %changelog
 * Mon Mar 05 2012 Bastien Nocera <bnocera@redhat.com> 3.3.91-1
