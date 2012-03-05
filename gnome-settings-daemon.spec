@@ -155,6 +155,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libgsdwacom.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
+%{_libexecdir}/gsd-wacom-led-helper
+%{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
 
 %{_libdir}/gnome-settings-daemon-3.0/xrandr.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libxrandr.so
