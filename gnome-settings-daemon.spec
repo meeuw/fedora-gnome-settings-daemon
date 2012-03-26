@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.3.92
+Version:        3.4.0
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -7,7 +7,7 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.3/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.4/%{name}-%{version}.tar.xz
 
 # Fedora specific patch
 Patch0: gsd-calculator.patch
@@ -208,6 +208,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Mon Mar 26 2012 Richard Hughes <rhughes@redhat.com> - 3.4.0-1
+- New upstream version.
+
 * Tue Mar 20 2012 Richard Hughes <rhughes@redhat.com> 3.3.92-1
 - Update to 3.3.92
 
