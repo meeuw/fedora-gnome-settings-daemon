@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,6 +8,8 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.4/%{name}-%{version}.tar.xz
+# disable wacom for ppc/ppc64 (used on RHEL)
+Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
 Requires: control-center-filesystem
 
@@ -36,11 +38,13 @@ BuildRequires:  nss-devel
 BuildRequires:  colord-devel >= 0.1.12
 BuildRequires:  lcms2-devel >= 2.2
 BuildRequires:  libXi-devel libXfixes-devel
-BuildRequires:  libwacom-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
+%ifnarch s390 s390x %{?rhel:ppc ppc64}
+BuildRequires:  libwacom-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
+%endif
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -58,6 +62,9 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%if 0%{?rhel}
+%patch0 -p1 -b .ppc-no-wacom
+%endif
 
 autoreconf -i -f
 
@@ -148,12 +155,15 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libupdates.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
+
+%ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libgsdwacom.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
 %{_libexecdir}/gsd-wacom-led-helper
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
+%endif
 
 %{_libdir}/gnome-settings-daemon-3.0/xrandr.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libxrandr.so
@@ -193,7 +203,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
-
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 
@@ -204,6 +213,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Tue Jul 17 2012 Dan Horák <dan[at]danny.cz> - 3.5.4-3
+- fix build on s390(x) - cherry-picked from f17 branch
+- allow build without wacom on ppc/ppc64
+
 * Tue Jul 17 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.4-2
 - Rebuild against new PackageKit
 
