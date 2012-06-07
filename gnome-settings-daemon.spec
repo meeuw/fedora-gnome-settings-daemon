@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -42,6 +42,7 @@ BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  libwacom-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
+BuildRequires:  libxkbfile-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
 
 %description
@@ -208,6 +209,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Thu Jun 07 2012 Richard Hughes <hughsient@gmail.com> - 3.5.2-2
+- Add missing BR
+
 * Wed Jun 06 2012 Richard Hughes <hughsient@gmail.com> - 3.5.2-1
 - Update to 3.5.2
 
