@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -188,7 +188,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-printer
 
 %{_datadir}/gnome-settings-daemon/
-%{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
 %{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
@@ -209,6 +208,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Thu Jun 07 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.2-3
+- Fix file lists
+
 * Thu Jun 07 2012 Richard Hughes <hughsient@gmail.com> - 3.5.2-2
 - Add missing BR
 
