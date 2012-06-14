@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -8,9 +8,6 @@ License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
 Source:         http://download.gnome.org/sources/%{name}/3.4/%{name}-%{version}.tar.xz
-
-# Fedora specific patch
-Patch0: gsd-calculator.patch
 
 Requires: control-center-filesystem
 
@@ -61,7 +58,6 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .calc
 
 autoreconf -i -f
 
@@ -208,6 +204,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Thu Jun 14 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.2-4
+- Drop calculator patch, no longer needed
+
 * Thu Jun 07 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.2-3
 - Fix file lists
 
