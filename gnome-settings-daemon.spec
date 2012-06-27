@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.5.3
+Version:        3.5.4
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -204,6 +204,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Wed Jun 27 2012 Richard Hughes <hughsient@gmail.com> - 3.5.4-1
+- Update to 3.5.4
+
 * Tue Jun 26 2012 Richard Hughes <hughsient@gmail.com> - 3.5.3-1
 - Update to 3.5.3
 
