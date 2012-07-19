@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -10,6 +10,9 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.5/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+
+# upstream fix
+Patch1:         0001-Remove-an-unused-case-in-the-notification-action-cb.patch
 
 Requires: control-center-filesystem
 
@@ -66,6 +69,7 @@ developing applications that use %{name}.
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
+%patch1 -p1
 
 autoreconf -i -f
 
@@ -230,6 +234,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Thu Jul 19 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.5-2
+- Fix the updates plugin to load
+
 * Thu Jul 19 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.5-1
 - Update to 3.5.5
 
