@@ -41,7 +41,7 @@ BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
-BuildRequres:   ibus-devel
+BuildRequires:   ibus-devel
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 BuildRequires:  libwacom-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
