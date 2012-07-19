@@ -1,13 +1,13 @@
 Name:           gnome-settings-daemon
-Version:        3.5.4
-Release:        3%{?dist}
+Version:        3.5.5
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.4/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.5/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
@@ -41,6 +41,7 @@ BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
+BuildRequres:   ibus-devel
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 BuildRequires:  libwacom-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
@@ -213,6 +214,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
 
 %changelog
+* Thu Jul 19 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.5-1
+- Update to 3.5.5
+
 * Tue Jul 17 2012 Dan Horák <dan[at]danny.cz> - 3.5.4-3
 - fix build on s390(x) - cherry-picked from f17 branch
 - allow build without wacom on ppc/ppc64
