@@ -203,6 +203,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
 
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
+%{_datadir}/dbus-1/services/org.freedesktop.IBus.service
 
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
@@ -212,6 +213,21 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %dir %{_datadir}/gnome-settings-daemon-3.0
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
+%{_libexecdir}/gsd-list-wacom
+%{_libexecdir}/gsd-test-a11y-keyboard
+%{_libexecdir}/gsd-test-a11y-settings
+%{_libexecdir}/gsd-test-background
+%{_libexecdir}/gsd-test-input-helper
+%{_libexecdir}/gsd-test-keyboard
+%{_libexecdir}/gsd-test-media-keys
+%{_libexecdir}/gsd-test-mouse
+%{_libexecdir}/gsd-test-orientation
+%{_libexecdir}/gsd-test-power
+%{_libexecdir}/gsd-test-print-notifications
+%{_libexecdir}/gsd-test-smartcard
+%{_libexecdir}/gsd-test-sound
+%{_libexecdir}/gsd-test-wacom
+%{_libexecdir}/gsd-test-xsettings
 
 %changelog
 * Thu Jul 19 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.5-1
