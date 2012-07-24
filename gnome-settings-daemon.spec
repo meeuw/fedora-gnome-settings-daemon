@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.5.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -19,7 +19,6 @@ Requires: control-center-filesystem
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 2.99.3
 BuildRequires:  gnome-desktop3-devel >= 3.1.4
-BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
@@ -44,7 +43,7 @@ BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
-BuildRequires:   ibus-devel
+BuildRequires:  ibus-devel
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 BuildRequires:  libwacom-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
@@ -217,7 +216,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %dir %{_datadir}/gnome-settings-daemon-3.0
 %{_datadir}/gnome-settings-daemon-3.0/input-device-example.sh
+%ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libexecdir}/gsd-list-wacom
+%{_libexecdir}/gsd-test-wacom
+%endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
 %{_libexecdir}/gsd-test-background
@@ -230,10 +232,12 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-print-notifications
 %{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
-%{_libexecdir}/gsd-test-wacom
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Tue Jul 24 2012 Dan Horák <dan[at]danny.cz> - 3.5.5-3
+- fix build without wacom
+
 * Thu Jul 19 2012 Matthias Clasen <mclasen@redhat.com> - 3.5.5-2
 - Fix the updates plugin to load
 
