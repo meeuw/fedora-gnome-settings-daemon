@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.5.5
-Release:        4%{?dist}
+Version:        3.5.6
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -10,9 +10,6 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.5/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-
-# upstream fix
-Patch1:         0001-Remove-an-unused-case-in-the-notification-action-cb.patch
 
 Requires: control-center-filesystem
 
@@ -68,7 +65,6 @@ developing applications that use %{name}.
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
-%patch1 -p1
 
 autoreconf -i -f
 
@@ -235,6 +231,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Tue Aug 21 2012 Richard Hughes <hughsient@gmail.com> - 3.5.6-1
+- Update to 3.5.6
+
 * Fri Jul 27 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.5.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
