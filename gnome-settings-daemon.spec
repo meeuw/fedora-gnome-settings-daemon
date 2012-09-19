@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.5.91
+Version:        3.5.92
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -231,6 +231,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Wed Sep 19 2012 Richard Hughes <hughsient@gmail.com> - 3.5.92-1
+- Update to 3.5.92
+
 * Wed Sep 05 2012 Cosimo Cecchi <cosimoc@redhat.com> - 3.5.91-1
 - Update to 3.5.91
 
