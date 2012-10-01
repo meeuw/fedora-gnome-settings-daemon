@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -60,6 +60,14 @@ Requires:       dbus-glib-devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
+%package	updates
+Summary:        updates plugin for  %{name} 
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+
+%description	updates
+The %{name}-updates package contains the updates plugin for %{name} 
+
 %prep
 %setup -q
 %if 0%{?rhel}
@@ -98,6 +106,13 @@ fi
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
+%postun	updates
+if [ $1 -eq 0 ]; then
+  glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
+fi
+
+%posttrans updates
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS
@@ -151,10 +166,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/sound.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libsound.so
 
-%{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libupdates.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
-
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
 
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
@@ -202,7 +213,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
 
-%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 %{_datadir}/dbus-1/services/org.freedesktop.IBus.service
 
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
@@ -231,7 +241,17 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-sound
 %{_libexecdir}/gsd-test-xsettings
 
+
+%files updates
+%{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libupdates.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
+%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
+
 %changelog
+* Fri Sep 28 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 3.6.0-2
+- Split out PackageKit into a sub package. Fixes #699348
+
 * Tue Sep 25 2012 Richard Hughes <hughsient@gmail.com> - 3.6.0-1
 - Update to 3.6.0
 
