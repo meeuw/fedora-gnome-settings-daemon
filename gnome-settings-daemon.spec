@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.6.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -10,6 +10,11 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.5/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+
+# upstream cleanup
+Patch1: 0001-Clean-up-gsd_power_stop.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=680689
+Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
 
 Requires: control-center-filesystem
 
@@ -73,6 +78,9 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
+
+%patch1 -p1
+%patch2 -p1
 
 autoreconf -i -f
 
@@ -249,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
+* Tue Oct  2 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-3
+- Fix lid close handling with new systemd
+
 * Fri Sep 28 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 3.6.0-2
 - Split out PackageKit into a sub package. Fixes #699348
 
