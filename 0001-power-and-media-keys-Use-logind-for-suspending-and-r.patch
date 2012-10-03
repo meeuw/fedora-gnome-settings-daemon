@@ -1,4 +1,4 @@
-From 9db5c300ed17bb667c99234db27914b57bbdaf9e Mon Sep 17 00:00:00 2001
+From 4bf4e9c9dcc1e56b5a058822056d91be7d3a0a36 Mon Sep 17 00:00:00 2001
 From: Richard Hughes <richard@hughsie.com>
 Date: Fri, 21 Sep 2012 11:56:53 +0100
 Subject: [PATCH] power and media-keys: Use logind for suspending and
