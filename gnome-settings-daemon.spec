@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.6.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -257,7 +257,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
-* Wed Oct  3 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-4
+* Wed Oct  3 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-5
 - Fix an inhibitor leak in the previous patch
 
 * Tue Oct  2 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-3
