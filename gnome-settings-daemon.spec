@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.6.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -15,6 +15,9 @@ Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 Patch1: 0001-Clean-up-gsd_power_stop.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=680689
 Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
+# Wacom OSD window
+# https://bugzilla.gnome.org/show_bug.cgi?id=679062
+Patch3: 0001-wacom-implement-OSD-help-window.patch
 
 Requires: control-center-filesystem
 
@@ -81,6 +84,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1 -b .wacom-osd-window
 
 autoreconf -i -f
 
@@ -248,7 +252,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
 %{_libexecdir}/gsd-test-xsettings
-
+%{_libexecdir}/gsd-test-wacom-osd
 
 %files updates
 %{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
@@ -257,6 +261,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
+* Fri Oct  5 2012 Olivier Fourdan <mclasen@redhat.com> - 3.6.0-6
+- Adds Wacom OSD window from upstream bug #679062
+
 * Wed Oct  3 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-5
 - Fix an inhibitor leak in the previous patch
 
