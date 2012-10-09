@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.6.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -238,6 +238,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libexecdir}/gsd-list-wacom
 %{_libexecdir}/gsd-test-wacom
+%{_libexecdir}/gsd-test-wacom-osd
 %endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
@@ -252,7 +253,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
 %{_libexecdir}/gsd-test-xsettings
-%{_libexecdir}/gsd-test-wacom-osd
 
 %files updates
 %{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
@@ -261,6 +261,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
+* Tue Oct  8 2012 Dan Horák <dan[at]danny.cz> - 3.6.0-7
+- fix build on s390(x)
+
 * Fri Oct  5 2012 Olivier Fourdan <mclasen@redhat.com> - 3.6.0-6
 - Adds Wacom OSD window from upstream bug #679062
 
