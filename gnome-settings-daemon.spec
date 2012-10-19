@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.6.0
-Release:        7%{?dist}
+Version:        3.6.1
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -11,8 +11,6 @@ Source:         http://download.gnome.org/sources/%{name}/3.6/%{name}-%{version}
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
-# upstream cleanup
-Patch1: 0001-Clean-up-gsd_power_stop.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=680689
 Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
 # Wacom OSD window
@@ -82,7 +80,6 @@ The %{name}-updates package contains the updates plugin for %{name}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
 
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1 -b .wacom-osd-window
 
@@ -261,13 +258,16 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
-* Tue Oct  8 2012 Dan Horák <dan[at]danny.cz> - 3.6.0-7
+* Tue Oct 08 2012 Dan Horák <dan[at]danny.cz> - 3.6.1-2
 - fix build on s390(x)
 
-* Fri Oct  5 2012 Olivier Fourdan <mclasen@redhat.com> - 3.6.0-6
+* Mon Oct 08 2012 Bastien Nocera <bnocera@redhat.com> 3.6.1-1
+- Update to 3.6.1
+
+* Fri Oct  5 2012 Olivier Fourdan <mclasen@redhat.com> - 3.6.0-5
 - Adds Wacom OSD window from upstream bug #679062
 
-* Wed Oct  3 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-5
+* Wed Oct  3 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-4
 - Fix an inhibitor leak in the previous patch
 
 * Tue Oct  2 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.0-3
