@@ -1,0 +1,108 @@
+From ef0737d5a8c440933558145fffd71a04188fecdb Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Thu, 8 Nov 2012 11:01:46 +0100
+Subject: [PATCH] Force updated man page into build system
+
+So that Docbook doesn't attempt to phone home to find stylesheets.
+---
+ man/gnome-settings-daemon.1 | 88 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
+ create mode 100644 man/gnome-settings-daemon.1
+
+diff --git a/man/gnome-settings-daemon.1 b/man/gnome-settings-daemon.1
+new file mode 100644
+index 0000000..62d6e4b
+--- /dev/null
++++ b/man/gnome-settings-daemon.1
+@@ -0,0 +1,88 @@
++'\" t
++.\"     Title: gnome-settings-daemon
++.\"    Author: Bastien Nocera <hadess@hadess.net>
++.\" Generator: DocBook XSL Stylesheets v1.77.1 <http://docbook.sf.net/>
++.\"      Date: 11/08/2012
++.\"    Manual: User Commands
++.\"    Source: GNOME
++.\"  Language: English
++.\"
++.TH "GNOME\-SETTINGS\-DAE" "1" "" "GNOME" "User Commands"
++.\" -----------------------------------------------------------------
++.\" * Define some portability stuff
++.\" -----------------------------------------------------------------
++.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++.\" http://bugs.debian.org/507673
++.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
++.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++.ie \n(.g .ds Aq \(aq
++.el       .ds Aq '
++.\" -----------------------------------------------------------------
++.\" * set default formatting
++.\" -----------------------------------------------------------------
++.\" disable hyphenation
++.nh
++.\" disable justification (adjust text to left margin only)
++.ad l
++.\" -----------------------------------------------------------------
++.\" * MAIN CONTENT STARTS HERE *
++.\" -----------------------------------------------------------------
++.SH "NAME"
++gnome-settings-daemon \- GNOME settings daemon
++.SH "SYNOPSIS"
++.HP \w'\fBgnome\-settings\-daemon\ \fR\fB[OPTION...]\fR\ 'u
++\fBgnome\-settings\-daemon \fR\fB[OPTION...]\fR
++.SH "DESCRIPTION"
++.PP
++\fBgnome\-settings\-daemon\fR
++provides many session\-wide services and functions that require a long\-running process\&. Among the services implemented by gnome\-settings\-daemon are an XSettings manager, which provides theming, font and other settings to GTK+ applications, and a clipboard manager, which preserves clipboard contents when an application exits\&. Many user interface elements of
++\fBgnome\-shell\fR
++and
++\fBgnome\-control\-center\fR
++rely on gnome\-settings\-daemon for their functionality\&.
++.PP
++The internal architecture of gnome\-settings\-daemon consists of a number of plugins, which provide functionality such as printer notifications, software update monitoring, background changing, etc\&. For debugging purposes, these plugins can be individually disabled by changing the gsettings key
++org\&.gnome\&.settings\-daemon\&.plugins\&.\fIplugin\-name\fR\&.active, where
++\fIplugin\-name\fR
++is the name of the plugin\&. To see a list of all plugins, use the command
++\fB gsettings list\-children org\&.gnome\&.settings\-daemon\&.plugins \fR
++.PP
++gnome\-settings\-daemon takes the name org\&.gnome\&.SettingsDaemon on the session bus to ensure that only one instance is running\&. Some plugins export objects under this name to make their functionality available to other applications\&. The interfaces of these objects should generally be considered private and unstable\&.
++.PP
++gnome\-settings\-daemon is a required component of the GNOME desktop, i\&.e\&. it is listed in the RequiredComponents field of
++/usr/share/gnome\-session/sessions/gnome\&.session\&. It is started in the initialization phase of the session, and
++\fBgnome\-session\fR
++will restart it if it crashes\&.
++.SH "OPTIONS"
++.PP
++\fB\-h\fR, \fB\-\-help\fR
++.RS 4
++Prints a short help text and exits\&.
++.RE
++.PP
++\fB\-\-debug\fR
++.RS 4
++Enables debugging code\&.
++.RE
++.PP
++\fB\-\-timed\-exit\fR
++.RS 4
++Exits after a timeout (30 seconds) for debugging\&.
++.RE
++.SH "FILES"
++.PP
++/usr/share/gnome\-session/sessions/gnome\&.session
++.RS 4
++GNOME session definition file where gnome\-settings\-daemon is listed as a required component\&.
++.RE
++.PP
++/etc/xdg/autostart/gnome\-settings\-daemon\&.desktop
++.RS 4
++Autostart file for gnome\-settings\-daemon, where its autostart phase is set\&.
++.RE
++.SH "SEE ALSO"
++.PP
++
++\fBgnome-shell\fR(1),
++\fBgnome-control-center\fR(1),
++\fBgnome-session\fR(1)
+-- 
+1.7.12.1
+

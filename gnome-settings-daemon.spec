@@ -10,7 +10,8 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.6/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-
+# Fix build without a network
+Patch1: 0001-Force-updated-man-page-into-build-system.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=680689
 Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
 # Wacom OSD window
@@ -81,6 +82,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
 
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1 -b .wacom-osd-window
 
