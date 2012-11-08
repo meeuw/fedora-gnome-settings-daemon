@@ -1,4 +1,4 @@
-From 9b9f6560d33b4586c6e1e3686074384ee6e09bc3 Mon Sep 17 00:00:00 2001
+From 0739b7e2d90d1d4130d82b6d0252ea014178c378 Mon Sep 17 00:00:00 2001
 From: Richard Hughes <richard@hughsie.com>
 Date: Fri, 21 Sep 2012 11:56:53 +0100
 Subject: [PATCH] power and media-keys: Use logind for suspending and
@@ -17,9 +17,9 @@ https://bugzilla.gnome.org/show_bug.cgi?id=680689
  plugins/common/Makefile.am                  |   4 +-
  plugins/common/gsd-power-helper.c           | 203 --------
  plugins/common/gsd-power-helper.h           |  35 --
- plugins/media-keys/gsd-media-keys-manager.c | 156 +++++--
- plugins/power/gsd-power-manager.c           | 701 +++++++++++++++++++---------
- 5 files changed, 595 insertions(+), 504 deletions(-)
+ plugins/media-keys/gsd-media-keys-manager.c | 156 ++++--
+ plugins/power/gsd-power-manager.c           | 703 +++++++++++++++++++---------
+ 5 files changed, 596 insertions(+), 505 deletions(-)
  delete mode 100644 plugins/common/gsd-power-helper.c
  delete mode 100644 plugins/common/gsd-power-helper.h
 
@@ -545,7 +545,7 @@ index 9c84d7f..a2f277e 100644
  
  GsdMediaKeysManager *
 diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
-index 1c594d8..2759f07 100644
+index 1c594d8..232ee12 100644
 --- a/plugins/power/gsd-power-manager.c
 +++ b/plugins/power/gsd-power-manager.c
 @@ -1,7 +1,7 @@
@@ -741,9 +741,10 @@ index 1c594d8..2759f07 100644
 -        kill_lid_close_safety_timer (manager);
 -}
 -
--static gboolean
+ static gboolean
 -is_on (GnomeRROutput *output)
--{
++inhibit_lid_switch_timer_cb (GsdPowerManager *manager)
+ {
 -	GnomeRRCrtc *crtc;
 -
 -	crtc = gnome_rr_output_get_crtc (output);
@@ -752,10 +753,9 @@ index 1c594d8..2759f07 100644
 -	return gnome_rr_crtc_get_current_mode (crtc) != NULL;
 -}
 -
- static gboolean
+-static gboolean
 -non_laptop_outputs_are_all_off (GnomeRRScreen *screen)
-+inhibit_lid_switch_timer_cb (GsdPowerManager *manager)
- {
+-{
 -        GnomeRROutput **outputs;
 -        int i;
 -
@@ -796,7 +796,7 @@ index 1c594d8..2759f07 100644
  }
  
  /* Sets up a timer to be triggered some seconds after closing the laptop lid
-@@ -2227,23 +2223,28 @@ lid_close_safety_timer_cb (GsdPowerManager *manager)
+@@ -2227,82 +2223,71 @@ lid_close_safety_timer_cb (GsdPowerManager *manager)
   * again in the timeout handler to see if we can suspend then.
   */
  static void
@@ -837,7 +837,9 @@ index 1c594d8..2759f07 100644
          }
  }
  
-@@ -2252,57 +2253,41 @@ suspend_with_lid_closed (GsdPowerManager *manager)
+ static void
+-suspend_with_lid_closed (GsdPowerManager *manager)
++do_lid_open_action (GsdPowerManager *manager)
  {
          gboolean ret;
          GError *error = NULL;
@@ -1017,7 +1019,7 @@ index 1c594d8..2759f07 100644
 -                                          NULL,
 -                                          sleep_cb_screensaver_proxy_ready_cb,
 -                                          manager);
--        }
+         }
 -}
 -
 -static void
@@ -1044,13 +1046,13 @@ index 1c594d8..2759f07 100644
 -                                   NULL,
 -                                   G_DBUS_CALL_FLAGS_NONE,
 -                                   -1, NULL, NULL, NULL);
-         }
- 
+-        }
+-
 -        /* close existing notifications on resume, the system power
 -         * state is probably different now */
 -        notify_close_if_showing (manager->priv->notification_low);
 -        notify_close_if_showing (manager->priv->notification_discharging);
--
+ 
 -        /* ensure we turn the panel back on after resume */
 -        ret = gnome_rr_screen_set_dpms_mode (manager->priv->x11_screen,
 -                                             GNOME_RR_DPMS_ON,
