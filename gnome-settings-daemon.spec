@@ -10,8 +10,6 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.6/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-# Fix build without a network
-Patch1: 0001-Force-updated-man-page-into-build-system.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=680689
 Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
 # Wacom OSD window
@@ -49,6 +47,7 @@ BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
 BuildRequires:  ibus-devel
 BuildRequires:  libxslt
+BuildRequires:  docbook-style-xsl
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 BuildRequires:  libwacom-devel
 BuildRequires:  xorg-x11-drv-wacom-devel
@@ -82,7 +81,6 @@ The %{name}-updates package contains the updates plugin for %{name}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
 
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1 -b .wacom-osd-window
 
@@ -263,6 +261,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Wed Nov 14 2012 Kalev Lember <kalevlember@gmail.com> - 3.6.3-1
 - Update to 3.6.3
+- Drop the static man page patch and BR docbook-style-xsl instead
 
 * Thu Nov 08 2012 Bastien Nocera <bnocera@redhat.com> 3.6.2-1
 - Update to 3.6.2
