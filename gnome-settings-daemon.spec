@@ -265,7 +265,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 * Thu Oct 18 2012 Matthias Clasen <mclasen@redhat.com> - 3.6.1-3
 - Fix a typo in the suspend patch (#858259)
 
-* Tue Oct 08 2012 Dan Horák <dan[at]danny.cz> - 3.6.1-2
+* Mon Oct 08 2012 Dan Horák <dan[at]danny.cz> - 3.6.1-2
 - fix build on s390(x)
 
 * Mon Oct 08 2012 Bastien Nocera <bnocera@redhat.com> 3.6.1-1
@@ -855,7 +855,7 @@ http://bugzilla.gnome.org/show_bug.cgi?id=580761 for details
 * Tue Sep 30 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-3
 - Fix the picking up of the gdm keyboard layout
 
-* Wed Sep 28 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-2
+* Sun Sep 28 2008 Ray Strode <rstrode@redhat.com> - 2.24.0-2
 - Don't draw background twice at startup
 
 * Tue Sep 23 2008 Matthias Clasen <mclasen@redhat.com> - 2.24.0-1
@@ -873,7 +873,7 @@ http://bugzilla.gnome.org/show_bug.cgi?id=580761 for details
 * Fri Sep  5 2008 Matthias Clasen <mclasen@redhat.com> - 2.23.91-5
 - Try harder to use the keyboard layout that gdm tells us
 
-* Tue Sep 04 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-4
+* Thu Sep 04 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-4
 - Use the fn-F7 key, not the F7 key.
 
 * Wed Sep 03 2008 Soren Sandmann <sandmann@redhat.com> - 2.23.91-3
