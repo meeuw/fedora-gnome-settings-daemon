@@ -228,7 +228,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libexecdir}/gsd-list-wacom
 %{_libexecdir}/gsd-test-wacom
-%{_libexecdir}/gsd-test-wacom-osd
+#%{_libexecdir}/gsd-test-wacom-osd
 %endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
