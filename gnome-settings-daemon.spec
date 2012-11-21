@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.6.3
+Version:        3.7.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -10,11 +10,6 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.6/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-# https://bugzilla.gnome.org/show_bug.cgi?id=680689
-Patch2: 0001-power-and-media-keys-Use-logind-for-suspending-and-r.patch
-# Wacom OSD window
-# https://bugzilla.gnome.org/show_bug.cgi?id=679062
-Patch3: 0001-wacom-implement-OSD-help-window.patch
 
 Requires: control-center-filesystem
 
@@ -80,9 +75,6 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
-
-%patch2 -p1
-%patch3 -p1 -b .wacom-osd-window
 
 autoreconf -i -f
 
@@ -259,6 +251,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
+* Tue Nov 20 2012 Richard Hughes <hughsient@gmail.com> - 3.7.1-1
+- Update to 3.7.1
+- Remove upstreamed patches
+
 * Wed Nov 14 2012 Kalev Lember <kalevlember@gmail.com> - 3.6.3-1
 - Update to 3.6.3
 - Drop the static man page patch and BR docbook-style-xsl instead
