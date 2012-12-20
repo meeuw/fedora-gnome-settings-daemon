@@ -157,8 +157,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libprint-notifications.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.print-notifications.gschema.xml
 
-%{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
+#{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
+#{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
 
 %{_libdir}/gnome-settings-daemon-3.0/sound.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libsound.so
@@ -235,7 +235,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-orientation
 %{_libexecdir}/gsd-test-power
 %{_libexecdir}/gsd-test-print-notifications
-%{_libexecdir}/gsd-test-smartcard
+#{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
 %{_libexecdir}/gsd-test-xsettings
 
@@ -248,6 +248,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Thu Dec 20 2012 Kalev Lember <kalevlember@gmail.com> - 3.7.3-1
 - Update to 3.7.3
+- Adjust the spec file for the (temporarly) disabled smartcard plugin
 
 * Tue Nov 20 2012 Richard Hughes <hughsient@gmail.com> - 3.7.1-1
 - Update to 3.7.1
