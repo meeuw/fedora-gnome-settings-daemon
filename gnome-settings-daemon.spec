@@ -33,6 +33,7 @@ BuildRequires:  PackageKit-glib-devel
 BuildRequires:  cups-devel
 BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
+BuildRequires:  librsvg2-devel
 BuildRequires:  nss-devel
 BuildRequires:  colord-devel >= 0.1.12
 BuildRequires:  lcms2-devel >= 2.2
