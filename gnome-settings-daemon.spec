@@ -157,6 +157,12 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libprint-notifications.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.print-notifications.gschema.xml
 
+%{_libdir}/gnome-settings-daemon-3.0/remote-display.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libremote-display.so
+
+%{_libdir}/gnome-settings-daemon-3.0/screensaver-proxy.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libscreensaver-proxy.so
+
 #{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
 #{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
 
@@ -228,6 +234,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
 %{_libexecdir}/gsd-test-background
+%{_libexecdir}/gsd-test-cursor
+%{_libexecdir}/gsd-test-housekeeping
 %{_libexecdir}/gsd-test-input-helper
 %{_libexecdir}/gsd-test-keyboard
 %{_libexecdir}/gsd-test-media-keys
@@ -235,15 +243,18 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-orientation
 %{_libexecdir}/gsd-test-power
 %{_libexecdir}/gsd-test-print-notifications
+%{_libexecdir}/gsd-test-remote-display
+%{_libexecdir}/gsd-test-screensaver-proxy
 #{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
+%{_libexecdir}/gsd-test-wacom-osd
+%{_libexecdir}/gsd-test-xrandr
 %{_libexecdir}/gsd-test-xsettings
 
 %files updates
 %{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libupdates.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
-%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
 * Thu Dec 20 2012 Kalev Lember <kalevlember@gmail.com> - 3.7.3-1
