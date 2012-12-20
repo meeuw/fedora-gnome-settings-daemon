@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.7.1
+Version:        3.7.3
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -7,7 +7,7 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.6/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.7/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
@@ -125,11 +125,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 # some of these don't have a separate gschema
 %{_libdir}/gnome-settings-daemon-3.0/a11y-keyboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/liba11y-keyboard.so
-
-# The automount plugin is a separate executable used in fallback
-# mode only
-%{_libexecdir}/gnome-fallback-mount-helper
-%{_sysconfdir}/xdg/autostart/gnome-fallback-mount-helper.desktop
 
 %{_libdir}/gnome-settings-daemon-3.0/background.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libbackground.so
@@ -251,6 +246,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
 %changelog
+* Thu Dec 20 2012 Kalev Lember <kalevlember@gmail.com> - 3.7.3-1
+- Update to 3.7.3
+
 * Tue Nov 20 2012 Richard Hughes <hughsient@gmail.com> - 3.7.1-1
 - Update to 3.7.1
 - Remove upstreamed patches
