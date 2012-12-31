@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.7.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -171,11 +171,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libsound.so
 
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
 
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libgsdwacom.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.peripherals.wacom.gschema.xml
 %{_libexecdir}/gsd-wacom-led-helper
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
 %endif
@@ -230,7 +230,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 %{_libexecdir}/gsd-list-wacom
 %{_libexecdir}/gsd-test-wacom
-#%{_libexecdir}/gsd-test-wacom-osd
+%{_libexecdir}/gsd-test-wacom-osd
 %endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
@@ -248,7 +248,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-screensaver-proxy
 #{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
-%{_libexecdir}/gsd-test-wacom-osd
 %{_libexecdir}/gsd-test-xrandr
 %{_libexecdir}/gsd-test-xsettings
 
@@ -258,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Mon Dec 31 2012 Dan Horák <dan[at]danny.cz> - 3.7.3-2
+- fix filelist for s390(x) (and ppc/ppc64 in RHEL)
+
 * Thu Dec 20 2012 Kalev Lember <kalevlember@gmail.com> - 3.7.3-1
 - Update to 3.7.3
 - Adjust the spec file for the (temporarly) disabled smartcard plugin
