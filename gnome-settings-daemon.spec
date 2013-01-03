@@ -45,7 +45,7 @@ BuildRequires:  ibus-devel
 BuildRequires:  libxslt
 BuildRequires:  docbook-style-xsl
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
-BuildRequires:  libwacom-devel
+BuildRequires:  libwacom-devel >= 0.7
 BuildRequires:  xorg-x11-drv-wacom-devel
 %endif
 
