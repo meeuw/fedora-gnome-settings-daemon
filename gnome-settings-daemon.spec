@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.7.3
-Release:        2%{?dist}
+Version:        3.7.4
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -257,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Wed Jan 16 2013 Richard Hughes <hughsient@gmail.com> - 3.7.4-1
+- Update to 3.7.4
+
 * Mon Dec 31 2012 Dan Horák <dan[at]danny.cz> - 3.7.3-2
 - fix filelist for s390(x) (and ppc/ppc64 in RHEL)
 
