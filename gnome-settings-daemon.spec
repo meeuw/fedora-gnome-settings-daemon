@@ -242,7 +242,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-media-keys
 %{_libexecdir}/gsd-test-mouse
 %{_libexecdir}/gsd-test-orientation
-%{_libexecdir}/gsd-test-power
 %{_libexecdir}/gsd-test-print-notifications
 %{_libexecdir}/gsd-test-remote-display
 %{_libexecdir}/gsd-test-screensaver-proxy
