@@ -14,7 +14,7 @@ Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 Requires: control-center-filesystem
 
 BuildRequires:  dbus-glib-devel
-BuildRequires:  gtk3-devel >= 2.99.3
+BuildRequires:  gtk3-devel >= 3.7.8
 BuildRequires:  gnome-desktop3-devel >= 3.1.4
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
@@ -256,6 +256,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Wed Feb 06 2013 Debarshi Ray <rishi@fedoraproject.org> - 3.7.5-2
+- Bump the gtk3 BuildRequires
+
 * Tue Feb 05 2013 Richard Hughes <rhughes@redhat.com> - 3.7.5-1
 - Update to 3.7.5
 
