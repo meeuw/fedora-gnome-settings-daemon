@@ -127,9 +127,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/a11y-keyboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/liba11y-keyboard.so
 
-%{_libdir}/gnome-settings-daemon-3.0/background.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libbackground.so
-
 %{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
 
@@ -234,7 +231,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
-%{_libexecdir}/gsd-test-background
 %{_libexecdir}/gsd-test-cursor
 %{_libexecdir}/gsd-test-housekeeping
 %{_libexecdir}/gsd-test-input-helper
