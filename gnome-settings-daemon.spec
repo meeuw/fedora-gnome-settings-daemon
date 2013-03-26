@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.7.92
+Version:        3.8.0
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -7,7 +7,7 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.7/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.8/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue Mar 26 2013 Richard Hughes <rhughes@redhat.com> - 3.8.0-1
+- Update to 3.8.0
+
 * Tue Mar 19 2013 Matthias Clasen <mclasen@redhat.com> - 3.7.92-1
 - Update to 3.7.92
 
