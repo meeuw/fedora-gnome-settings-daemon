@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.8.0
+Version:        3.8.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -252,6 +252,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue Apr 16 2013 Richard Hughes <rhughes@redhat.com> - 3.8.1-1
+- Update to 3.8.1
+
 * Tue Mar 26 2013 Richard Hughes <rhughes@redhat.com> - 3.8.0-1
 - Update to 3.8.0
 
