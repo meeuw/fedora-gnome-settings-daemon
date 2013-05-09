@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
 Version:        3.8.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -10,6 +10,8 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.8/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+# fedora has newer different default ibus engines for Chinese and Japanese
+Patch1:         %{name}-ibus-kkc-libpinyin.patch
 
 Requires: control-center-filesystem
 
@@ -76,6 +78,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
+%patch1 -p1 -b .ibus-anthy-pinyin
 
 autoreconf -i -f
 
@@ -252,6 +255,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Thu May  9 2013 Jens Petersen <petersen@redhat.com> - 3.8.1-2
+- default ibus engine in Fedora is now kkc for Japanese
+  and libpinyin for Chinese (#948117)
+
 * Tue Apr 16 2013 Richard Hughes <rhughes@redhat.com> - 3.8.1-1
 - Update to 3.8.1
 
