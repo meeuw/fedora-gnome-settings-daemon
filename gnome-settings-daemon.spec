@@ -14,6 +14,7 @@ Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 Patch1:         %{name}-ibus-kkc-libpinyin.patch
 
 Requires: control-center-filesystem
+Requires: colord
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
