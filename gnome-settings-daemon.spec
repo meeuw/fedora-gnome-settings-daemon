@@ -1,6 +1,6 @@
 Name:           gnome-settings-daemon
-Version:        3.8.1
-Release:        2%{?dist}
+Version:        3.8.2
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -255,6 +255,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue May 14 2013 Richard Hughes <rhughes@redhat.com> - 3.8.2-1
+- Update to 3.8.2
+
 * Thu May  9 2013 Jens Petersen <petersen@redhat.com> - 3.8.1-2
 - default ibus engine in Fedora is now kkc for Japanese
   and libpinyin for Chinese (#948117)
