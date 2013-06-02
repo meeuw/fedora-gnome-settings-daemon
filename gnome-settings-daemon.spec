@@ -1,3 +1,5 @@
+%global gnome_desktop_version 3.9.0
+
 Name:           gnome-settings-daemon
 Version:        3.9.2
 Release:        1%{?dist}
@@ -13,7 +15,7 @@ Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
-BuildRequires:  gnome-desktop3-devel >= 3.1.4
+BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  gstreamer-devel
 BuildRequires:  gstreamer-plugins-base-devel
@@ -49,6 +51,7 @@ BuildRequires:  xorg-x11-drv-wacom-devel
 
 Requires: colord
 Requires: control-center-filesystem
+Requires: gnome-desktop3%{?_isa} >= %{gnome_desktop_version}
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -257,6 +260,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 - Update to 3.9.2
 - Drop the ibus-kkc-libpinyin patch; the hardcoded input sources
   list is gone from g-s-d
+- Set the minimum required gnome-desktop3 version
 
 * Tue May 14 2013 Richard Hughes <rhughes@redhat.com> - 3.8.2-1
 - Update to 3.8.2
