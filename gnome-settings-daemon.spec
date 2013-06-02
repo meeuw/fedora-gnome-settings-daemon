@@ -13,9 +13,6 @@ Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 # fedora has newer different default ibus engines for Chinese and Japanese
 Patch1:         %{name}-ibus-kkc-libpinyin.patch
 
-Requires: control-center-filesystem
-Requires: colord
-
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
 BuildRequires:  gnome-desktop3-devel >= 3.1.4
@@ -51,6 +48,9 @@ BuildRequires:  docbook-style-xsl
 BuildRequires:  libwacom-devel >= 0.7
 BuildRequires:  xorg-x11-drv-wacom-devel
 %endif
+
+Requires: colord
+Requires: control-center-filesystem
 
 %description
 A daemon to share settings from GNOME to other applications. It also
