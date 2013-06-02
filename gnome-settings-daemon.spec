@@ -1,5 +1,5 @@
 Name:           gnome-settings-daemon
-Version:        3.8.2
+Version:        3.9.2
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -7,11 +7,9 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.8/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.9/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-# fedora has newer different default ibus engines for Chinese and Japanese
-Patch1:         %{name}-ibus-kkc-libpinyin.patch
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
@@ -79,7 +77,6 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
-%patch1 -p1 -b .ibus-anthy-pinyin
 
 autoreconf -i -f
 
@@ -178,6 +175,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/wacom.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libgsdwacom.so
 %{_libexecdir}/gsd-wacom-led-helper
+%{_libexecdir}/gsd-wacom-oled-helper
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
 %endif
 
@@ -208,7 +206,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gnome-settings-daemon
 %{_libexecdir}/gsd-locate-pointer
 %{_libexecdir}/gsd-printer
-%{_libexecdir}/gsd-input-sources-switcher
 
 %{_datadir}/gnome-settings-daemon/
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
@@ -256,6 +253,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Sun Jun 02 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.2-1
+- Update to 3.9.2
+- Drop the ibus-kkc-libpinyin patch; the hardcoded input sources
+  list is gone from g-s-d
+
 * Tue May 14 2013 Richard Hughes <rhughes@redhat.com> - 3.8.2-1
 - Update to 3.8.2
 
