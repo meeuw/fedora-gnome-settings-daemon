@@ -1,7 +1,7 @@
 %global gnome_desktop_version 3.9.0
 
 Name:           gnome-settings-daemon
-Version:        3.9.2
+Version:        3.9.3
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -207,6 +207,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libgsd.so
 
 %{_libexecdir}/gnome-settings-daemon
+%{_libexecdir}/gnome-settings-daemon-localeexec
 %{_libexecdir}/gsd-locate-pointer
 %{_libexecdir}/gsd-printer
 
@@ -256,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Thu Jun 20 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.3-1
+- Update to 3.9.3
+
 * Sun Jun 02 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.2-1
 - Update to 3.9.2
 - Drop the ibus-kkc-libpinyin patch; the hardcoded input sources
