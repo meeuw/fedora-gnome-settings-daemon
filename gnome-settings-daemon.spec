@@ -2,7 +2,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.9.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -17,8 +17,6 @@ BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
 BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
-BuildRequires:  gstreamer-devel
-BuildRequires:  gstreamer-plugins-base-devel
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  libgnomekbd-devel
 BuildRequires:  libnotify-devel
@@ -257,6 +255,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Mon Jul 22 2013 Bastien Nocera <bnocera@redhat.com> 3.9.3-2
+- Remove obsolete GStreamer 0.10 BRs
+
 * Thu Jun 20 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.3-1
 - Update to 3.9.3
 
