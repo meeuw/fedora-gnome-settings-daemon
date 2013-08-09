@@ -1,8 +1,8 @@
 %global gnome_desktop_version 3.9.0
 
 Name:           gnome-settings-daemon
-Version:        3.9.3
-Release:        3%{?dist}
+Version:        3.9.5
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -121,8 +121,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
 %doc AUTHORS COPYING NEWS
-%dir %{_sysconfdir}/gnome-settings-daemon
-%dir %{_sysconfdir}/gnome-settings-daemon/xrandr
 
 # list plugins explicitly, so we notice if one goes missing
 # some of these don't have a separate gschema
@@ -160,11 +158,14 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/remote-display.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libremote-display.so
 
+%{_libdir}/gnome-settings-daemon-3.0/librfkill.so
+%{_libdir}/gnome-settings-daemon-3.0/rfkill.gnome-settings-plugin
+
 %{_libdir}/gnome-settings-daemon-3.0/screensaver-proxy.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libscreensaver-proxy.so
 
-#{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
-#{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
+%{_libdir}/gnome-settings-daemon-3.0/smartcard.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libsmartcard.so
 
 %{_libdir}/gnome-settings-daemon-3.0/sound.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libsound.so
@@ -243,8 +244,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-orientation
 %{_libexecdir}/gsd-test-print-notifications
 %{_libexecdir}/gsd-test-remote-display
+%{_libexecdir}/gsd-test-rfkill
 %{_libexecdir}/gsd-test-screensaver-proxy
-#{_libexecdir}/gsd-test-smartcard
+%{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
 %{_libexecdir}/gsd-test-xrandr
 %{_libexecdir}/gsd-test-xsettings
@@ -255,6 +257,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Fri Aug 09 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.5-1
+- Update to 3.9.5
+- Remove empty /etc/gnome-settings-daemon directory
+- Install new rfkill plugin and add back the smartcard plugin
+
 * Tue Jul 30 2013 Richard Hughes <rhughes@redhat.com> - 3.9.3-3
 - Rebuild for colord soname bump
 
