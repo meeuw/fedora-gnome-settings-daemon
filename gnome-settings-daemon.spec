@@ -1,7 +1,7 @@
 %global gnome_desktop_version 3.9.0
 
 Name:           gnome-settings-daemon
-Version:        3.9.5
+Version:        3.9.90
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -257,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Thu Aug 22 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.90-1
+- Update to 3.9.90
+
 * Fri Aug 09 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.5-1
 - Update to 3.9.5
 - Remove empty /etc/gnome-settings-daemon directory
