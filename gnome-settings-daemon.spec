@@ -2,7 +2,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.9.90
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -12,6 +12,8 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.9/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+# Backported from upstream
+Patch1:         0001-Keep-middle-click-paste-enabled-for-now.patch
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
@@ -78,6 +80,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
+%patch1 -p1 -b .middle_click_paste
 
 autoreconf -i -f
 
@@ -257,6 +260,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Fri Aug 23 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.90-2
+- Keep middle click paste enabled for now
+
 * Thu Aug 22 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.90-1
 - Update to 3.9.90
 

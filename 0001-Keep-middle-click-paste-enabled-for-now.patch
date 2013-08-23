@@ -1,0 +1,28 @@
+From e204eddcdbfb9f8d722355fab1643330c7d10c25 Mon Sep 17 00:00:00 2001
+From: Matthias Clasen <mclasen@redhat.com>
+Date: Thu, 22 Aug 2013 16:23:01 -0400
+Subject: [PATCH] Keep middle click paste enabled for now
+
+We're not really ready for this change, and we haven't
+messaged it properly. After discussion with Allan Day and
+Jakup Steiner, we'll defer this change until the next cycle.
+---
+ plugins/xsettings/gsd-xsettings-manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugins/xsettings/gsd-xsettings-manager.c b/plugins/xsettings/gsd-xsettings-manager.c
+index cb018a0..c0f21fc 100644
+--- a/plugins/xsettings/gsd-xsettings-manager.c
++++ b/plugins/xsettings/gsd-xsettings-manager.c
+@@ -348,7 +348,7 @@ static FixedEntry fixed_entries [] = {
+         { "Gtk/ShowInputMethodMenu", fixed_false_int },
+         { "Gtk/ShowUnicodeMenu",     fixed_false_int },
+         { "Gtk/AutoMnemonics",       fixed_true_int },
+-        { "Gtk/EnablePrimaryPaste",  fixed_false_int },
++        { "Gtk/EnablePrimaryPaste",  fixed_true_int },
+ };
+ 
+ static TranslationEntry translations [] = {
+-- 
+1.8.3.1
+
