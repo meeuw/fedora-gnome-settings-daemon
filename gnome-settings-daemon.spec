@@ -5,7 +5,7 @@
 %global geocode_glib_version 0.99.3
 
 Name:           gnome-settings-daemon
-Version:        3.9.91
+Version:        3.9.91.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -273,6 +273,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue Sep 03 2013 Matthias Clasen <mclasen@redhat.com> - 3.9.91.1-1
+- Update to 3.9.91.1
+
 * Tue Sep 03 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.91-1
 - Update to 3.9.91
 - Include the new datetime plugin
