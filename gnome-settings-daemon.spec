@@ -26,6 +26,7 @@ BuildRequires:  libgnomekbd-devel
 BuildRequires:  libnotify-devel
 BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
+BuildRequires:  geoclue2-devel >= %{geoclue_version}
 BuildRequires:  geocode-glib-devel >= %{geocode_glib_version}
 BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
