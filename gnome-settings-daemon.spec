@@ -1,8 +1,12 @@
 %global gnome_desktop_version 3.9.0
+%global libgweather_version 3.9.5
+%global gsettings_desktop_schemas_version 3.9.91
+%global geoclue_version 1.99.3
+%global geocode_glib_version 0.99.3
 
 Name:           gnome-settings-daemon
-Version:        3.9.90
-Release:        2%{?dist}
+Version:        3.9.91
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -12,8 +16,6 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.9/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-# Backported from upstream
-Patch1:         0001-Keep-middle-click-paste-enabled-for-now.patch
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
@@ -24,15 +26,17 @@ BuildRequires:  libgnomekbd-devel
 BuildRequires:  libnotify-devel
 BuildRequires:  gettext intltool
 BuildRequires:  fontconfig-devel
+BuildRequires:  geocode-glib-devel >= %{geocode_glib_version}
 BuildRequires:  libcanberra-devel
 BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
 BuildRequires:  libxklavier-devel
-BuildRequires:  gsettings-desktop-schemas-devel >= 0.1.7
+BuildRequires:  gsettings-desktop-schemas-devel >= %{gsettings_desktop_schemas_version}
 BuildRequires:  PackageKit-glib-devel
 BuildRequires:  cups-devel
 BuildRequires:  upower-devel
 BuildRequires:  libgudev1-devel
+BuildRequires:  libgweather-devel >= %{libgweather_version}
 BuildRequires:  librsvg2-devel
 BuildRequires:  nss-devel
 BuildRequires:  colord-devel >= 0.1.12
@@ -51,7 +55,11 @@ BuildRequires:  xorg-x11-drv-wacom-devel
 
 Requires: colord
 Requires: control-center-filesystem
+Requires: geoclue2 >= %{geoclue_version}
+Requires: geocode-glib%{?_isa} >= %{geocode_glib_version}
 Requires: gnome-desktop3%{?_isa} >= %{gnome_desktop_version}
+Requires: gsettings-desktop-schemas%{?_isa} >= %{gsettings_desktop_schemas_version}
+Requires: libgweather%{?_isa} >= %{libgweather_version}
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -80,7 +88,6 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
-%patch1 -p1 -b .middle_click_paste
 
 autoreconf -i -f
 
@@ -132,6 +139,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %{_libdir}/gnome-settings-daemon-3.0/clipboard.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libclipboard.so
+
+%{_libdir}/gnome-settings-daemon-3.0/datetime.gnome-settings-plugin
+%{_libdir}/gnome-settings-daemon-3.0/libdatetime.so
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.datetime.gschema.xml
 
 %{_libdir}/gnome-settings-daemon-3.0/housekeeping.gnome-settings-plugin
 %{_libdir}/gnome-settings-daemon-3.0/libhousekeeping.so
@@ -239,6 +250,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
 %{_libexecdir}/gsd-test-cursor
+%{_libexecdir}/gsd-test-datetime
 %{_libexecdir}/gsd-test-housekeeping
 %{_libexecdir}/gsd-test-input-helper
 %{_libexecdir}/gsd-test-keyboard
@@ -251,6 +263,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-screensaver-proxy
 %{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
+%{_libexecdir}/gsd-test-updates
 %{_libexecdir}/gsd-test-xrandr
 %{_libexecdir}/gsd-test-xsettings
 
@@ -260,6 +273,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue Sep 03 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.91-1
+- Update to 3.9.91
+- Include the new datetime plugin
+
 * Fri Aug 23 2013 Kalev Lember <kalevlember@gmail.com> - 3.9.90-2
 - Keep middle click paste enabled for now
 
