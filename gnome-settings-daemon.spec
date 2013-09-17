@@ -6,7 +6,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.9.91.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -16,6 +16,9 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.9/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+
+# taken from upstream to make offline updates actually work
+Patch1:         0001-updates-Do-not-clear-the-offline-update-if-rebooting.patch
 
 BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
@@ -89,6 +92,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
+%patch1 -p1 -b .offline-updates-no-clear
 
 autoreconf -i -f
 
@@ -274,6 +278,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Tue Sep 17 2013 Richard Hughes <rhughes@redhat.com> - 3.9.91.1-2
+- Grab a patch from upstream so that the offline updates feature can
+  actually work when reboot returns with success.
+
 * Tue Sep 03 2013 Matthias Clasen <mclasen@redhat.com> - 3.9.91.1-1
 - Update to 3.9.91.1
 
