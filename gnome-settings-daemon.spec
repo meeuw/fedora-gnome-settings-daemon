@@ -17,7 +17,6 @@ Source:         http://download.gnome.org/sources/%{name}/3.10/%{name}-%{version
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
-BuildRequires:  dbus-glib-devel
 BuildRequires:  gtk3-devel >= 3.7.8
 BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
@@ -70,7 +69,6 @@ handles global keybindings, as well as a number of desktop-wide settings.
 Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name} = %{version}-%{release}
-Requires:       dbus-glib-devel
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
