@@ -6,7 +6,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.10.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -276,6 +276,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Fri Oct 11 2013 Richard Hughes <rhughes@redhat.com> - 3.10.0-3
+- Apply the previous patch on Fedora too.
+
 * Fri Oct 11 2013 Richard Hughes <rhughes@redhat.com> - 3.10.0-2
 - Grab a patch from upstream to fix the multiple notifications about updates.
 - Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1009132
