@@ -89,8 +89,8 @@ The %{name}-updates package contains the updates plugin for %{name}
 %setup -q
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
-%patch1 -p1 -b .updates-fixes
 %endif
+%patch1 -p1 -b .updates-fixes
 
 autoreconf -i -f
 
