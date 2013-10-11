@@ -6,7 +6,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.10.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -16,6 +16,9 @@ URL:            http://download.gnome.org/sources/%{name}
 Source:         http://download.gnome.org/sources/%{name}/3.10/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
+
+# already upstreamed fixes to the updates plugin
+Patch1:         master-updates.patch
 
 BuildRequires:  gtk3-devel >= 3.7.8
 BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
@@ -86,6 +89,7 @@ The %{name}-updates package contains the updates plugin for %{name}
 %setup -q
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
+%patch1 -p1 -b .updates-fixes
 %endif
 
 autoreconf -i -f
@@ -272,6 +276,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Fri Oct 11 2013 Richard Hughes <rhughes@redhat.com> - 3.10.0-2
+- Grab a patch from upstream to fix the multiple notifications about updates.
+- Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1009132
+
 * Tue Sep 24 2013 Kalev Lember <kalevlember@gmail.com> - 3.10.0-1
 - Update to 3.10.0
 
