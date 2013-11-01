@@ -1,4 +1,4 @@
-%global gnome_desktop_version 3.9.0
+%global gnome_desktop_version 3.11.1
 %global libgweather_version 3.9.5
 %global gsettings_desktop_schemas_version 3.9.91
 %global geoclue_version 1.99.3
