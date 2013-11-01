@@ -168,9 +168,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/libprint-notifications.so
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.print-notifications.gschema.xml
 
-%{_libdir}/gnome-settings-daemon-3.0/remote-display.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libremote-display.so
-
 %{_libdir}/gnome-settings-daemon-3.0/librfkill.so
 %{_libdir}/gnome-settings-daemon-3.0/rfkill.gnome-settings-plugin
 
@@ -257,7 +254,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-mouse
 %{_libexecdir}/gsd-test-orientation
 %{_libexecdir}/gsd-test-print-notifications
-%{_libexecdir}/gsd-test-remote-display
 %{_libexecdir}/gsd-test-rfkill
 %{_libexecdir}/gsd-test-screensaver-proxy
 %{_libexecdir}/gsd-test-smartcard
