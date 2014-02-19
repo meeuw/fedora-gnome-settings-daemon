@@ -6,7 +6,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.11.90
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -270,6 +270,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Wed Feb 19 2014 Richard Hughes <rhughes@redhat.com> - 3.11.90-2
+- Rebuilt for gnome-desktop soname bump
+
 * Tue Feb 18 2014 Richard Hughes <rhughes@redhat.com> - 3.11.90-1
 - Update to 3.11.90
 
