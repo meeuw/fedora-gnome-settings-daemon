@@ -1,12 +1,13 @@
+%global gtk3_version 3.12.0
 %global gnome_desktop_version 3.11.1
 %global libgweather_version 3.9.5
 %global gsettings_desktop_schemas_version 3.9.91
-%global geoclue_version 1.99.3
+%global geoclue_version 2.1.2
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
 Version:        3.12.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -17,7 +18,7 @@ Source:         http://download.gnome.org/sources/%{name}/3.12/%{name}-%{version
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
-BuildRequires:  gtk3-devel >= 3.7.8
+BuildRequires:  gtk3-devel >= %{gtk3_version}
 BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
 BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
 BuildRequires:  pulseaudio-libs-devel
@@ -60,6 +61,7 @@ Requires: geoclue2 >= %{geoclue_version}
 Requires: geocode-glib%{?_isa} >= %{geocode_glib_version}
 Requires: gnome-desktop3%{?_isa} >= %{gnome_desktop_version}
 Requires: gsettings-desktop-schemas%{?_isa} >= %{gsettings_desktop_schemas_version}
+Requires: gtk3%{?_isa} >= %{gtk3_version}
 Requires: libgweather%{?_isa} >= %{libgweather_version}
 
 %description
@@ -270,6 +272,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Sat Apr 05 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.0.1-2
+- Update dep versions
+
 * Wed Mar 26 2014 Richard Hughes <rhughes@redhat.com> - 3.12.0.1-1
 - Update to 3.12.0.1
 
