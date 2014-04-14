@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.12.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -56,7 +56,6 @@ BuildRequires:  xorg-x11-drv-wacom-devel
 %endif
 
 Requires: colord
-Requires: control-center-filesystem
 Requires: geoclue2 >= %{geoclue_version}
 Requires: geocode-glib%{?_isa} >= %{geocode_glib_version}
 Requires: gnome-desktop3%{?_isa} >= %{gnome_desktop_version}
@@ -272,6 +271,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
+* Mon Apr 14 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.0.1-3
+- Drop control-center-filesystem dependency
+
 * Sat Apr 05 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.0.1-2
 - Update dep versions
 
