@@ -70,7 +70,7 @@ handles global keybindings, as well as a number of desktop-wide settings.
 %package        devel
 Summary:        Development files for %{name}
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -79,7 +79,7 @@ developing applications that use %{name}.
 %package	updates
 Summary:        updates plugin for  %{name} 
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description	updates
 The %{name}-updates package contains the updates plugin for %{name} 
@@ -273,6 +273,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Wed Apr 16 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.1-1
 - Update to 3.12.1
+- Tighten subpackage deps
 
 * Mon Apr 14 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.0.1-3
 - Drop control-center-filesystem dependency
