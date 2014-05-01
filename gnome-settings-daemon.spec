@@ -63,6 +63,8 @@ Requires: gsettings-desktop-schemas%{?_isa} >= %{gsettings_desktop_schemas_versi
 Requires: gtk3%{?_isa} >= %{gtk3_version}
 Requires: libgweather%{?_isa} >= %{libgweather_version}
 
+Obsoletes: %{name}-updates < 3.13.1
+
 %description
 A daemon to share settings from GNOME to other applications. It also
 handles global keybindings, as well as a number of desktop-wide settings.
@@ -75,14 +77,6 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description    devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
-
-%package	updates
-Summary:        updates plugin for  %{name} 
-Group:          Development/Libraries
-Requires:       %{name}%{?_isa} = %{version}-%{release}
-
-%description	updates
-The %{name}-updates package contains the updates plugin for %{name} 
 
 %prep
 %setup -q
@@ -120,14 +114,6 @@ fi
 
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
-
-%postun	updates
-if [ $1 -eq 0 ]; then
-  glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
-fi
-
-%posttrans updates
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
@@ -261,18 +247,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-screensaver-proxy
 %{_libexecdir}/gsd-test-smartcard
 %{_libexecdir}/gsd-test-sound
-%{_libexecdir}/gsd-test-updates
 %{_libexecdir}/gsd-test-xrandr
 %{_libexecdir}/gsd-test-xsettings
-
-%files updates
-%{_libdir}/gnome-settings-daemon-3.0/updates.gnome-settings-plugin
-%{_libdir}/gnome-settings-daemon-3.0/libupdates.so
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.updates.gschema.xml
 
 %changelog
 * Thu May 01 2014 Kalev Lember <kalevlember@gmail.com> - 3.13.1-1
 - Update to 3.13.1
+- Remove and obsolete the updates plugin
 
 * Wed Apr 16 2014 Kalev Lember <kalevlember@gmail.com> - 3.12.1-1
 - Update to 3.12.1
