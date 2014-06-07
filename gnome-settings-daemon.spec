@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.13.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -251,6 +251,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.13.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Thu May 01 2014 Kalev Lember <kalevlember@gmail.com> - 3.13.1-1
 - Update to 3.13.1
 - Remove and obsolete the updates plugin
