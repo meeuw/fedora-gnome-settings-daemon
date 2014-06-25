@@ -6,8 +6,8 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.13.1
-Release:        2%{?dist}
+Version:        3.13.2
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -251,6 +251,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Wed Jun 25 2014 Richard Hughes <rhughes@redhat.com> - 3.13.2-1
+- Update to 3.13.2
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.13.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
