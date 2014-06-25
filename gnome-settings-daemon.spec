@@ -50,6 +50,7 @@ BuildRequires:  ibus-devel
 BuildRequires:  libxslt
 BuildRequires:  docbook-style-xsl
 BuildRequires:  xkeyboard-config-devel
+BuildRequires:  NetworkManager-glib-devel
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
 BuildRequires:  libwacom-devel >= 0.7
 BuildRequires:  xorg-x11-drv-wacom-devel
@@ -200,6 +201,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %{_libdir}/gnome-settings-daemon-3.0/libcursor.so
 %{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
+
+%{_libdir}/gnome-settings-daemon-3.0/libsharing.so
+%{_libdir}/gnome-settings-daemon-3.0/sharing.gnome-settings-plugin
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.sharing.gschema.xml
 
 %{_libdir}/gnome-settings-daemon-3.0/libgsd.so
 
