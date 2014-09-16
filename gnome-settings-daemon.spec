@@ -6,7 +6,7 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.13.91
+Version:        3.13.92
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -46,7 +46,6 @@ BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
 BuildRequires:  libxkbfile-devel
-BuildRequires:  ibus-devel
 BuildRequires:  libxslt
 BuildRequires:  docbook-style-xsl
 BuildRequires:  xkeyboard-config-devel
@@ -65,6 +64,10 @@ Requires: gtk3%{?_isa} >= %{gtk3_version}
 Requires: libgweather%{?_isa} >= %{libgweather_version}
 
 Obsoletes: %{name}-updates < 3.13.1
+
+# Input sources handling was moved to gnome-shell / mutter; make sure not to
+# break older gnome-shell versions.
+Conflicts: gnome-shell < 3.13.92
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -222,8 +225,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.gschema.xml
 
-%{_datadir}/dbus-1/services/org.freedesktop.IBus.service
-
 %{_datadir}/man/man1/gnome-settings-daemon.1.gz
 
 
@@ -256,6 +257,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Tue Sep 16 2014 Kalev Lember <kalevlember@gmail.com> - 3.13.92-1
+- Update to 3.13.92
+
 * Wed Sep 03 2014 Kalev Lember <kalevlember@gmail.com> - 3.13.91-1
 - Update to 3.13.91
 
