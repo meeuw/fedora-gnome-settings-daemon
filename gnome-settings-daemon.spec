@@ -92,9 +92,7 @@ autoreconf -i -f
 
 %build
 %configure --disable-static \
-           --enable-profiling \
-           --enable-packagekit \
-           --enable-systemd
+           --enable-profiling
 make %{?_smp_mflags}
 
 
