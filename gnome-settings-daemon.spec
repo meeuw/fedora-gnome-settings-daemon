@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.14.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -64,6 +64,7 @@ Requires: gtk3%{?_isa} >= %{gtk3_version}
 Requires: libgweather%{?_isa} >= %{libgweather_version}
 
 Obsoletes: %{name}-updates < 3.13.1
+Obsoletes: drwright < 3.5.0-3
 
 # Input sources handling was moved to gnome-shell / mutter; make sure not to
 # break older gnome-shell versions.
@@ -255,6 +256,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Sun Oct 26 2014 Kalev Lember <kalevlember@gmail.com> - 3.14.1-2
+- Obsolete drwright
+
 * Tue Oct 14 2014 Rui Matos <rmatos@redhat.com> - 3.14.1-1
 - Update to 3.14.1
 
