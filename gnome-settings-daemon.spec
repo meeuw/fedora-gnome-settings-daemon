@@ -45,7 +45,9 @@ BuildRequires:  lcms2-devel >= 2.2
 BuildRequires:  libXi-devel libXfixes-devel
 BuildRequires:  systemd-devel
 BuildRequires:  libXtst-devel
+%if 0%{?fedora}
 BuildRequires:  libwayland-client-devel
+%endif
 BuildRequires:  libxslt
 BuildRequires:  docbook-style-xsl
 BuildRequires:  xkeyboard-config-devel
@@ -93,6 +95,9 @@ autoreconf -i -f
 
 %build
 %configure --disable-static \
+%if 0%{?rhel}
+           --disable-wayland \
+%endif
            --enable-profiling
 make %{?_smp_mflags}
 
