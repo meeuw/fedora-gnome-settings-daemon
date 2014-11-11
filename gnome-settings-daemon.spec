@@ -6,8 +6,8 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.14.1
-Release:        3%{?dist}
+Version:        3.14.2
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -261,6 +261,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Tue Nov 11 2014 Kalev Lember <kalevlember@gmail.com> - 3.14.2-1
+- Update to 3.14.2
+
 * Sat Nov 01 2014 Richard Hughes <rhughes@redhat.com> - 3.14.1-3
 - Fix compile on RHEL
 
