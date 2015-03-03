@@ -125,7 +125,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files -f %{name}.lang
-%doc AUTHORS COPYING NEWS
+%license COPYING
+%doc AUTHORS NEWS
 
 # list plugins explicitly, so we notice if one goes missing
 # some of these don't have a separate gschema
@@ -263,6 +264,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Tue Mar 03 2015 Kalev Lember <kalevlember@gmail.com> - 3.15.91-1
 - Update to 3.15.91
+- Use the %%license macro for the COPYING file
 
 * Tue Feb 17 2015 Richard Hughes <rhughes@redhat.com> - 3.15.90-1
 - Update to 3.15.90
