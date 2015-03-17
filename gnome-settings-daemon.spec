@@ -6,7 +6,7 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.15.91
+Version:        3.15.92
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -207,9 +207,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libdir}/gnome-settings-daemon-3.0/orientation.gnome-settings-plugin
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.orientation.gschema.xml
 
-%{_libdir}/gnome-settings-daemon-3.0/libcursor.so
-%{_libdir}/gnome-settings-daemon-3.0/cursor.gnome-settings-plugin
-
 %{_libdir}/gnome-settings-daemon-3.0/libsharing.so
 %{_libdir}/gnome-settings-daemon-3.0/sharing.gnome-settings-plugin
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.sharing.gschema.xml
@@ -245,7 +242,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %endif
 %{_libexecdir}/gsd-test-a11y-keyboard
 %{_libexecdir}/gsd-test-a11y-settings
-%{_libexecdir}/gsd-test-cursor
 %{_libexecdir}/gsd-test-datetime
 %{_libexecdir}/gsd-test-housekeeping
 %{_libexecdir}/gsd-test-input-helper
@@ -262,6 +258,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Tue Mar 17 2015 Kalev Lember <kalevlember@gmail.com> - 3.15.92-1
+- Update to 3.15.92
+
 * Tue Mar 03 2015 Kalev Lember <kalevlember@gmail.com> - 3.15.91-1
 - Update to 3.15.91
 - Use the %%license macro for the COPYING file
