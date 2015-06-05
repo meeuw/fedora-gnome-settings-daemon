@@ -6,7 +6,7 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.16.2
+Version:        3.17.2
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -14,7 +14,7 @@ Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.16/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.17/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
@@ -258,6 +258,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Fri Jun 05 2015 Kalev Lember <kalevlember@gmail.com> - 3.17.2-1
+- Update to 3.17.2
+
 * Tue May 12 2015 Kalev Lember <kalevlember@gmail.com> - 3.16.2-1
 - Update to 3.16.2
 
