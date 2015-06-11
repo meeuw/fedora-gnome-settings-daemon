@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.17.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -58,6 +58,7 @@ BuildRequires:  xorg-x11-drv-wacom-devel
 %endif
 
 Requires: colord
+Requires: iio-sensor-proxy
 Requires: geoclue2 >= %{geoclue_version}
 Requires: geocode-glib%{?_isa} >= %{geocode_glib_version}
 Requires: gnome-desktop3%{?_isa} >= %{gnome_desktop_version}
@@ -258,6 +259,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Thu Jun 11 2015 Richard Hughes <rhughes@redhat.com> - 3.17.2-2
+- Add runtime dep on iio-sensor-proxy for the ambient light sensor
+
 * Fri Jun 05 2015 Kalev Lember <kalevlember@gmail.com> - 3.17.2-1
 - Update to 3.17.2
 
