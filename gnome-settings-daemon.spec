@@ -18,43 +18,40 @@ Source:         http://download.gnome.org/sources/%{name}/3.17/%{name}-%{version
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
-BuildRequires:  gtk3-devel >= %{gtk3_version}
-BuildRequires:  gnome-desktop3-devel >= %{gnome_desktop_version}
-BuildRequires:  xorg-x11-proto-devel libXxf86misc-devel
-BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  libgnomekbd-devel
-BuildRequires:  libnotify-devel
+BuildRequires:  pkgconfig(colord) >= 1.0.2
+BuildRequires:  pkgconfig(fontconfig)
+BuildRequires:  pkgconfig(geoclue-2.0) >= %{geoclue_version}
+BuildRequires:  pkgconfig(geocode-glib-1.0) >= %{geocode_glib_version}
+BuildRequires:  pkgconfig(gnome-desktop-3.0) >= %{gnome_desktop_version}
+BuildRequires:  pkgconfig(gsettings-desktop-schemas) >= %{gsettings_desktop_schemas_version}
+BuildRequires:  pkgconfig(gtk+-3.0) >= %{gtk3_version}
+BuildRequires:  pkgconfig(gudev-1.0)
+BuildRequires:  pkgconfig(gweather-3.0) >= %{libgweather_version}
+BuildRequires:  pkgconfig(lcms2) >= 2.2
+BuildRequires:  pkgconfig(libcanberra-gtk3)
+BuildRequires:  pkgconfig(libnm-glib)
+BuildRequires:  pkgconfig(libnm-util)
+BuildRequires:  pkgconfig(libnotify)
+BuildRequires:  pkgconfig(libpulse)
+BuildRequires:  pkgconfig(libpulse-mainloop-glib)
+BuildRequires:  pkgconfig(librsvg-2.0)
+BuildRequires:  pkgconfig(nss)
+BuildRequires:  pkgconfig(polkit-gobject-1)
+BuildRequires:  pkgconfig(upower-glib)
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(xi)
+BuildRequires:  pkgconfig(xtst)
 BuildRequires:  gettext intltool
-BuildRequires:  fontconfig-devel
-BuildRequires:  geoclue2-devel >= %{geoclue_version}
-BuildRequires:  geocode-glib-devel >= %{geocode_glib_version}
-BuildRequires:  libcanberra-devel
-BuildRequires:  polkit-devel
 BuildRequires:  autoconf automake libtool
-BuildRequires:  libxklavier-devel
-BuildRequires:  gsettings-desktop-schemas-devel >= %{gsettings_desktop_schemas_version}
-BuildRequires:  PackageKit-glib-devel
 BuildRequires:  cups-devel
-BuildRequires:  upower-devel
-BuildRequires:  libgudev1-devel
-BuildRequires:  libgweather-devel >= %{libgweather_version}
-BuildRequires:  librsvg2-devel
-BuildRequires:  nss-devel
-BuildRequires:  colord-devel >= 0.1.12
-BuildRequires:  lcms2-devel >= 2.2
-BuildRequires:  libXi-devel libXfixes-devel
-BuildRequires:  systemd-devel
-BuildRequires:  libXtst-devel
 %if 0%{?fedora}
-BuildRequires:  libwayland-client-devel
+BuildRequires:  pkgconfig(wayland-client)
 %endif
 BuildRequires:  libxslt
 BuildRequires:  docbook-style-xsl
-BuildRequires:  xkeyboard-config-devel
-BuildRequires:  NetworkManager-glib-devel
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
-BuildRequires:  libwacom-devel >= 0.7
-BuildRequires:  xorg-x11-drv-wacom-devel
+BuildRequires:  pkgconfig(libwacom) >= 0.7
+BuildRequires:  pkgconfig(xorg-wacom)
 %endif
 
 Requires: colord
@@ -261,6 +258,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Wed Jul 22 2015 David King <amigadave@amigadave.com> - 3.17.3-1
 - Update to 3.17.3
+- Use pkgconfig for BuildRequires
 
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.17.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
