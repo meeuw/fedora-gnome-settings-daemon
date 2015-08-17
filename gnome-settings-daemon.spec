@@ -101,7 +101,7 @@ make %{?_smp_mflags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 %find_lang %{name} --with-gnome
@@ -258,6 +258,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %changelog
 * Mon Aug 17 2015 Kalev Lember <klember@redhat.com> - 3.17.90-1
 - Update to 3.17.90
+- Use make_install macro
 
 * Wed Jul 22 2015 David King <amigadave@amigadave.com> - 3.17.3-1
 - Update to 3.17.3
