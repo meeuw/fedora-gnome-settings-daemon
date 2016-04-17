@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.20.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
@@ -34,6 +34,7 @@ BuildRequires:  pkgconfig(libnm)
 BuildRequires:  pkgconfig(libnotify)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(libpulse-mainloop-glib)
+BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(librsvg-2.0)
 BuildRequires:  pkgconfig(nss)
 BuildRequires:  pkgconfig(polkit-gobject-1)
@@ -254,6 +255,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Sun Apr 17 2016 Bastien Nocera <bnocera@redhat.com> - 3.20.1-2
+- Require alsa to enable the audio device selection dialogue
+
 * Wed Apr 13 2016 Kalev Lember <klember@redhat.com> - 3.20.1-1
 - Update to 3.20.1
 
