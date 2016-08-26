@@ -19,6 +19,7 @@ Source:         http://download.gnome.org/sources/%{name}/3.20/%{name}-%{version
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 Patch1:         0001-gvc-mixer-control-Really-fix-double-free-when-settin.patch
 
+BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(geoclue-2.0) >= %{geoclue_version}
@@ -35,7 +36,6 @@ BuildRequires:  pkgconfig(libnm)
 BuildRequires:  pkgconfig(libnotify)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(libpulse-mainloop-glib)
-BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(librsvg-2.0)
 BuildRequires:  pkgconfig(nss)
 BuildRequires:  pkgconfig(polkit-gobject-1)
