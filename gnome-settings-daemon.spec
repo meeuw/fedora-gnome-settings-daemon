@@ -6,18 +6,17 @@
 %global geocode_glib_version 3.10.0
 
 Name:           gnome-settings-daemon
-Version:        3.20.1
-Release:        3%{?dist}
+Version:        3.21.90
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 Group:          System Environment/Daemons
 License:        GPLv2+
 URL:            http://download.gnome.org/sources/%{name}
 #VCS: git:git://git.gnome.org/gnome-settings-daemon
-Source:         http://download.gnome.org/sources/%{name}/3.20/%{name}-%{version}.tar.xz
+Source:         http://download.gnome.org/sources/%{name}/3.21/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
-Patch1:         0001-gvc-mixer-control-Really-fix-double-free-when-settin.patch
 
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
@@ -91,9 +90,6 @@ developing applications that use %{name}.
 %patch0 -p1 -b .ppc-no-wacom
 %endif
 
-pushd plugins/media-keys/gvc
-%patch1 -p1 -b .crasher
-popd
 autoreconf -i -f
 
 %build
@@ -259,6 +255,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Fri Aug 26 2016 Kalev Lember <klember@redhat.com> - 3.21.90-1
+- Update to 3.21.90
+
 * Sun Apr 17 2016 Bastien Nocera <bnocera@redhat.com> - 3.20.1-3
 - Fix crasher in newly enabled audio device selection dialogue
 
