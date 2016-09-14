@@ -88,6 +88,10 @@ developing applications that use %{name}.
 %patch0 -p1 -b .ppc-no-wacom
 %endif
 
+# Work around broken 3.21.92 tarball
+rm plugins/smartcard/gsd-smartcard-enum-types.c
+rm plugins/smartcard/gsd-smartcard-enum-types.h
+
 autoreconf -i -f
 
 %build
