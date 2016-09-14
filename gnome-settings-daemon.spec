@@ -6,7 +6,7 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.21.92
+Version:        3.21.92.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -87,10 +87,6 @@ developing applications that use %{name}.
 %if 0%{?rhel}
 %patch0 -p1 -b .ppc-no-wacom
 %endif
-
-# Work around broken 3.21.92 tarball
-rm plugins/smartcard/gsd-smartcard-enum-types.c
-rm plugins/smartcard/gsd-smartcard-enum-types.h
 
 autoreconf -i -f
 
@@ -257,6 +253,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-xsettings
 
 %changelog
+* Wed Sep 14 2016 Kalev Lember <klember@redhat.com> - 3.21.92.1-1
+- Update to 3.21.92.1
+
 * Wed Sep 14 2016 Kalev Lember <klember@redhat.com> - 3.21.92-1
 - Update to 3.21.92
 - Don't set group tags
