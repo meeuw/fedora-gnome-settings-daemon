@@ -11,8 +11,8 @@ Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
-URL:            http://download.gnome.org/sources/%{name}
-Source0:        http://download.gnome.org/sources/%{name}/3.23/%{name}-%{version}.tar.xz
+URL:            https://download.gnome.org/sources/%{name}
+Source0:        https://download.gnome.org/sources/%{name}/3.23/%{name}-%{version}.tar.xz
 # disable wacom for ppc/ppc64 (used on RHEL)
 Patch0:         %{name}-3.5.4-ppc-no-wacom.patch
 
