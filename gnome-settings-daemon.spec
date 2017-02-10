@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.23.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -228,6 +228,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.23.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Thu Jan 12 2017 Bastien Nocera <bnocera@redhat.com> - 3.23.3-1
 + gnome-settings-daemon-3.23.3-1
 - Update to 3.23.3
