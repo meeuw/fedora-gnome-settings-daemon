@@ -222,8 +222,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_includedir}/gnome-settings-daemon-3.0
 %{_libdir}/pkgconfig/gnome-settings-daemon.pc
 %ifnarch s390 s390x %{?rhel:ppc ppc64}
-%{_libexecdir}/gsd-list-wacom
-%{_libexecdir}/gsd-test-wacom-osd
 %endif
 %{_libexecdir}/gsd-test-input-helper
 
