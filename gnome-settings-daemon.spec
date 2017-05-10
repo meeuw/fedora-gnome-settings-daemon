@@ -1,12 +1,12 @@
 %global gtk3_version 3.15.3
 %global gnome_desktop_version 3.11.1
 %global libgweather_version 3.9.5
-%global gsettings_desktop_schemas_version 3.20.0
+%global gsettings_desktop_schemas_version 3.23.3
 %global geocode_glib_version 3.10.0
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.24.1
+Version:        3.24.2
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -216,6 +216,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Wed May 10 2017 Kalev Lember <klember@redhat.com> - 3.24.2-1
+- Update to 3.24.2
+
 * Wed Apr 12 2017 Kalev Lember <klember@redhat.com> - 3.24.1-1
 - Update to 3.24.1
 
