@@ -1,0 +1,324 @@
+From a68b7265ec8f0030b0c444ae7b81275937a97f6f Mon Sep 17 00:00:00 2001
+From: Benjamin Berg <bberg@redhat.com>
+Date: Tue, 18 Apr 2017 11:56:09 +0200
+Subject: [PATCH 1/4] rfkill: Add property to Rfkill helper to inhibit kernel
+ handling
+
+The kernel will handle input events by default which is causing race
+conditions and can for example make it impossible to disable airplane
+mode again. Add API to allow disabling the kernel handler.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=760517
+---
+ plugins/rfkill/rfkill-glib.c | 114 +++++++++++++++++++++++++++++++++++++++++++
+ plugins/rfkill/rfkill-glib.h |   4 ++
+ 2 files changed, 118 insertions(+)
+
+diff --git a/plugins/rfkill/rfkill-glib.c b/plugins/rfkill/rfkill-glib.c
+index 0ef265f..3705dc1 100644
+--- a/plugins/rfkill/rfkill-glib.c
++++ b/plugins/rfkill/rfkill-glib.c
+@@ -31,6 +31,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <sys/ioctl.h>
+ 
+ #include <glib.h>
+ #include <gio/gio.h>
+@@ -43,6 +44,10 @@ enum {
+ 	LAST_SIGNAL
+ };
+ 
++enum {
++	PROP_RFKILL_INPUT_INHIBITED = 1
++};
++
+ static int signals[LAST_SIGNAL] = { 0 };
+ 
+ struct _CcRfkillGlib {
+@@ -52,6 +57,9 @@ struct _CcRfkillGlib {
+ 	GIOChannel *channel;
+ 	guint watch_id;
+ 
++	/* rfkill-input inhibitor */
++	int noinput_fd;
++
+ 	/* Pending Bluetooth enablement.
+ 	 * If (@change_all_timeout_id != 0), then (task != NULL). The converse
+ 	 * does not necessarily hold. */
+@@ -356,6 +364,7 @@ event_cb (GIOChannel   *source,
+ static void
+ cc_rfkill_glib_init (CcRfkillGlib *rfkill)
+ {
++	rfkill->noinput_fd = -1;
+ }
+ 
+ int
+@@ -433,6 +442,96 @@ cc_rfkill_glib_open (CcRfkillGlib *rfkill)
+ 	return fd;
+ }
+ 
++#define RFKILL_INPUT_INHIBITED(rfkill) (rfkill->noinput_fd >= 0)
++
++gboolean
++cc_rfkill_glib_get_rfkill_input_inhibited (CcRfkillGlib        *rfkill)
++{
++	g_return_val_if_fail (CC_RFKILL_IS_GLIB (rfkill), FALSE);
++
++	return RFKILL_INPUT_INHIBITED(rfkill);
++}
++
++void
++cc_rfkill_glib_set_rfkill_input_inhibited (CcRfkillGlib *rfkill,
++					   gboolean      inhibit)
++{
++	g_return_if_fail (CC_RFKILL_IS_GLIB (rfkill));
++
++	/* Nothing to do if the states already match. */
++	if (RFKILL_INPUT_INHIBITED(rfkill) == inhibit)
++		return;
++
++	if (!inhibit && RFKILL_INPUT_INHIBITED(rfkill)) {
++		close (rfkill->noinput_fd);
++		rfkill->noinput_fd = -1;
++
++		g_debug ("Closed rfkill noinput FD.");
++	}
++
++	if (inhibit && !RFKILL_INPUT_INHIBITED(rfkill)) {
++		int fd, res;
++		/* Open write only as we don't want to do any IO to it ever. */
++		fd = open ("/dev/rfkill", O_WRONLY);
++		if (fd < 0) {
++			if (errno == EACCES)
++				g_warning ("Could not open RFKILL control device, please verify your installation");
++			else
++				g_debug ("Could not open RFKILL control device: %s", g_strerror (errno));
++			return;
++		}
++
++		res = ioctl (fd, RFKILL_IOCTL_NOINPUT, (long) 0);
++		if (res != 0) {
++			g_warning ("Could not disable kernel handling of RFKILL related keys: %s", g_strerror (errno));
++			close (fd);
++			return;
++		}
++
++		g_debug ("Opened rfkill-input inhibitor.");
++
++		rfkill->noinput_fd = fd;
++	}
++
++	g_object_notify (G_OBJECT (rfkill), "kernel-noinput");
++}
++
++static void
++cc_rfkill_glib_set_property (GObject      *object,
++			 guint	       prop_id,
++			 const GValue *value,
++			 GParamSpec   *pspec)
++{
++	CcRfkillGlib *rfkill = CC_RFKILL_GLIB (object);
++
++	switch (prop_id) {
++	case PROP_RFKILL_INPUT_INHIBITED:
++		cc_rfkill_glib_set_rfkill_input_inhibited (rfkill, g_value_get_boolean (value));
++		break;
++	default:
++		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++		break;
++	}
++}
++
++static void
++cc_rfkill_glib_get_property (GObject    *object,
++			 guint	     prop_id,
++			 GValue	    *value,
++			 GParamSpec *pspec)
++{
++	CcRfkillGlib *rfkill = CC_RFKILL_GLIB (object);
++
++	switch (prop_id) {
++	case PROP_RFKILL_INPUT_INHIBITED:
++		g_value_set_boolean (value, RFKILL_INPUT_INHIBITED(rfkill));
++		break;
++	default:
++		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
++		break;
++	}
++}
++
+ static void
+ cc_rfkill_glib_finalize (GObject *object)
+ {
+@@ -449,6 +548,11 @@ cc_rfkill_glib_finalize (GObject *object)
+ 	}
+ 	g_clear_object (&rfkill->stream);
+ 
++	if (RFKILL_INPUT_INHIBITED(rfkill)) {
++		close (rfkill->noinput_fd);
++		rfkill->noinput_fd = -1;
++	}
++
+ 	G_OBJECT_CLASS(cc_rfkill_glib_parent_class)->finalize(object);
+ }
+ 
+@@ -457,8 +561,18 @@ cc_rfkill_glib_class_init(CcRfkillGlibClass *klass)
+ {
+ 	GObjectClass *object_class = (GObjectClass *) klass;
+ 
++	object_class->set_property = cc_rfkill_glib_set_property;
++	object_class->get_property = cc_rfkill_glib_get_property;
+ 	object_class->finalize = cc_rfkill_glib_finalize;
+ 
++	g_object_class_install_property (object_class,
++					 PROP_RFKILL_INPUT_INHIBITED,
++					 g_param_spec_boolean ("rfkill-input-inhibited",
++							       "Rfkill input inhibited",
++							       "Whether to prevent the kernel from handling RFKILL related key events.",
++							       FALSE,
++							       G_PARAM_READWRITE));
++
+ 	signals[CHANGED] =
+ 		g_signal_new ("changed",
+ 			      G_TYPE_FROM_CLASS (klass),
+diff --git a/plugins/rfkill/rfkill-glib.h b/plugins/rfkill/rfkill-glib.h
+index a7d09b6..283fba2 100644
+--- a/plugins/rfkill/rfkill-glib.h
++++ b/plugins/rfkill/rfkill-glib.h
+@@ -36,6 +36,10 @@ G_DECLARE_FINAL_TYPE (CcRfkillGlib, cc_rfkill_glib, CC_RFKILL, GLIB, GObject)
+ CcRfkillGlib *cc_rfkill_glib_new               (void);
+ int           cc_rfkill_glib_open              (CcRfkillGlib *rfkill);
+ 
++gboolean      cc_rfkill_glib_get_rfkill_input_inhibited (CcRfkillGlib        *rfkill);
++void          cc_rfkill_glib_set_rfkill_input_inhibited (CcRfkillGlib        *rfkill,
++							 gboolean             noinput);
++
+ void          cc_rfkill_glib_send_change_all_event        (CcRfkillGlib        *rfkill,
+ 							   guint                rfkill_type,
+ 							   gboolean             enable,
+-- 
+2.9.4
+
+From 4c88fd950caf9ff356a6d4698fdc7e0dd0049a65 Mon Sep 17 00:00:00 2001
+From: Benjamin Berg <bberg@redhat.com>
+Date: Tue, 18 Apr 2017 11:58:10 +0200
+Subject: [PATCH 2/4] rfkill: Inhibit rfkill-input's rfkill keys handling
+
+Disable the kernel's handling of rfkill input events when the
+session is active, so that multiple logins of GNOME, or use of any
+sessions without this handling can fall back onto the kernel's support.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=760517
+---
+ plugins/rfkill/gsd-rfkill-manager.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/plugins/rfkill/gsd-rfkill-manager.c b/plugins/rfkill/gsd-rfkill-manager.c
+index 6e6e130..052dfcf 100644
+--- a/plugins/rfkill/gsd-rfkill-manager.c
++++ b/plugins/rfkill/gsd-rfkill-manager.c
+@@ -76,6 +76,9 @@ struct GsdRfkillManagerPrivate
+         GDBusObjectManager      *mm_client;
+         gboolean                 wwan_interesting;
+ 
++        GsdSessionManager       *session;
++        GBinding                *rfkill_input_inhibit_binding;
++
+         gchar                   *chassis_type;
+ };
+ 
+@@ -522,6 +525,11 @@ on_bus_gotten (GObject               *source_object,
+                                                                NULL,
+                                                                NULL,
+                                                                NULL);
++
++        manager->priv->session = gnome_settings_bus_get_session_proxy ();
++        manager->priv->rfkill_input_inhibit_binding = g_object_bind_property (manager->priv->session, "session-is-active",
++                                                                              manager->priv->rfkill, "rfkill-input-inhibited",
++                                                                              G_BINDING_SYNC_CREATE);
+ }
+ 
+ static void
+@@ -710,6 +718,8 @@ gsd_rfkill_manager_stop (GsdRfkillManager *manager)
+ 
+         g_clear_pointer (&p->introspection_data, g_dbus_node_info_unref);
+         g_clear_object (&p->connection);
++        g_clear_object (&p->rfkill_input_inhibit_binding);
++        g_clear_object (&p->session);
+         g_clear_object (&p->rfkill);
+         g_clear_pointer (&p->killswitches, g_hash_table_destroy);
+         g_clear_pointer (&p->bt_killswitches, g_hash_table_destroy);
+-- 
+2.9.4
+
+From 71d444c6c0dc57ee48ac4b90571706ba8010dc07 Mon Sep 17 00:00:00 2001
+From: Hans de Goede <hdegoede@redhat.com>
+Date: Wed, 10 May 2017 16:38:33 +0200
+Subject: [PATCH 3/4] media-keys: Add support for new XF86RFKill keysym
+
+...and map it to RFKILL_KEY.
+
+This depends on a X-server + libX11 or libxkbcommon which actually support
+the XF86RFKill keysym and a xkeyboard-config which contains a binding for
+it. Specifically the following changes are needed:
+https://cgit.freedesktop.org/xorg/proto/xproto/commit/?id=98a32d328e7195e12c38baa877917335bceffbaf
+https://github.com/xkbcommon/libxkbcommon/commit/939d0909a427bdb076dfbba4ccce440391c6b308
+https://patchwork.freedesktop.org/patch/156341/
+
+See https://bugzilla.gnome.org/show_bug.cgi?id=760517
+
+https://bugzilla.gnome.org/show_bug.cgi?id=781505
+---
+ plugins/media-keys/shortcuts-list.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/plugins/media-keys/shortcuts-list.h b/plugins/media-keys/shortcuts-list.h
+index bcfb2e1..36ba0d6 100644
+--- a/plugins/media-keys/shortcuts-list.h
++++ b/plugins/media-keys/shortcuts-list.h
+@@ -112,6 +112,7 @@ static struct {
+ #if 0
+         { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86WLAN", GSD_ACTION_MODE_LAUNCHER },
+         { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86UWB", GSD_ACTION_MODE_LAUNCHER },
++        { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86RFKill", GSD_ACTION_MODE_LAUNCHER },
+         { BLUETOOTH_RFKILL_KEY, NULL, N_("Toggle Bluetooth"), "XF86Bluetooth", GSD_ACTION_MODE_LAUNCHER }
+ #endif
+ };
+-- 
+2.9.4
+
+From 3313c950404d94ba2affa231f6694af4a7ac50bc Mon Sep 17 00:00:00 2001
+From: Benjamin Berg <bberg@redhat.com>
+Date: Thu, 18 May 2017 12:02:10 +0200
+Subject: [PATCH 4/4] media-keys: Re-enable RFKILL related key handling
+
+Handling was disabled to prevent both the kernel and GNOME handling the
+same toggle event. With the related patches from bug #760517 backported
+the handling should be re-enabled.
+---
+ plugins/media-keys/shortcuts-list.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/plugins/media-keys/shortcuts-list.h b/plugins/media-keys/shortcuts-list.h
+index 36ba0d6..97026ff 100644
+--- a/plugins/media-keys/shortcuts-list.h
++++ b/plugins/media-keys/shortcuts-list.h
+@@ -108,13 +108,10 @@ static struct {
+         { KEYBOARD_BRIGHTNESS_DOWN_KEY, NULL, N_("Keyboard Brightness Down"), "XF86KbdBrightnessDown", SHELL_ACTION_MODE_ALL },
+         { KEYBOARD_BRIGHTNESS_TOGGLE_KEY, NULL, N_("Keyboard Brightness Toggle"), "XF86KbdLightOnOff", SHELL_ACTION_MODE_ALL },
+         { BATTERY_KEY, NULL, N_("Battery Status"), "XF86Battery", GSD_ACTION_MODE_LAUNCHER },
+-        /* FIXME: https://bugzilla.gnome.org/show_bug.cgi?id=760517 */
+-#if 0
+         { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86WLAN", GSD_ACTION_MODE_LAUNCHER },
+         { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86UWB", GSD_ACTION_MODE_LAUNCHER },
+         { RFKILL_KEY, NULL, N_("Toggle Airplane Mode"), "XF86RFKill", GSD_ACTION_MODE_LAUNCHER },
+         { BLUETOOTH_RFKILL_KEY, NULL, N_("Toggle Bluetooth"), "XF86Bluetooth", GSD_ACTION_MODE_LAUNCHER }
+-#endif
+ };
+ 
+ #undef SCREENSAVER_MODE
+-- 
+2.9.4
+
