@@ -1,0 +1,299 @@
+From 50aa59bea9544db74fff6425519090e1f414f12a Mon Sep 17 00:00:00 2001
+From: Rui Matos <tiagomatos@gmail.com>
+Date: Mon, 24 Jul 2017 15:15:22 +0200
+Subject: [PATCH 1/3] datetime: Honor location enabled setting
+
+If location is disabled session wide we shouldn't use the service.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=785343
+---
+ plugins/datetime/gsd-timezone-monitor.c | 52 +++++++++++++++++++++++++++------
+ 1 file changed, 43 insertions(+), 9 deletions(-)
+
+diff --git a/plugins/datetime/gsd-timezone-monitor.c b/plugins/datetime/gsd-timezone-monitor.c
+index 2ac8648..1955acd 100644
+--- a/plugins/datetime/gsd-timezone-monitor.c
++++ b/plugins/datetime/gsd-timezone-monitor.c
+@@ -43,13 +43,17 @@ typedef struct
+ {
+         GCancellable *cancellable;
+         GPermission *permission;
++        Timedate1 *dtm;
++
+         GClueClient *geoclue_client;
+         GClueSimple *geoclue_simple;
+-        Timedate1 *dtm;
++        GCancellable *geoclue_cancellable;
+ 
+         TzDB *tzdb;
+         WeatherTzDB *weather_tzdb;
+         gchar *current_timezone;
++
++        GSettings *location_settings;
+ } GsdTimezoneMonitorPrivate;
+ 
+ G_DEFINE_TYPE_WITH_PRIVATE (GsdTimezoneMonitor, gsd_timezone_monitor, G_TYPE_OBJECT)
+@@ -257,7 +261,7 @@ start_reverse_geocoding (GsdTimezoneMonitor *self,
+ 
+         reverse = geocode_reverse_new_for_location (location);
+         geocode_reverse_resolve_async (reverse,
+-                                       priv->cancellable,
++                                       priv->geoclue_cancellable,
+                                        on_reverse_geocoding_ready,
+                                        self);
+ 
+@@ -312,18 +316,35 @@ on_geoclue_simple_ready (GObject      *source_object,
+ }
+ 
+ static void
+-register_geoclue (GsdTimezoneMonitor *self)
++start_geoclue (GsdTimezoneMonitor *self)
+ {
+         GsdTimezoneMonitorPrivate *priv = gsd_timezone_monitor_get_instance_private (self);
+ 
++        priv->geoclue_cancellable = g_cancellable_new ();
+         gclue_simple_new (DESKTOP_ID,
+                           GCLUE_ACCURACY_LEVEL_CITY,
+-                          priv->cancellable,
++                          priv->geoclue_cancellable,
+                           on_geoclue_simple_ready,
+                           self);
+ 
+ }
+ 
++static void
++stop_geoclue (GsdTimezoneMonitor *self)
++{
++        GsdTimezoneMonitorPrivate *priv = gsd_timezone_monitor_get_instance_private (self);
++
++        g_cancellable_cancel (priv->geoclue_cancellable);
++        g_clear_object (&priv->geoclue_cancellable);
++
++        if (priv->geoclue_client) {
++                gclue_client_call_stop (priv->geoclue_client, NULL, NULL, NULL);
++                priv->geoclue_client = NULL;
++        }
++
++        g_clear_object (&priv->geoclue_simple);
++}
++
+ GsdTimezoneMonitor *
+ gsd_timezone_monitor_new (void)
+ {
+@@ -338,21 +359,21 @@ gsd_timezone_monitor_finalize (GObject *obj)
+ 
+         g_debug ("Stopping timezone monitor");
+ 
++        stop_geoclue (monitor);
++
+         if (priv->cancellable) {
+                 g_cancellable_cancel (priv->cancellable);
+                 g_clear_object (&priv->cancellable);
+         }
+ 
+-        if (priv->geoclue_client)
+-                gclue_client_call_stop (priv->geoclue_client, NULL, NULL, NULL);
+-
+         g_clear_object (&priv->dtm);
+-        g_clear_object (&priv->geoclue_simple);
+         g_clear_object (&priv->permission);
+         g_clear_pointer (&priv->current_timezone, g_free);
+         g_clear_pointer (&priv->tzdb, tz_db_free);
+         g_clear_pointer (&priv->weather_tzdb, weather_tz_db_free);
+ 
++        g_clear_object (&priv->location_settings);
++
+         G_OBJECT_CLASS (gsd_timezone_monitor_parent_class)->finalize (obj);
+ }
+ 
+@@ -374,6 +395,16 @@ gsd_timezone_monitor_class_init (GsdTimezoneMonitorClass *klass)
+ }
+ 
+ static void
++check_location_settings (GsdTimezoneMonitor *self)
++{
++        GsdTimezoneMonitorPrivate *priv = gsd_timezone_monitor_get_instance_private (self);
++        if (g_settings_get_boolean (priv->location_settings, "enabled"))
++                start_geoclue (self);
++        else
++                stop_geoclue (self);
++}
++
++static void
+ gsd_timezone_monitor_init (GsdTimezoneMonitor *self)
+ {
+         GError *error = NULL;
+@@ -414,5 +445,8 @@ gsd_timezone_monitor_init (GsdTimezoneMonitor *self)
+         priv->tzdb = tz_load_db ();
+         priv->weather_tzdb = weather_tz_db_new ();
+ 
+-        register_geoclue (self);
++        priv->location_settings = g_settings_new ("org.gnome.system.location");
++        g_signal_connect_swapped (priv->location_settings, "changed::enabled",
++                                  G_CALLBACK (check_location_settings), self);
++        check_location_settings (self);
+ }
+-- 
+2.9.3
+
+From 991e82f5ad7997919055dfa3827cffb2c976c77c Mon Sep 17 00:00:00 2001
+From: Rui Matos <tiagomatos@gmail.com>
+Date: Sun, 23 Jul 2017 17:49:04 +0200
+Subject: [PATCH 2/3] color: Request location updates with a larger time
+ granularity
+
+By default geoclue gives us location updates whenever they're
+available which might be very frequently. As these updates are written
+to disk and we don't really need them very frequently, we can request
+them to be less frequent. Once per hour should be good enough for
+our night light purposes.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=785342
+---
+ plugins/color/gsd-night-light.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/plugins/color/gsd-night-light.c b/plugins/color/gsd-night-light.c
+index a8818de..6af94ef 100644
+--- a/plugins/color/gsd-night-light.c
++++ b/plugins/color/gsd-night-light.c
+@@ -449,6 +449,8 @@ on_geoclue_simple_ready (GObject      *source_object,
+ 
+         self->geoclue_simple = geoclue_simple;
+         self->geoclue_client = gclue_simple_get_client (self->geoclue_simple);
++        g_object_set (G_OBJECT (self->geoclue_client),
++                      "time-threshold", 60*60, NULL); /* 1 hour */
+ 
+         g_signal_connect (self->geoclue_simple, "notify::location",
+                           G_CALLBACK (on_location_notify), user_data);
+-- 
+2.9.3
+
+From 6a8c981ce6745bd8b06c4aceba6dbac005ae0717 Mon Sep 17 00:00:00 2001
+From: Rui Matos <tiagomatos@gmail.com>
+Date: Mon, 24 Jul 2017 15:42:07 +0200
+Subject: [PATCH 3/3] color: Honor location enabled setting
+
+If location is disabled session wide we shouldn't use the service.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=785342
+---
+ plugins/color/gsd-night-light.c | 48 +++++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
+
+diff --git a/plugins/color/gsd-night-light.c b/plugins/color/gsd-night-light.c
+index 6af94ef..d91cdbb 100644
+--- a/plugins/color/gsd-night-light.c
++++ b/plugins/color/gsd-night-light.c
+@@ -40,6 +40,7 @@ struct _GsdNightLight {
+         gint               disabled_day_of_month;
+         GClueClient       *geoclue_client;
+         GClueSimple       *geoclue_simple;
++        GSettings         *location_settings;
+         gdouble            cached_sunrise;
+         gdouble            cached_sunset;
+         gdouble            cached_temperature;
+@@ -459,8 +460,9 @@ on_geoclue_simple_ready (GObject      *source_object,
+ }
+ 
+ static void
+-register_geoclue (GsdNightLight *self)
++start_geoclue (GsdNightLight *self)
+ {
++        self->cancellable = g_cancellable_new ();
+         gclue_simple_new (DESKTOP_ID,
+                           GCLUE_ACCURACY_LEVEL_CITY,
+                           self->cancellable,
+@@ -469,6 +471,28 @@ register_geoclue (GsdNightLight *self)
+ 
+ }
+ 
++static void
++stop_geoclue (GsdNightLight *self)
++{
++        g_cancellable_cancel (self->cancellable);
++        g_clear_object (&self->cancellable);
++
++        if (self->geoclue_client != NULL) {
++                gclue_client_call_stop (self->geoclue_client, NULL, NULL, NULL);
++                self->geoclue_client = NULL;
++        }
++        g_clear_object (&self->geoclue_simple);
++}
++
++static void
++check_location_settings (GsdNightLight *self)
++{
++        if (g_settings_get_boolean (self->location_settings, "enabled") && self->geoclue_enabled)
++                start_geoclue (self);
++        else
++                stop_geoclue (self);
++}
++
+ void
+ gsd_night_light_set_disabled_until_tmw (GsdNightLight *self, gboolean value)
+ {
+@@ -522,16 +546,17 @@ gsd_night_light_set_geoclue_enabled (GsdNightLight *self, gboolean enabled)
+ gboolean
+ gsd_night_light_start (GsdNightLight *self, GError **error)
+ {
+-
+-        if (self->geoclue_enabled)
+-                register_geoclue (self);
+-
+         night_light_recheck (self);
+         poll_timeout_create (self);
+ 
+         /* care about changes */
+         g_signal_connect (self->settings, "changed",
+                           G_CALLBACK (settings_changed_cb), self);
++
++        g_signal_connect_swapped (self->location_settings, "changed::enabled",
++                                  G_CALLBACK (check_location_settings), self);
++        check_location_settings (self);
++
+         return TRUE;
+ }
+ 
+@@ -540,25 +565,20 @@ gsd_night_light_finalize (GObject *object)
+ {
+         GsdNightLight *self = GSD_NIGHT_LIGHT (object);
+ 
++        stop_geoclue (self);
++
+         poll_timeout_destroy (self);
+         poll_smooth_destroy (self);
+ 
+         g_clear_object (&self->settings);
+         g_clear_pointer (&self->datetime_override, (GDestroyNotify) g_date_time_unref);
+ 
+-        if (self->cancellable != NULL) {
+-                g_cancellable_cancel (self->cancellable);
+-                g_clear_object (&self->cancellable);
+-        }
+-
+         if (self->validate_id > 0) {
+                 g_source_remove (self->validate_id);
+                 self->validate_id = 0;
+         }
+ 
+-        if (self->geoclue_client != NULL)
+-                gclue_client_call_stop (self->geoclue_client, NULL, NULL, NULL);
+-        g_clear_object (&self->geoclue_simple);
++        g_clear_object (&self->location_settings);
+         G_OBJECT_CLASS (gsd_night_light_parent_class)->finalize (object);
+ }
+ 
+@@ -682,8 +702,8 @@ gsd_night_light_init (GsdNightLight *self)
+         self->cached_sunrise = -1.f;
+         self->cached_sunset = -1.f;
+         self->cached_temperature = GSD_COLOR_TEMPERATURE_DEFAULT;
+-        self->cancellable = g_cancellable_new ();
+         self->settings = g_settings_new ("org.gnome.settings-daemon.plugins.color");
++        self->location_settings = g_settings_new ("org.gnome.system.location");
+ }
+ 
+ GsdNightLight *
+-- 
+2.9.3
+
