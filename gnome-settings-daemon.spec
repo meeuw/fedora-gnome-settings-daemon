@@ -7,8 +7,8 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.25.2
-Release:        2%{?dist}
+Version:        3.25.4
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -66,9 +66,10 @@ Obsoletes: %{name}-updates < 3.13.1
 Obsoletes: drwright < 3.5.0-3
 Obsoletes: gnome-settings-daemon-devel < 3.23.1
 
-# Input sources handling was moved to gnome-shell / mutter; make sure not to
-# break older gnome-shell versions.
-Conflicts: gnome-shell < 3.13.92
+# The orientation and xrandr plugins were removed in 3.25.4 and their
+# functionality was moved to mutter; this conflict here makes sure not to break
+# older gnome-shell versions that expect the functionality
+Conflicts: gnome-shell < 3.25.4
 
 %description
 A daemon to share settings from GNOME to other applications. It also
@@ -181,10 +182,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
 %endif
 
-%{_libexecdir}/gsd-xrandr
-%{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.XRANDR.desktop
-%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xrandr.gschema.xml
-
 %{_libexecdir}/gsd-xsettings
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.XSettings.desktop
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.xsettings.gschema.xml
@@ -196,9 +193,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.Color.desktop
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.color.gschema.xml
 
-%{_libexecdir}/gsd-orientation
-%{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.Orientation.desktop
-
 %{_libexecdir}/gsd-sharing
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.Sharing.desktop
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.sharing.gschema.xml
@@ -207,7 +201,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 /usr/lib/udev/rules.d/*.rules
 %{_datadir}/gnome-settings-daemon/
-%{_datadir}/icons/hicolor/*/apps/gsd-xrandr.*
 %{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
 
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.enums.xml
@@ -219,6 +212,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Mon Jul 31 2017 Kalev Lember <klember@redhat.com> - 3.25.4-1
+- Update to 3.25.4
+
 * Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.25.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
