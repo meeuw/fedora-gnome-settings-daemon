@@ -68,7 +68,8 @@ Obsoletes: gnome-settings-daemon-devel < 3.23.1
 
 # The orientation and xrandr plugins were removed in 3.25.4 and their
 # functionality was moved to mutter; this conflict here makes sure not to break
-# older gnome-session and gnome-shell releases that expect the functionality
+# older gdm, gnome-session and gnome-shell releases that expect the functionality
+Conflicts: gdm < 1:3.25.4.1
 Conflicts: gnome-session < 3.25.4
 Conflicts: gnome-shell < 3.25.4
 
@@ -214,7 +215,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %changelog
 * Mon Jul 31 2017 Kalev Lember <klember@redhat.com> - 3.25.4-2
-- Add explicit conflicts to not break older gnome-session and gnome-shell
+- Add explicit conflicts to not break older gdm, gnome-session and gnome-shell
 
 * Mon Jul 31 2017 Kalev Lember <klember@redhat.com> - 3.25.4-1
 - Update to 3.25.4
