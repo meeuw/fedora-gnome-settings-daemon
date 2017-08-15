@@ -7,8 +7,8 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.25.4
-Release:        2%{?dist}
+Version:        3.25.90
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -214,6 +214,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Tue Aug 15 2017 Kalev Lember <klember@redhat.com> - 3.25.90-1
+- Update to 3.25.90
+
 * Mon Jul 31 2017 Kalev Lember <klember@redhat.com> - 3.25.4-2
 - Add explicit conflicts to not break older gdm, gnome-session and gnome-shell
 
