@@ -7,7 +7,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.24.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -16,6 +16,7 @@ Source0:        https://download.gnome.org/sources/%{name}/3.24/%{name}-%{versio
 # Backported from upstream
 Patch1:		0001-Backport-RFKILL-fixes.patch
 Patch2:         geoclue-usage-fixes.patch
+Patch3:         ambient-light-backlight-fixes.patch
 
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
@@ -86,6 +87,7 @@ developing applications that use %{name}.
 %setup -q
 %patch1 -p1 -b .backport_rfkill_fixes
 %patch2 -p1
+%patch3 -p1
 
 %build
 %configure --disable-static \
@@ -221,6 +223,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Mon Aug 28 2017 Rui Matos <rmatos@redhat.com> - 3.24.3-3
+- Add upstream ambient light and backlight usage fixes (rhbz#1322588)
+
 * Mon Jul 24 2017 Rui Matos <rmatos@redhat.com> - 3.24.3-2
 - Add upstream geoclue usage fixes (rhbz#1473061)
 

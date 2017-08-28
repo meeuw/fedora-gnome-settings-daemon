@@ -1,0 +1,180 @@
+From 476154fe04501797f4a8a95ece8d067881b0558b Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Fri, 11 Aug 2017 17:08:42 +0200
+Subject: [PATCH 1/5] power: Allow disabling ALS monitoring even if inactive
+
+We definitely do want to be able to disable light sensor
+monitoring even if we're not in an active session any more.
+
+The only case this conditional was supposed to prevent is
+trying to claim the light sensor when the session is inactive.
+Anything else should be allowed.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=766067
+---
+ plugins/power/gsd-power-manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
+index efb83dd..a56c11e 100644
+--- a/plugins/power/gsd-power-manager.c
++++ b/plugins/power/gsd-power-manager.c
+@@ -993,7 +993,7 @@ iio_proxy_claim_light (GsdPowerManager *manager, gboolean active)
+                 return;
+         if (!manager->priv->backlight_available)
+                 return;
+-	if (active != manager->priv->session_is_active)
++	if (active && !manager->priv->session_is_active) {
+ 		return;
+ 
+         if (!g_dbus_proxy_call_sync (manager->priv->iio_proxy,
+-- 
+2.9.3
+
+From f644eb35cc9b588d5d5ce23c5056995d0d9099e0 Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Fri, 11 Aug 2017 17:32:08 +0200
+Subject: [PATCH 2/5] power: Clarify suspend signal monitoring comment
+
+We need to both watch for the signal and setup inhibitors
+to be informed about suspend attempts, so move the comment
+above both calls.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=786164
+---
+ plugins/power/gsd-power-manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
+index a56c11e..31d4170 100644
+--- a/plugins/power/gsd-power-manager.c
++++ b/plugins/power/gsd-power-manager.c
+@@ -2446,10 +2446,10 @@ on_rr_screen_acquired (GObject      *object,
+         /* ensure the default dpms timeouts are cleared */
+         backlight_enable (manager);
+ 
++        /* Set up a delay inhibitor to be informed about suspend attempts */
+         g_signal_connect (manager->priv->logind_proxy, "g-signal",
+                           G_CALLBACK (logind_proxy_signal_cb),
+                           manager);
+-        /* Set up a delay inhibitor to be informed about suspend attempts */
+         inhibit_suspend (manager);
+ 
+         /* track the active session */
+-- 
+2.9.3
+
+From c0e5471502787531c1a8dde99ed949bfacddb804 Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Fri, 11 Aug 2017 17:33:13 +0200
+Subject: [PATCH 3/5] power: Call backlight_enable() after session setup
+
+backlight_enable() does 2 things, fiddle with the DPMS as well
+as attempt to claim the light sensor. But the light sensor
+claim attempt will always fail as the "session_is_active" variable
+has not been initialised yet. So just try a tad later for it
+to work as soon as you've logged into the session.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=786164
+---
+ plugins/power/gsd-power-manager.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
+index 31d4170..7b287c6 100644
+--- a/plugins/power/gsd-power-manager.c
++++ b/plugins/power/gsd-power-manager.c
+@@ -2443,9 +2443,6 @@ on_rr_screen_acquired (GObject      *object,
+         /* check whether a backlight is available */
+         manager->priv->backlight_available = backlight_available (manager->priv->rr_screen);
+ 
+-        /* ensure the default dpms timeouts are cleared */
+-        backlight_enable (manager);
+-
+         /* Set up a delay inhibitor to be informed about suspend attempts */
+         g_signal_connect (manager->priv->logind_proxy, "g-signal",
+                           G_CALLBACK (logind_proxy_signal_cb),
+@@ -2506,6 +2503,9 @@ on_rr_screen_acquired (GObject      *object,
+         engine_coldplug (manager);
+         idle_configure (manager);
+ 
++        /* ensure the default dpms timeouts are cleared */
++        backlight_enable (manager);
++
+         manager->priv->xscreensaver_watchdog_timer_id = gsd_power_enable_screensaver_watchdog ();
+ 
+         /* don't blank inside a VM */
+-- 
+2.9.3
+
+From 867b20398e4b9c04833e618603dfd90297de82ad Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Fri, 11 Aug 2017 17:50:29 +0200
+Subject: [PATCH 4/5] power: "0.0" is not a valid light level
+
+This is the equivalent of "undefined" for the accelerometer
+orientation. Don't use it to prime our nice ambient light
+readings curve.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=786164
+---
+ plugins/power/gsd-power-manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
+index 7b287c6..ef24cf3 100644
+--- a/plugins/power/gsd-power-manager.c
++++ b/plugins/power/gsd-power-manager.c
+@@ -2550,7 +2550,7 @@ iio_proxy_changed (GsdPowerManager *manager)
+         if (val_has == NULL || !g_variant_get_boolean (val_has))
+                 goto out;
+         val_als = g_dbus_proxy_get_cached_property (manager->priv->iio_proxy, "LightLevel");
+-        if (val_als == NULL)
++        if (val_als == NULL || g_variant_get_double (val_als) == 0.0) {
+                 goto out;
+         manager->priv->ambient_last_absolute = g_variant_get_double (val_als);
+         g_debug ("Read last absolute light level: %f", manager->priv->ambient_last_absolute);
+-- 
+2.9.3
+
+From 8a98aea8f3a00c8f9e5939192f7cf9952e60d759 Mon Sep 17 00:00:00 2001
+From: Emmanuele Bassi <ebassi@gnome.org>
+Date: Mon, 21 Aug 2017 18:46:31 +0100
+Subject: [PATCH 5/5] Build fixes for the power plugin
+
+Commit 476154fe and commit 867b2039 broke the build.
+
+Full Continuous log:
+
+http://build.gnome.org/continuous/buildmaster/builds/2017/08/21/49/build/log-gnome-settings-daemon.txt
+
+https://bugzilla.gnome.org/show_bug.cgi?id=786577
+---
+ plugins/power/gsd-power-manager.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/plugins/power/gsd-power-manager.c b/plugins/power/gsd-power-manager.c
+index ef24cf3..e411e12 100644
+--- a/plugins/power/gsd-power-manager.c
++++ b/plugins/power/gsd-power-manager.c
+@@ -993,7 +993,7 @@ iio_proxy_claim_light (GsdPowerManager *manager, gboolean active)
+                 return;
+         if (!manager->priv->backlight_available)
+                 return;
+-	if (active && !manager->priv->session_is_active) {
++	if (active && !manager->priv->session_is_active)
+ 		return;
+ 
+         if (!g_dbus_proxy_call_sync (manager->priv->iio_proxy,
+@@ -2550,7 +2550,7 @@ iio_proxy_changed (GsdPowerManager *manager)
+         if (val_has == NULL || !g_variant_get_boolean (val_has))
+                 goto out;
+         val_als = g_dbus_proxy_get_cached_property (manager->priv->iio_proxy, "LightLevel");
+-        if (val_als == NULL || g_variant_get_double (val_als) == 0.0) {
++        if (val_als == NULL || g_variant_get_double (val_als) == 0.0)
+                 goto out;
+         manager->priv->ambient_last_absolute = g_variant_get_double (val_als);
+         g_debug ("Read last absolute light level: %f", manager->priv->ambient_last_absolute);
+-- 
+2.9.3
+
