@@ -1,0 +1,37 @@
+From 5c5b8c385541ba4d33db88258aef1dd4f99523b7 Mon Sep 17 00:00:00 2001
+From: Dick Marinus <dick@mrns.nl>
+Date: Wed, 30 Aug 2017 13:02:55 +0200
+Subject: [PATCH] remove super keys
+
+---
+ plugins/media-keys/shortcuts-list.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/plugins/media-keys/shortcuts-list.h b/plugins/media-keys/shortcuts-list.h
+index bcfb2e11..7fad4721 100644
+--- a/plugins/media-keys/shortcuts-list.h
++++ b/plugins/media-keys/shortcuts-list.h
+@@ -64,7 +64,6 @@ static struct {
+         { SCREENSAVER_KEY, "screensaver", NULL, NULL, SCREENSAVER_MODE },
+         { SCREENSAVER_KEY, NULL, N_("Lock Screen"), "XF86ScreenSaver", SCREENSAVER_MODE },
+         { HELP_KEY, "help", NULL, NULL, GSD_ACTION_MODE_LAUNCHER },
+-        { HELP_KEY, NULL, N_("Help"), "<Super>F1", GSD_ACTION_MODE_LAUNCHER },
+         { SCREENSHOT_KEY, "screenshot", NULL, NULL, NO_LOCK_MODE },
+         { WINDOW_SCREENSHOT_KEY, "window-screenshot", NULL, NULL, NO_LOCK_MODE },
+         { AREA_SCREENSHOT_KEY, "area-screenshot", NULL, NULL, NO_LOCK_MODE },
+@@ -82,12 +81,10 @@ static struct {
+         { FORWARD_KEY, NULL, N_("Forward"), "XF86AudioForward", SHELL_ACTION_MODE_ALL },
+         { REPEAT_KEY, NULL, N_("Repeat"), "XF86AudioRepeat", SHELL_ACTION_MODE_ALL },
+         { RANDOM_KEY, NULL, N_("Random Play"), "XF86AudioRandomPlay", SHELL_ACTION_MODE_ALL },
+-        { VIDEO_OUT_KEY, NULL, N_("Video Out"), "<Super>p", SHELL_ACTION_MODE_ALL },
+         /* Key code of the XF86Display key (Fn-F7 on Thinkpads, Fn-F4 on HP machines, etc.) */
+         { VIDEO_OUT_KEY, NULL, N_("Video Out"), "XF86Display", SHELL_ACTION_MODE_ALL },
+         /* Key code of the XF86RotateWindows key (present on some tablets) */
+         { ROTATE_VIDEO_KEY, NULL, N_("Rotate Screen"), "XF86RotateWindows", SHELL_ACTION_MODE_NORMAL },
+-        { ROTATE_VIDEO_LOCK_KEY, NULL, N_("Orientation Lock"), "<Super>o", SHELL_ACTION_MODE_ALL },
+         { MAGNIFIER_KEY, "magnifier", NULL, NULL, SHELL_ACTION_MODE_ALL },
+         { SCREENREADER_KEY, "screenreader", NULL, NULL, SHELL_ACTION_MODE_ALL },
+         { ON_SCREEN_KEYBOARD_KEY, "on-screen-keyboard", NULL, NULL, SHELL_ACTION_MODE_ALL },
+-- 
+2.13.5
+

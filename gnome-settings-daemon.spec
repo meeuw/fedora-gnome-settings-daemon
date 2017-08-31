@@ -17,6 +17,7 @@ Source0:        https://download.gnome.org/sources/%{name}/3.24/%{name}-%{versio
 Patch1:		0001-Backport-RFKILL-fixes.patch
 Patch2:         geoclue-usage-fixes.patch
 Patch3:         ambient-light-backlight-fixes.patch
+Patch4:         0001-remove-super-keys.patch
 
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
@@ -88,6 +89,7 @@ developing applications that use %{name}.
 %patch1 -p1 -b .backport_rfkill_fixes
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %configure --disable-static \
