@@ -1,0 +1,32 @@
+From 248c3e623436b0671a0d27565ec44235547e1f35 Mon Sep 17 00:00:00 2001
+From: Dick Marinus <dick@mrns.nl>
+Date: Wed, 29 Nov 2017 14:16:05 +0100
+Subject: [PATCH] remove super keys
+
+---
+ plugins/media-keys/shortcuts-list.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/plugins/media-keys/shortcuts-list.h b/plugins/media-keys/shortcuts-list.h
+index 00a15b64..4ceef869 100644
+--- a/plugins/media-keys/shortcuts-list.h
++++ b/plugins/media-keys/shortcuts-list.h
+@@ -66,7 +66,6 @@ static struct {
+         { SCREENSAVER_KEY, "screensaver", NULL, NULL, SCREENSAVER_MODE },
+         { SCREENSAVER_KEY, NULL, N_("Lock Screen"), "XF86ScreenSaver", SCREENSAVER_MODE },
+         { HELP_KEY, "help", NULL, NULL, GSD_ACTION_MODE_LAUNCHER },
+-        { HELP_KEY, NULL, N_("Help"), "<Super>F1", GSD_ACTION_MODE_LAUNCHER },
+         { SCREENSHOT_KEY, "screenshot", NULL, NULL, NO_LOCK_MODE },
+         { WINDOW_SCREENSHOT_KEY, "window-screenshot", NULL, NULL, NO_LOCK_MODE },
+         { AREA_SCREENSHOT_KEY, "area-screenshot", NULL, NULL, NO_LOCK_MODE },
+@@ -84,7 +83,6 @@ static struct {
+         { FORWARD_KEY, NULL, N_("Forward"), "XF86AudioForward", SHELL_ACTION_MODE_ALL },
+         { REPEAT_KEY, NULL, N_("Repeat"), "XF86AudioRepeat", SHELL_ACTION_MODE_ALL },
+         { RANDOM_KEY, NULL, N_("Random Play"), "XF86AudioRandomPlay", SHELL_ACTION_MODE_ALL },
+-        { ROTATE_VIDEO_LOCK_KEY, NULL, N_("Orientation Lock"), "<Super>o", SHELL_ACTION_MODE_ALL },
+         { MAGNIFIER_KEY, "magnifier", NULL, NULL, SHELL_ACTION_MODE_ALL },
+         { SCREENREADER_KEY, "screenreader", NULL, NULL, SHELL_ACTION_MODE_ALL },
+         { ON_SCREEN_KEYBOARD_KEY, "on-screen-keyboard", NULL, NULL, SHELL_ACTION_MODE_ALL },
+-- 
+2.14.3
+

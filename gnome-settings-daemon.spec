@@ -14,6 +14,7 @@ Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 License:        GPLv2+
 URL:            https://download.gnome.org/sources/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/3.26/%{name}-%{version}.tar.xz
+Patch1:         0001-remove-super-keys.patch
 
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
@@ -87,6 +88,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch1 -p1
 
 %build
 %configure --disable-static \
