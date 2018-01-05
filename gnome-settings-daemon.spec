@@ -8,7 +8,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.26.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -105,20 +105,6 @@ find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 
-%post
-touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-
-%postun
-if [ $1 -eq 0 ]; then
-  touch --no-create %{_datadir}/icons/hicolor >&/dev/null || :
-  gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
-  glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
-fi
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor >&/dev/null || :
-glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
-
 %files -f %{name}.lang
 %license COPYING
 %doc AUTHORS NEWS
@@ -214,6 +200,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Fri Jan 05 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 3.26.2-2
+- Remove obsolete scriptlets
+
 * Thu Nov 02 2017 Kalev Lember <klember@redhat.com> - 3.26.2-1
 - Update to 3.26.2
 
