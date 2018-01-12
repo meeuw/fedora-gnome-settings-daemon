@@ -8,12 +8,16 @@
 
 Name:           gnome-settings-daemon
 Version:        3.26.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
 URL:            https://download.gnome.org/sources/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/3.26/%{name}-%{version}.tar.xz
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1322588
+# https://bugzilla.gnome.org/show_bug.cgi?id=792409
+Patch0: 0001-power-Don-t-react-to-light-changes-if-not-at-console.patch
 
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
@@ -86,7 +90,7 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
 %configure --disable-static \
@@ -200,6 +204,10 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Fri Jan 12 2018 Bastien Nocera <bnocera@redhat.com> - 3.26.2-3
+- Fix gdm session trying to change the backlight, resulting in a lot
+  of spurious error messages (#1322588)
+
 * Fri Jan 05 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 3.26.2-2
 - Remove obsolete scriptlets
 
