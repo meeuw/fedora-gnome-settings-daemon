@@ -8,7 +8,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.26.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -204,6 +204,9 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Mon Feb 05 2018 Kalev Lember <klember@redhat.com> - 3.26.2-5
+- Rebuilt for libgweather soname bump
+
 * Sat Jan 20 2018 Björn Esser <besser82@fedoraproject.org> - 3.26.2-4
 - Rebuilt for switch to libxcrypt
 
