@@ -7,18 +7,19 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.26.2
-Release:        5%{?dist}
+Version:        3.27.90
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
 URL:            https://download.gnome.org/sources/%{name}
-Source0:        https://download.gnome.org/sources/%{name}/3.26/%{name}-%{version}.tar.xz
+Source0:        https://download.gnome.org/sources/%{name}/3.27/%{name}-%{version}.tar.xz
+# Backported from upstream
+Patch0:         0001-build-Fix-error-when-doing-non-debug-builds.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1322588
-# https://bugzilla.gnome.org/show_bug.cgi?id=792409
-Patch0: 0001-power-Don-t-react-to-light-changes-if-not-at-console.patch
-
+BuildRequires:  cups-devel
+BuildRequires:  gettext
+BuildRequires:  meson
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
 BuildRequires:  pkgconfig(fontconfig)
@@ -44,13 +45,7 @@ BuildRequires:  pkgconfig(upower-glib)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xtst)
-BuildRequires:  gettext intltool
-BuildRequires:  cups-devel
-%if 0%{?fedora}
 BuildRequires:  pkgconfig(wayland-client)
-%endif
-BuildRequires:  libxslt
-BuildRequires:  docbook-style-xsl
 %ifnarch s390 s390x
 BuildRequires:  pkgconfig(libwacom) >= 0.7
 BuildRequires:  pkgconfig(xorg-wacom)
@@ -93,17 +88,11 @@ developing applications that use %{name}.
 %autosetup -p1
 
 %build
-%configure --disable-static \
-%if 0%{?rhel}
-           --disable-wayland \
-%endif
-           --enable-profiling
-make %{?_smp_mflags}
-
+%meson
+%meson_build
 
 %install
-%make_install
-find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+%meson_install
 
 %find_lang %{name} --with-gnome
 
@@ -115,9 +104,6 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 
 # list daemons explicitly, so we notice if one goes missing
 # some of these don't have a separate gschema
-%{_libexecdir}/gsd-a11y-keyboard
-%{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.A11yKeyboard.desktop
-
 %{_libexecdir}/gsd-clipboard
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.Clipboard.desktop
 
@@ -204,6 +190,10 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Tue Feb 06 2018 Kalev Lember <klember@redhat.com> - 3.27.90-1
+- Update to 3.27.90
+- Switch to meson build system
+
 * Mon Feb 05 2018 Kalev Lember <klember@redhat.com> - 3.26.2-5
 - Rebuilt for libgweather soname bump
 
