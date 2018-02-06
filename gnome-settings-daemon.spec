@@ -20,6 +20,7 @@ Patch0:         0001-build-Fix-error-when-doing-non-debug-builds.patch
 BuildRequires:  cups-devel
 BuildRequires:  gettext
 BuildRequires:  meson
+BuildRequires:  perl-interpreter
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
 BuildRequires:  pkgconfig(fontconfig)
