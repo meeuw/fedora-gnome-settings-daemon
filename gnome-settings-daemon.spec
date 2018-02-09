@@ -8,7 +8,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.27.90
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -16,8 +16,10 @@ URL:            https://download.gnome.org/sources/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/3.27/%{name}-%{version}.tar.xz
 # Backported from upstream
 Patch0:         0001-build-Fix-error-when-doing-non-debug-builds.patch
-# Fix missing libcommon.so library
-Patch1:         libcommon-static-library.patch
+# https://gitlab.gnome.org/GNOME/gnome-settings-daemon/issues/1
+Patch1:         0001-build-Fix-runtime-linkage-to-libgsd-and-libcommon.patch
+# https://bugzilla.gnome.org/show_bug.cgi?id=793087
+Patch2:         0001-build-Apply-a-workaround-for-D-Bus-code-generation.patch
 
 BuildRequires:  cups-devel
 BuildRequires:  gettext
@@ -193,6 +195,11 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Fri Feb 09 2018 Bastien Nocera <bnocera@redhat.com> - 3.27.90-3
++ gnome-settings-daemon-3.27.90-3
+- Really fix gsd-* helper linkage
+- Build fix for highly parallel builds
+
 * Wed Feb 07 2018 Kalev Lember <klember@redhat.com> - 3.27.90-2
 - Fix missing libcommon.so library
 
