@@ -1,6 +1,6 @@
 %global glib2_version 2.53.0
 %global gtk3_version 3.15.3
-%global gnome_desktop_version 3.11.1
+%global gnome_desktop_version 3.27.90
 %global libgweather_version 3.9.5
 %global gsettings_desktop_schemas_version 3.23.3
 %global geocode_glib_version 3.10.0
@@ -8,7 +8,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.27.90
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -195,6 +195,10 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Sat Feb 10 2018 Bastien Nocera <bnocera@redhat.com> - 3.27.90-4
++ gnome-settings-daemon-3.27.90-4
+- Rebuild against newer gnome-desktop3 package
+
 * Fri Feb 09 2018 Bastien Nocera <bnocera@redhat.com> - 3.27.90-3
 + gnome-settings-daemon-3.27.90-3
 - Really fix gsd-* helper linkage
