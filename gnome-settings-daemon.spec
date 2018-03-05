@@ -64,11 +64,14 @@ Obsoletes: %{name}-updates < 3.13.1
 Obsoletes: drwright < 3.5.0-3
 Obsoletes: gnome-settings-daemon-devel < 3.23.1
 
+# The "org.gnome.SettingsDaemon.A11yKeyboard" has been been removed, now
+# handled in gnome-shell/mutter instead; this conflict here makes sure not to
+# break older gdm and gnome-session releases that expect the functionality
+Conflicts: gdm < 1:3.27.90
+Conflicts: gnome-session < 3.27.90
 # The orientation and xrandr plugins were removed in 3.25.4 and their
 # functionality was moved to mutter; this conflict here makes sure not to break
 # older gdm, gnome-session and gnome-shell releases that expect the functionality
-Conflicts: gdm < 1:3.25.4.1
-Conflicts: gnome-session < 3.25.4
 Conflicts: gnome-shell < 3.25.4
 
 %description
