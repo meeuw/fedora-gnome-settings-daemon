@@ -8,12 +8,13 @@
 
 Name:           gnome-settings-daemon
 Version:        3.28.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
 URL:            https://download.gnome.org/sources/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/3.28/%{name}-%{version}.tar.xz
+Source1:        org.gnome.settings-daemon.plugins.power.gschema.override
 
 BuildRequires:  cups-devel
 BuildRequires:  gettext
@@ -96,6 +97,8 @@ developing applications that use %{name}.
 %install
 %meson_install
 
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas
+
 %find_lang %{name} --with-gnome
 
 mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
@@ -134,6 +137,7 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-power
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.Power.desktop
 %{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.settings-daemon.plugins.power.gschema.override
 
 %{_libexecdir}/gsd-print-notifications
 %{_sysconfdir}/xdg/autostart/org.gnome.SettingsDaemon.PrintNotifications.desktop
@@ -192,6 +196,9 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Tue Apr 10 2018 Michael Catanzaro <mcatanzaro@gnome.org> - 3.28.0-2
+- Disable automatic suspend, except when on battery power
+
 * Mon Mar 12 2018 Kalev Lember <klember@redhat.com> - 3.28.0-1
 - Update to 3.28.0
 
