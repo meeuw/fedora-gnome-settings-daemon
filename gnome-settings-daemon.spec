@@ -7,8 +7,8 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.28.0
-Release:        2%{?dist}
+Version:        3.28.1
+Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -196,6 +196,9 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Thu Apr 12 2018 Kalev Lember <klember@redhat.com> - 3.28.1-1
+- Update to 3.28.1
+
 * Tue Apr 10 2018 Michael Catanzaro <mcatanzaro@gnome.org> - 3.28.0-2
 - Disable automatic suspend, except when on battery power
 
