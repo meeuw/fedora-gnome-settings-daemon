@@ -18,6 +18,8 @@ Source1:        org.gnome.settings-daemon.plugins.power.gschema.override
 
 BuildRequires:  meson >= 0.44.0
 BuildRequires:  gcc
+Patch0: 0001-remove-super-keys.patch
+
 BuildRequires:  cups-devel
 BuildRequires:  gettext
 BuildRequires:  perl-interpreter
