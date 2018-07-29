@@ -16,9 +16,10 @@ URL:            https://download.gnome.org/sources/%{name}
 Source0:        https://download.gnome.org/sources/%{name}/3.28/%{name}-%{version}.tar.xz
 Source1:        org.gnome.settings-daemon.plugins.power.gschema.override
 
+BuildRequires:  meson >= 0.44.0
+BuildRequires:  gcc
 BuildRequires:  cups-devel
 BuildRequires:  gettext
-BuildRequires:  meson
 BuildRequires:  perl-interpreter
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(colord) >= 1.0.2
