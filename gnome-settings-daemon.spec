@@ -8,7 +8,7 @@
 
 Name:           gnome-settings-daemon
 Version:        3.28.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
 License:        GPLv2+
@@ -197,6 +197,9 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Tue Jul 31 2018 Florian Weimer <fweimer@redhat.com> - 3.28.1-3
+- Rebuild with fixed binutils
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.28.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
