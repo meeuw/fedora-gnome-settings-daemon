@@ -7,7 +7,7 @@
 %global geoclue_version 2.3.1
 
 Name:           gnome-settings-daemon
-Version:        3.30.0
+Version:        3.30.1.1
 Release:        1%{?dist}
 Summary:        The daemon sharing settings from GNOME to GTK+/KDE applications
 
@@ -197,6 +197,9 @@ mkdir $RPM_BUILD_ROOT%{_libdir}/gnome-settings-daemon-3.0/gtk-modules
 %{_libexecdir}/gsd-test-input-helper
 
 %changelog
+* Fri Sep 28 2018 Kalev Lember <klember@redhat.com> - 3.30.1.1-1
+- Update to 3.30.1.1
+
 * Thu Sep 06 2018 Kalev Lember <klember@redhat.com> - 3.30.0-1
 - Update to 3.30.0
 
